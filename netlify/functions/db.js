@@ -724,3 +724,4 @@ export async function connectToDatabase() {
     return { isConnected: false, mode: 'memory', error: err.message };
   }
 }
+

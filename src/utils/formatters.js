@@ -45,3 +45,4 @@ export function formatDate(dateString) {
     minute: '2-digit'
   });
 }
+

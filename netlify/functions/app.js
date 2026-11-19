@@ -162,7 +162,13 @@ app.get('/api/products', async (req, res) => {
       if (sort === 'price-high') sortOptions = { salePrice: -1 };
       if (sort === 'newest') sortOptions = { createdAt: -1 };
 
-      products = await Product.find(query).sort(sortOptions);
+      const rawProducts = await Product.find(query).sort(sortOptions);
+      products = rawProducts.map(p => {
+        const obj = p.toObject ? p.toObject() : { ...p };
+        if (!obj.name && obj.title) obj.name = obj.title;
+        if (!obj.slug) obj.slug = (obj.name || 'product').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+        return obj;
+      });
     } else {
       products = await memoryStore.getProducts({
         category,
@@ -201,7 +207,11 @@ app.get('/api/products/:slug', async (req, res) => {
       return res.status(404).json({ success: false, message: 'Product not found' });
     }
 
-    return res.json({ success: true, data: product });
+    const obj = product.toObject ? product.toObject() : { ...product };
+    if (!obj.name && obj.title) obj.name = obj.title;
+    if (!obj.slug) obj.slug = (obj.name || 'product').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+
+    return res.json({ success: true, data: obj });
   } catch (err) {
     console.error('Error fetching product by slug:', err);
     return res.status(500).json({ success: false, message: 'Failed to fetch product' });
@@ -284,10 +294,13 @@ app.post('/api/orders', async (req, res) => {
       const itemTotal = verifiedUnitPrice * requestedQty;
       calculatedSubtotal += itemTotal;
 
+      const resolvedName = productDoc.name || productDoc.title || item.productName || 'Product';
+      const resolvedSlug = productDoc.slug || item.slug || resolvedName.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+
       verifiedItems.push({
-        productId: String(productDoc._id || productDoc.slug),
-        productName: productDoc.name,
-        slug: productDoc.slug,
+        productId: String(productDoc._id || resolvedSlug),
+        productName: resolvedName,
+        slug: resolvedSlug,
         image: productDoc.images?.[0] || '',
         unitPrice: verifiedUnitPrice,
         quantity: requestedQty,
@@ -310,6 +323,7 @@ app.post('/api/orders', async (req, res) => {
 
     const orderPayload = {
       orderId,
+      orderNumber: orderId,
       customer: {
         fullName: customer.fullName.trim(),
         phoneNumber: customer.phoneNumber.trim(),
@@ -957,7 +971,7 @@ app.put('/api/admin/site-config', requireAdmin, async (req, res) => {
       savedConfig = await WebsiteConfig.findByIdAndUpdate(
         'main',
         { $set: updateData },
-        { new: true, upsert: true }
+        { returnDocument: 'after', upsert: true }
       );
     } else {
       savedConfig = await memoryStore.updateWebsiteConfig(updateData);
@@ -1013,3 +1027,4 @@ app.post('/api/upload', requireAdmin, async (req, res) => {
 });
 
 export default app;
+

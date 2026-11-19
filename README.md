@@ -292,3 +292,4 @@ The application includes an automated test suite (`npm run test` or `node script
 ## 📄 License & Attribution
 
 Developed with care for premium hair restoration e-commerce in Bangladesh. All rights reserved.
+

@@ -53,3 +53,4 @@ export default function FeaturedProductsSection({ products = [] }) {
     </section>
   );
 }
+

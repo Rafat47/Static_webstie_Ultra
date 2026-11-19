@@ -157,3 +157,4 @@ const WebsiteConfigSchema = new mongoose.Schema({
 }, { timestamps: true });
 
 export default mongoose.models.WebsiteConfig || mongoose.model('WebsiteConfig', WebsiteConfigSchema);
+

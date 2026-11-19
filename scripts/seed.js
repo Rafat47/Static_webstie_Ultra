@@ -33,7 +33,7 @@ async function seedDatabase() {
     await WebsiteConfig.findOneAndUpdate(
       { _id: 'main' },
       { $setOnInsert: { _id: 'main', ...defaultWebsiteConfig } },
-      { upsert: true, new: true }
+      { upsert: true, returnDocument: 'after' }
     );
     console.log('✅ Website Configuration seeded.');
 
@@ -43,7 +43,7 @@ async function seedDatabase() {
       await Category.findOneAndUpdate(
         { slug: cat.slug },
         { $set: cat },
-        { upsert: true, new: true }
+        { upsert: true, returnDocument: 'after' }
       );
     }
     console.log(`✅ ${defaultCategories.length} Categories seeded.`);
@@ -54,7 +54,7 @@ async function seedDatabase() {
       await Product.findOneAndUpdate(
         { slug: prod.slug },
         { $set: prod },
-        { upsert: true, new: true }
+        { upsert: true, returnDocument: 'after' }
       );
     }
     console.log(`✅ ${defaultProducts.length} Products seeded.`);
@@ -77,7 +77,7 @@ async function seedDatabase() {
           role: 'superadmin'
         }
       },
-      { upsert: true, new: true }
+      { upsert: true, returnDocument: 'after' }
     );
     console.log('✅ Admin account configured successfully.');
 
@@ -94,3 +94,4 @@ async function seedDatabase() {
 }
 
 seedDatabase();
+

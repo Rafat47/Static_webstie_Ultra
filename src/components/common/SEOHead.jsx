@@ -26,3 +26,4 @@ export default function SEOHead({ title, description, image }) {
 
   return null;
 }
+

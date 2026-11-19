@@ -94,3 +94,4 @@ export async function sendMetaCapiEvent({
     return { success: false, error: error.response?.data || error.message };
   }
 }
+

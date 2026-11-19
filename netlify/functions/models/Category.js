@@ -10,3 +10,4 @@ const CategorySchema = new mongoose.Schema({
 }, { timestamps: true });
 
 export default mongoose.models.Category || mongoose.model('Category', CategorySchema);
+
