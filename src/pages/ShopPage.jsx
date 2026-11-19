@@ -98,32 +98,32 @@ export default function ShopPage() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header Banner */}
-        <div className="mb-8 sm:mb-10 text-center sm:text-left space-y-2">
-          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-brand-dark tracking-tight">
-            Explore All Hair Care Products
+        <div className="mb-8 space-y-2 pb-6 border-b border-brand-border">
+          <h1 className="text-2xl sm:text-3xl font-black text-brand-dark tracking-tight uppercase">
+            All Hair Care Products
           </h1>
-          <p className="text-sm sm:text-base text-brand-muted max-w-2xl">
-            Authentic dermatological formulations, titanium micro-needle systems, and cost-saving combo sets with nationwide Cash on Delivery.
+          <p className="text-xs sm:text-sm text-brand-muted max-w-2xl">
+            100% genuine Minoxidil 5% topical solutions, titanium micro-needles, and cost-effective combo packages. Cash on Delivery nationwide.
           </p>
         </div>
 
         {/* Filter & Search Bar Controls */}
-        <div className="bg-white rounded-2xl p-4 sm:p-5 border border-brand-border shadow-xs mb-8 space-y-4">
+        <div className="bg-white p-4 sm:p-5 border border-brand-border mb-8 space-y-4">
           <div className="flex flex-col sm:flex-row items-center gap-3">
             {/* Search Input */}
             <div className="relative flex-1 w-full">
               <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
               <input
                 type="text"
-                placeholder="Search Minoxidil, Derma Roller, Combos..."
+                placeholder="Search products..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-brand-accent/50 focus:border-brand-accent"
+                className="w-full pl-10 pr-4 py-2.5 border border-brand-border text-xs text-brand-dark placeholder-gray-400 focus:outline-none focus:border-brand-dark transition-colors"
               />
               {searchTerm && (
                 <button
                   onClick={() => setSearchTerm('')}
-                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-brand-dark"
                 >
                   <X className="w-4 h-4" />
                 </button>
@@ -135,7 +135,7 @@ export default function ShopPage() {
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
-                className="w-full sm:w-48 py-2.5 px-3 rounded-xl border border-gray-200 text-sm text-brand-text bg-white focus:outline-none focus:ring-2 focus:ring-brand-accent/50 font-medium"
+                className="w-full sm:w-48 py-2.5 px-3 border border-brand-border text-xs text-brand-dark bg-white focus:outline-none focus:border-brand-dark font-medium"
               >
                 <option value="featured">Featured First</option>
                 <option value="price-low">Price: Low to High</option>
@@ -146,10 +146,10 @@ export default function ShopPage() {
               {/* Featured toggle */}
               <button
                 onClick={() => setFeaturedOnly(!featuredOnly)}
-                className={`py-2.5 px-3.5 rounded-xl text-xs font-bold border transition-colors whitespace-nowrap flex items-center gap-1.5 ${
+                className={`py-2.5 px-3.5 text-xs font-bold border transition-colors whitespace-nowrap flex items-center gap-1.5 uppercase tracking-wider ${
                   featuredOnly
-                    ? 'bg-brand-navy text-white border-brand-navy'
-                    : 'bg-gray-50 text-brand-muted border-gray-200 hover:bg-gray-100'
+                    ? 'bg-brand-dark text-white border-brand-dark'
+                    : 'bg-white text-brand-muted border-brand-border hover:border-brand-dark hover:text-brand-dark'
                 }`}
               >
                 <span>⭐ Top Picks</span>
@@ -158,13 +158,13 @@ export default function ShopPage() {
           </div>
 
           {/* Dynamic Category Filter Pills */}
-          <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pt-2 pb-1">
+          <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pt-2 border-t border-brand-border">
             <button
               onClick={() => handleCategorySelect('All')}
-              className={`px-4 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all ${
+              className={`px-4 py-2 text-xs font-bold uppercase tracking-wider whitespace-nowrap transition-colors ${
                 selectedCategory === 'All'
-                  ? 'bg-brand-accent text-white shadow-xs'
-                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                  ? 'bg-brand-dark text-white'
+                  : 'bg-white text-brand-muted border border-brand-border hover:border-brand-dark hover:text-brand-dark'
               }`}
             >
               All Products
@@ -173,10 +173,10 @@ export default function ShopPage() {
               <button
                 key={cat._id || cat.slug}
                 onClick={() => handleCategorySelect(cat.name)}
-                className={`px-4 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all ${
+                className={`px-4 py-2 text-xs font-bold uppercase tracking-wider whitespace-nowrap transition-colors ${
                   selectedCategory.toLowerCase() === cat.name.toLowerCase()
-                    ? 'bg-brand-accent text-white shadow-xs'
-                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                    ? 'bg-brand-dark text-white'
+                    : 'bg-white text-brand-muted border border-brand-border hover:border-brand-dark hover:text-brand-dark'
                 }`}
               >
                 {cat.name}
@@ -188,21 +188,21 @@ export default function ShopPage() {
         {/* Product Grid State */}
         {loading ? (
           <div className="py-20 flex flex-col items-center justify-center space-y-3">
-            <RefreshCw className="w-8 h-8 text-brand-accent animate-spin" />
-            <p className="text-sm font-semibold text-brand-muted">Loading authentic products...</p>
+            <RefreshCw className="w-8 h-8 text-brand-dark animate-spin" />
+            <p className="text-xs font-bold uppercase tracking-wider text-brand-muted">Loading products...</p>
           </div>
         ) : products.length === 0 ? (
-          <div className="bg-white rounded-2xl border border-brand-border p-12 text-center max-w-md mx-auto space-y-4">
-            <div className="w-14 h-14 rounded-full bg-blue-50 text-brand-accent flex items-center justify-center mx-auto">
-              <Package className="w-7 h-7 opacity-75" />
+          <div className="bg-white border border-brand-border p-12 text-center max-w-md mx-auto space-y-4">
+            <div className="w-14 h-14 border border-brand-border text-brand-dark flex items-center justify-center mx-auto">
+              <Package className="w-7 h-7 stroke-[1.5]" />
             </div>
-            <h3 className="text-lg font-bold text-brand-dark">No products found</h3>
+            <h3 className="text-base font-bold text-brand-dark uppercase">No products found</h3>
             <p className="text-xs text-brand-muted">
               We couldn't find any products matching your current filters. Try searching with a different term.
             </p>
             <button
               onClick={clearFilters}
-              className="px-5 py-2.5 rounded-xl bg-brand-accent hover:bg-blue-600 text-white font-semibold text-xs shadow transition-colors"
+              className="px-6 py-3 bg-brand-dark hover:bg-black text-white font-bold text-xs uppercase tracking-wider transition-colors"
             >
               Reset All Filters
             </button>
@@ -214,14 +214,14 @@ export default function ShopPage() {
               {(selectedCategory !== 'All' || searchTerm || featuredOnly) && (
                 <button
                   onClick={clearFilters}
-                  className="text-brand-accent hover:underline font-semibold"
+                  className="text-brand-dark hover:underline font-bold uppercase tracking-wider"
                 >
                   Clear filters
                 </button>
               )}
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
               {products.map((product) => (
                 <ProductCard key={product._id || product.slug} product={product} />
               ))}
@@ -232,4 +232,3 @@ export default function ShopPage() {
     </div>
   );
 }
-

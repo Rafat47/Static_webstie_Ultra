@@ -23,7 +23,7 @@ const OrderSchema = new mongoose.Schema({
   customer: {
     fullName: { type: String, required: true, trim: true },
     phoneNumber: { type: String, required: true, trim: true },
-    district: { type: String, required: true, trim: true },
+    district: { type: String, trim: true, default: "Dhaka" },
     deliveryArea: {
       type: String,
       enum: ['inside_dhaka', 'outside_dhaka'],

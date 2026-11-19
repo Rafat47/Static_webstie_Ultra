@@ -154,7 +154,10 @@ async function runTests() {
     console.error('\n❌ Test failure:', err.message);
     process.exitCode = 1;
   } finally {
-    server.close();
+    server.close(() => {
+      process.exit(process.exitCode || 0);
+    });
+    setTimeout(() => process.exit(process.exitCode || 0), 1000);
   }
 }
 

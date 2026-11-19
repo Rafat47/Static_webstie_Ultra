@@ -8,28 +8,29 @@ export default {
     extend: {
       colors: {
         brand: {
-          dark: '#071B35',      // Primary background
-          navy: '#0D294A',      // Secondary navy
-          blue: '#174A7E',      // Primary blue
-          accent: '#3C83C5',    // Accent blue
-          light: '#F4F7FA',     // Light background
-          text: '#142235',      // Primary text
-          muted: '#64748B',     // Secondary text
-          border: '#DCE4ED',    // Borders
-          gold: '#F59E0B',      // Accent rating/badges
-          emerald: '#10B981',   // Success/Stock badge
+          dark: '#0F172A',      // BuyAzz-inspired clean charcoal/black
+          navy: '#1E293B',      // Slate 800
+          blue: '#1E40AF',      // Deep royal blue accent
+          accent: '#0F172A',    // High-contrast primary action (solid black/charcoal)
+          light: '#FFFFFF',     // Clean pure white background
+          surface: '#F8FAFC',   // Subtle light slate background
+          text: '#0F172A',      // Near-black typography
+          muted: '#64748B',     // Refined slate secondary text
+          border: '#E2E8F0',    // Crisp 1px borders
+          red: '#DC2626',       // Discount badges
+          emerald: '#16A34A',   // Stock / trust indicator
+          amber: '#D97706',     // Star ratings
         }
       },
       fontFamily: {
-        sans: ['Inter', 'Manrope', 'sans-serif'],
+        sans: ['Inter', 'ui-sans-serif', 'system-ui', '-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', 'sans-serif'],
       },
       boxShadow: {
-        'card': '0 4px 20px -2px rgba(7, 27, 53, 0.08), 0 2px 6px -1px rgba(7, 27, 53, 0.04)',
-        'card-hover': '0 12px 30px -4px rgba(7, 27, 53, 0.14), 0 4px 10px -2px rgba(7, 27, 53, 0.06)',
-        'float': '0 10px 25px -3px rgba(60, 131, 197, 0.25)',
+        'subtle': '0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px -1px rgba(0, 0, 0, 0.05)',
+        'card': '0 1px 3px 0 rgba(15, 23, 42, 0.06), 0 1px 2px 0 rgba(15, 23, 42, 0.04)',
+        'preview': '0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.05)',
       }
     },
   },
   plugins: [],
 }
-

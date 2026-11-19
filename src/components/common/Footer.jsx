@@ -34,57 +34,50 @@ export default function Footer() {
   const footerData = config?.footer || {};
 
   return (
-    <footer className="bg-brand-dark text-white pt-14 pb-8 border-t border-white/10" id="contact">
+    <footer className="bg-brand-dark text-white border-t border-brand-border" id="contact">
       {/* Value Proposition Badges */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12 border-b border-white/10">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="flex items-center space-x-3.5 bg-white/5 p-4 rounded-xl border border-white/10">
-            <div className="w-10 h-10 rounded-lg bg-brand-accent/20 flex items-center justify-center text-brand-accent flex-shrink-0">
-              <ShieldCheck className="w-5 h-5" />
+      <div className="border-b border-white/10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="flex items-start space-x-3.5 border-b md:border-b-0 md:border-r border-white/10 pb-6 md:pb-0 pr-4">
+              <ShieldCheck className="w-5 h-5 text-white flex-shrink-0 mt-0.5 stroke-[2]" />
+              <div>
+                <h4 className="font-bold text-xs uppercase tracking-wider text-white">100% Authentic Guarantee</h4>
+                <p className="text-xs text-gray-400 mt-1">USA formulation Kirkland 5% & sterile titanium micro-needles.</p>
+              </div>
             </div>
-            <div>
-              <h4 className="font-bold text-sm text-white">100% Authentic Guarantee</h4>
-              <p className="text-xs text-gray-300">USA formulation Kirkland 5% & sterile titanium micro-needles.</p>
-            </div>
-          </div>
 
-          <div className="flex items-center space-x-3.5 bg-white/5 p-4 rounded-xl border border-white/10">
-            <div className="w-10 h-10 rounded-lg bg-brand-accent/20 flex items-center justify-center text-brand-accent flex-shrink-0">
-              <Truck className="w-5 h-5" />
+            <div className="flex items-start space-x-3.5 border-b md:border-b-0 md:border-r border-white/10 pb-6 md:pb-0 pr-4">
+              <Truck className="w-5 h-5 text-white flex-shrink-0 mt-0.5 stroke-[2]" />
+              <div>
+                <h4 className="font-bold text-xs uppercase tracking-wider text-white">Nationwide Cash on Delivery</h4>
+                <p className="text-xs text-gray-400 mt-1">Pay safely after inspecting your parcel in all 64 districts of Bangladesh.</p>
+              </div>
             </div>
-            <div>
-              <h4 className="font-bold text-sm text-white">Nationwide Cash on Delivery</h4>
-              <p className="text-xs text-gray-300">Pay safely after receiving your parcel in all 64 districts of Bangladesh.</p>
-            </div>
-          </div>
 
-          <div className="flex items-center space-x-3.5 bg-white/5 p-4 rounded-xl border border-white/10">
-            <div className="w-10 h-10 rounded-lg bg-brand-accent/20 flex items-center justify-center text-brand-accent flex-shrink-0">
-              <Clock className="w-5 h-5" />
-            </div>
-            <div>
-              <h4 className="font-bold text-sm text-white">Fast Dispatch</h4>
-              <p className="text-xs text-gray-300">24-48 hours delivery inside Dhaka; 2-4 days across Bangladesh.</p>
+            <div className="flex items-start space-x-3.5">
+              <Clock className="w-5 h-5 text-white flex-shrink-0 mt-0.5 stroke-[2]" />
+              <div>
+                <h4 className="font-bold text-xs uppercase tracking-wider text-white">Fast Dispatch</h4>
+                <p className="text-xs text-gray-400 mt-1">24-48 hours inside Dhaka; 2-4 days across Bangladesh.</p>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
       {/* Main Footer Links & Info */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Brand Info */}
           <div className="space-y-4">
             <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 rounded-lg bg-brand-accent flex items-center justify-center text-white">
-                <Sparkles className="w-4 h-4" />
-              </div>
-              <span className="font-black text-xl tracking-wider text-white">
+              <span className="font-black text-xl tracking-wider text-white uppercase">
                 {siteSettings.logoText || 'REGROW'}
               </span>
             </div>
-            <p className="text-xs text-gray-300 leading-relaxed">
-              {footerData.aboutText || 'Regrow Hair Care is dedicated to helping individuals in Bangladesh reclaim hair density with genuine, science-backed topical Minoxidil solutions and titanium micro-needling systems.'}
+            <p className="text-xs text-gray-400 leading-relaxed">
+              {footerData.aboutText || 'Science-backed topical Minoxidil 5% solutions and titanium micro-needling systems for men & women experiencing hair thinning.'}
             </p>
             {/* Social Links */}
             <div className="flex items-center space-x-3 pt-2">
@@ -93,7 +86,8 @@ export default function Footer() {
                   href={siteSettings.socialLinks.facebook}
                   target="_blank"
                   rel="noreferrer"
-                  className="w-8 h-8 rounded-full bg-white/10 hover:bg-brand-accent flex items-center justify-center text-gray-300 hover:text-white transition-colors"
+                  className="w-8 h-8 border border-white/20 hover:border-white hover:bg-white hover:text-brand-dark flex items-center justify-center text-gray-300 transition-colors"
+                  aria-label="Facebook"
                 >
                   <FacebookIcon className="w-4 h-4" />
                 </a>
@@ -103,7 +97,8 @@ export default function Footer() {
                   href={siteSettings.socialLinks.instagram}
                   target="_blank"
                   rel="noreferrer"
-                  className="w-8 h-8 rounded-full bg-white/10 hover:bg-brand-accent flex items-center justify-center text-gray-300 hover:text-white transition-colors"
+                  className="w-8 h-8 border border-white/20 hover:border-white hover:bg-white hover:text-brand-dark flex items-center justify-center text-gray-300 transition-colors"
+                  aria-label="Instagram"
                 >
                   <InstagramIcon className="w-4 h-4" />
                 </a>
@@ -113,7 +108,8 @@ export default function Footer() {
                   href={siteSettings.socialLinks.youtube}
                   target="_blank"
                   rel="noreferrer"
-                  className="w-8 h-8 rounded-full bg-white/10 hover:bg-brand-accent flex items-center justify-center text-gray-300 hover:text-white transition-colors"
+                  className="w-8 h-8 border border-white/20 hover:border-white hover:bg-white hover:text-brand-dark flex items-center justify-center text-gray-300 transition-colors"
+                  aria-label="YouTube"
                 >
                   <YoutubeIcon className="w-4 h-4" />
                 </a>
@@ -123,8 +119,8 @@ export default function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h5 className="font-bold text-sm uppercase tracking-wider text-white mb-4">Quick Navigation</h5>
-            <ul className="space-y-2.5 text-xs text-gray-300">
+            <h5 className="font-bold text-xs uppercase tracking-widest text-white mb-4">Quick Navigation</h5>
+            <ul className="space-y-2 text-xs text-gray-400">
               <li>
                 <Link to="/" className="hover:text-white transition-colors">Home</Link>
               </li>
@@ -145,8 +141,8 @@ export default function Footer() {
 
           {/* Policies */}
           <div>
-            <h5 className="font-bold text-sm uppercase tracking-wider text-white mb-4">Customer Care & Policies</h5>
-            <ul className="space-y-2.5 text-xs text-gray-300">
+            <h5 className="font-bold text-xs uppercase tracking-widest text-white mb-4">Customer Care & Policies</h5>
+            <ul className="space-y-2 text-xs text-gray-400">
               <li>
                 <Link to="/shipping-policy" className="hover:text-white transition-colors">Shipping & Delivery Policy</Link>
               </li>
@@ -160,35 +156,35 @@ export default function Footer() {
                 <Link to="/terms-and-conditions" className="hover:text-white transition-colors">Terms & Conditions</Link>
               </li>
               <li>
-                <Link to="/admin/login" className="hover:text-brand-accent transition-colors opacity-60">Admin Portal</Link>
+                <Link to="/admin/login" className="hover:text-white transition-colors opacity-50">Admin Portal</Link>
               </li>
             </ul>
           </div>
 
           {/* Contact Details */}
           <div>
-            <h5 className="font-bold text-sm uppercase tracking-wider text-white mb-4">Direct Contact</h5>
-            <div className="space-y-3 text-xs text-gray-300">
+            <h5 className="font-bold text-xs uppercase tracking-widest text-white mb-4">Direct Contact</h5>
+            <div className="space-y-2.5 text-xs text-gray-400">
               {siteSettings.contactPhone && (
                 <div className="flex items-start space-x-2.5">
-                  <Phone className="w-4 h-4 text-brand-accent mt-0.5 flex-shrink-0" />
+                  <Phone className="w-3.5 h-3.5 text-white mt-0.5 flex-shrink-0" />
                   <span>{siteSettings.contactPhone}</span>
                 </div>
               )}
               {siteSettings.contactEmail && (
                 <div className="flex items-start space-x-2.5">
-                  <Mail className="w-4 h-4 text-brand-accent mt-0.5 flex-shrink-0" />
+                  <Mail className="w-3.5 h-3.5 text-white mt-0.5 flex-shrink-0" />
                   <span>{siteSettings.contactEmail}</span>
                 </div>
               )}
               {siteSettings.address && (
                 <div className="flex items-start space-x-2.5">
-                  <MapPin className="w-4 h-4 text-brand-accent mt-0.5 flex-shrink-0" />
+                  <MapPin className="w-3.5 h-3.5 text-white mt-0.5 flex-shrink-0" />
                   <span>{siteSettings.address}</span>
                 </div>
               )}
-              <div className="pt-2 text-[11px] text-gray-400">
-                Operating Hours: 10:00 AM – 9:00 PM (Daily)
+              <div className="pt-2 text-[11px] text-gray-500">
+                Support Hours: 10:00 AM – 9:00 PM (Everyday)
               </div>
             </div>
           </div>
@@ -196,11 +192,13 @@ export default function Footer() {
       </div>
 
       {/* Copyright Bar */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between text-xs text-gray-400 gap-2">
-        <p>{footerData.copyrightText || '© 2026 Regrow Hair Care BD. All rights reserved.'}</p>
-        <p className="text-[11px] text-gray-400">
-          Disclaimer: Informational purposes only. Minoxidil is for topical application in appropriate candidates.
-        </p>
+      <div className="border-t border-white/10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 flex flex-col sm:flex-row items-center justify-between text-xs text-gray-400 gap-2">
+          <p>{footerData.copyrightText || '© 2026 Regrow Hair Care BD. All rights reserved.'}</p>
+          <p className="text-[11px] text-gray-400">
+            Disclaimer: For cosmetic & topical use. Consult a physician for chronic dermatological conditions.
+          </p>
+        </div>
       </div>
     </footer>
   );
