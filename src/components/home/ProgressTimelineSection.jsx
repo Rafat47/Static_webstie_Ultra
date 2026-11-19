@@ -1,5 +1,5 @@
 import React from 'react';
-import { Calendar, AlertCircle } from 'lucide-react';
+import { AlertCircle } from 'lucide-react';
 import { useConfig } from '../../context/ConfigContext';
 
 export default function ProgressTimelineSection() {
@@ -11,63 +11,63 @@ export default function ProgressTimelineSection() {
   const stages = sectionData.stages || [];
 
   return (
-    <section className="py-12 sm:py-16 bg-white border-b border-gray-100" id="progress">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="py-10 sm:py-16 bg-white border-b border-gray-100" id="progress">
+      <div className="max-w-[1536px] mx-auto px-3 sm:px-6">
         
         {/* Section Header */}
-        <div className="max-w-3xl mb-8 sm:mb-12 space-y-1.5">
-          <span className="text-[11px] font-bold uppercase tracking-wider text-gray-500">
+        <div className="max-w-3xl mb-8 sm:mb-12 space-y-2">
+          <span className="text-xs sm:text-sm font-bold uppercase tracking-wider text-gray-500">
             Realistic Expectations
           </span>
-          <h2 className="text-2xl sm:text-3xl font-black text-gray-900 tracking-tight">
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black text-gray-900 tracking-tight uppercase">
             {sectionData.title || 'Every Journey Takes Time'}
           </h2>
-          <p className="text-xs sm:text-sm text-gray-600">
+          <p className="text-sm sm:text-base text-gray-700">
             {sectionData.subtitle || 'What to realistically expect with consistent daily application. Results vary by individual.'}
           </p>
 
           {/* Ethical Disclaimer */}
-          <div className="inline-flex items-center gap-2 p-2 rounded bg-gray-50 border border-gray-200 text-gray-700 text-xs font-medium mt-2">
-            <AlertCircle className="w-3.5 h-3.5 text-gray-500 flex-shrink-0" />
-            <span>{sectionData.disclaimer || 'Important: Consistent application is essential. Individual biological response and timelines vary.'}</span>
+          <div className="inline-flex items-center gap-2 p-2.5 rounded bg-gray-50 border border-gray-200 text-gray-700 text-xs font-medium mt-2">
+            <AlertCircle className="w-4 h-4 text-gray-500 flex-shrink-0" />
+            <span>{sectionData.disclaimer || 'Important: Consistent twice-daily application is essential. Individual biological response, timeline, and degree of recovery naturally vary.'}</span>
           </div>
         </div>
 
         {/* Timeline Cards Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 lg:gap-6">
           {stages.map((stage, idx) => (
             <div
               key={idx}
-              className="bg-white rounded-lg border border-gray-200 overflow-hidden shadow-2xs hover:border-black transition-all flex flex-col justify-between"
+              className="bg-white rounded-lg border border-gray-200 overflow-hidden shadow-2xs hover:border-black transition-all flex flex-col justify-between group"
             >
               {/* Image Preview */}
-              <div className="relative aspect-4/3 overflow-hidden bg-gray-50">
+              <div className="relative aspect-4/3 overflow-hidden bg-gray-50 border-b border-gray-100">
                 <img
                   src={stage.image || 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&auto=format&fit=crop&q=80'}
                   alt={stage.title}
                   loading="lazy"
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover group-hover:scale-103 transition-transform duration-300"
                 />
-                <div className="absolute top-2 left-2 bg-black text-white text-[10px] font-bold px-2 py-0.5 rounded shadow-xs">
+                <div className="absolute top-2.5 left-2.5 bg-black text-white text-[11px] font-bold px-2 py-0.5 rounded shadow-xs">
                   {stage.period || stage.stage}
                 </div>
               </div>
 
               {/* Text Content */}
-              <div className="p-4 flex-1 flex flex-col justify-between space-y-2">
+              <div className="p-4 sm:p-5 flex-1 flex flex-col justify-between space-y-3">
                 <div>
-                  <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider font-mono">
+                  <span className="text-[11px] font-bold text-gray-400 uppercase tracking-wider font-mono">
                     {stage.stage || `Stage 0${idx + 1}`}
                   </span>
-                  <h4 className="font-bold text-gray-900 text-sm mt-0.5">
+                  <h4 className="font-bold text-gray-900 text-sm sm:text-base mt-0.5">
                     {stage.title}
                   </h4>
-                  <p className="text-xs text-gray-600 leading-relaxed mt-1">
+                  <p className="text-xs sm:text-sm text-gray-600 leading-relaxed mt-1.5">
                     {stage.description}
                   </p>
                 </div>
 
-                <div className="pt-2 border-t border-gray-100 text-[11px] font-semibold text-gray-500 flex items-center justify-between">
+                <div className="pt-2.5 border-t border-gray-100 text-xs font-semibold text-gray-500 flex items-center justify-between">
                   <span>Milestone:</span>
                   <span className="text-gray-900 font-bold">{stage.period}</span>
                 </div>

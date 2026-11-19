@@ -96,7 +96,7 @@ export default function ShopPage() {
         description="Browse authentic Minoxidil 5%, Titanium Derma Rollers, and value combo packages. Fast Cash on Delivery across Bangladesh."
       />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-[1536px] mx-auto px-3 sm:px-6">
         {/* Header Banner */}
         <div className="mb-8 space-y-2 pb-6 border-b border-brand-border">
           <h1 className="text-2xl sm:text-3xl font-black text-brand-dark tracking-tight uppercase">

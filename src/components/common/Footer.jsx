@@ -37,7 +37,7 @@ export default function Footer() {
     <footer className="bg-brand-dark text-white border-t border-brand-border" id="contact">
       {/* Value Proposition Badges */}
       <div className="border-b border-white/10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="max-w-[1536px] mx-auto px-3 sm:px-6 py-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="flex items-start space-x-3.5 border-b md:border-b-0 md:border-r border-white/10 pb-6 md:pb-0 pr-4">
               <ShieldCheck className="w-5 h-5 text-white flex-shrink-0 mt-0.5 stroke-[2]" />
@@ -67,7 +67,7 @@ export default function Footer() {
       </div>
 
       {/* Main Footer Links & Info */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="max-w-[1536px] mx-auto px-3 sm:px-6 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Brand Info */}
           <div className="space-y-4">
@@ -193,7 +193,7 @@ export default function Footer() {
 
       {/* Copyright Bar */}
       <div className="border-t border-white/10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 flex flex-col sm:flex-row items-center justify-between text-xs text-gray-400 gap-2">
+        <div className="max-w-[1536px] mx-auto px-3 sm:px-6 py-5 flex flex-col sm:flex-row items-center justify-between text-xs text-gray-400 gap-2">
           <p>{footerData.copyrightText || '© 2026 Regrow Hair Care BD. All rights reserved.'}</p>
           <p className="text-[11px] text-gray-400">
             Disclaimer: For cosmetic & topical use. Consult a physician for chronic dermatological conditions.

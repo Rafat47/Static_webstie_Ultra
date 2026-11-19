@@ -7,25 +7,34 @@ export default function HeroSection() {
   const { config } = useConfig();
   const hero = config?.hero || {};
 
+  const desktopImg = hero.desktopImage || hero.heroImage || 'https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=1600&auto=format&fit=crop&q=85';
+  const mobileImg = hero.mobileImage || hero.heroMobileImage || desktopImg;
+
   return (
-    <section className="bg-white py-4 sm:py-6" id="hero">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="bg-white py-3 sm:py-6" id="hero">
+      <div className="max-w-[1536px] mx-auto px-3 sm:px-6">
         {/* Main Banner Container - BuyAzz Inspired Large Presentation */}
-        <div className="relative rounded-xl overflow-hidden border border-gray-200 bg-gray-50 aspect-21/9 min-h-[260px] sm:min-h-[380px] lg:min-h-[440px] flex items-center shadow-xs">
-          {/* Background Photography Image */}
-          <img
-            src={hero.heroImage || 'https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=1600&auto=format&fit=crop&q=85'}
-            alt="Hair Care & Minoxidil Solutions"
-            className="absolute inset-0 w-full h-full object-cover object-center"
-          />
+        <div className="relative rounded-xl overflow-hidden border border-gray-200 bg-gray-50 aspect-[16/9] sm:aspect-[21/9] min-h-[280px] sm:min-h-[400px] lg:min-h-[460px] flex items-center shadow-xs">
+          
+          {/* Responsive Art Direction: Mobile vs Desktop Image */}
+          <picture className="absolute inset-0 w-full h-full">
+            {hero.mobileImage && (
+              <source media="(max-width: 640px)" srcSet={mobileImg} />
+            )}
+            <img
+              src={desktopImg}
+              alt="Hair Care & Minoxidil Solutions"
+              className="w-full h-full object-cover object-center"
+            />
+          </picture>
 
           {/* Clean Gradient Overlay for Readability */}
-          <div className="absolute inset-0 bg-gradient-to-r from-black/75 via-black/45 to-transparent sm:from-black/70 sm:via-black/35" />
+          <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent sm:from-black/70 sm:via-black/35" />
 
           {/* Content Overlay */}
-          <div className="relative z-10 max-w-xl px-6 sm:px-12 py-8 text-white space-y-3 sm:space-y-4">
+          <div className="relative z-10 max-w-xl px-4 sm:px-12 py-6 sm:py-8 text-white space-y-3 sm:space-y-4">
             {hero.badge && (
-              <span className="inline-block text-[11px] sm:text-xs font-bold uppercase tracking-wider text-amber-400 bg-black/40 px-3 py-1 rounded backdrop-blur-xs border border-white/10">
+              <span className="inline-block text-[11px] sm:text-xs font-bold uppercase tracking-wider text-amber-400 bg-black/50 px-3 py-1 rounded backdrop-blur-xs border border-white/10">
                 {hero.badge}
               </span>
             )}

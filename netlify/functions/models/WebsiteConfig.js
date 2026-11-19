@@ -36,6 +36,8 @@ const WebsiteConfigSchema = new mongoose.Schema({
     secondaryBtnText: String,
     secondaryBtnLink: String,
     heroImage: String,
+    desktopImage: String,
+    mobileImage: String,
     rating: String,
     trustBadges: [
       {
@@ -58,7 +60,9 @@ const WebsiteConfigSchema = new mongoose.Schema({
       bulletPoints: [String],
       ctaText: String,
       ctaLink: String,
-      image: String
+      image: String,
+      desktopImage: String,
+      mobileImage: String
     },
     hairThinning: {
       enabled: { type: Boolean, default: true },
@@ -71,7 +75,8 @@ const WebsiteConfigSchema = new mongoose.Schema({
           title: String,
           description: String,
           badge: String,
-          icon: String
+          icon: String,
+          image: String
         }
       ],
       ctaText: String,
@@ -90,6 +95,8 @@ const WebsiteConfigSchema = new mongoose.Schema({
       ],
       scienceNote: String,
       image: String,
+      desktopImage: String,
+      mobileImage: String,
       ctaText: String,
       ctaLink: String
     },
@@ -118,10 +125,13 @@ const WebsiteConfigSchema = new mongoose.Schema({
         {
           stepNumber: String,
           title: String,
-          description: String
+          description: String,
+          image: String
         }
       ],
-      image: String
+      image: String,
+      desktopImage: String,
+      mobileImage: String
     }
   },
   featuredProducts: {

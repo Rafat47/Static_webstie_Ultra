@@ -144,7 +144,7 @@ export default function CheckoutPage() {
     <div className="min-h-screen bg-brand-light py-8 sm:py-12">
       <SEOHead title="Checkout — Cash on Delivery | Regrow Hair Care BD" />
 
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-[1536px] mx-auto px-3 sm:px-6">
         {/* Back Link */}
         <div className="mb-6">
           <Link

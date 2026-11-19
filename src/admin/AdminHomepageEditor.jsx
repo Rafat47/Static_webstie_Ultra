@@ -243,21 +243,45 @@ export default function AdminHomepageEditor() {
               </div>
             </div>
 
-            <div>
-              <label className="block font-bold uppercase tracking-wider text-brand-dark mb-1">
-                Hero Image URL
-              </label>
-              <input
-                type="text"
-                value={configData.hero?.heroImage || ''}
-                onChange={(e) => updateNested('hero.heroImage', e.target.value)}
-                className="w-full px-3.5 py-2 rounded-xl border border-gray-200"
-              />
-              {configData.hero?.heroImage && (
-                <div className="mt-2 w-32 h-24 rounded-lg overflow-hidden border border-gray-200">
-                  <img src={configData.hero.heroImage} alt="Hero Preview" className="w-full h-full object-cover" />
-                </div>
-              )}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label className="block font-bold uppercase tracking-wider text-brand-dark mb-1">
+                  Desktop Hero Image URL (21:9 Aspect Ratio)
+                </label>
+                <input
+                  type="text"
+                  placeholder="https://... (1600x685 recommended)"
+                  value={configData.hero?.desktopImage || configData.hero?.heroImage || ''}
+                  onChange={(e) => {
+                    updateNested('hero.desktopImage', e.target.value);
+                    updateNested('hero.heroImage', e.target.value);
+                  }}
+                  className="w-full px-3.5 py-2 rounded-xl border border-gray-200"
+                />
+                {(configData.hero?.desktopImage || configData.hero?.heroImage) && (
+                  <div className="mt-2 w-36 h-16 rounded-lg overflow-hidden border border-gray-200">
+                    <img src={configData.hero.desktopImage || configData.hero.heroImage} alt="Desktop Hero Preview" className="w-full h-full object-cover" />
+                  </div>
+                )}
+              </div>
+
+              <div>
+                <label className="block font-bold uppercase tracking-wider text-brand-dark mb-1">
+                  Mobile Hero Image URL (16:9 Aspect Ratio)
+                </label>
+                <input
+                  type="text"
+                  placeholder="https://... (800x450 recommended)"
+                  value={configData.hero?.mobileImage || ''}
+                  onChange={(e) => updateNested('hero.mobileImage', e.target.value)}
+                  className="w-full px-3.5 py-2 rounded-xl border border-gray-200"
+                />
+                {configData.hero?.mobileImage && (
+                  <div className="mt-2 w-24 h-16 rounded-lg overflow-hidden border border-gray-200">
+                    <img src={configData.hero.mobileImage} alt="Mobile Hero Preview" className="w-full h-full object-cover" />
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         )}
@@ -372,14 +396,29 @@ export default function AdminHomepageEditor() {
               </div>
 
               <div>
-                <label className="block font-bold uppercase tracking-wider text-brand-dark mb-1">Side Image URL</label>
+                <label className="block font-bold uppercase tracking-wider text-brand-dark mb-1">Desktop Image URL</label>
                 <input
                   type="text"
-                  value={configData.sections?.startNow?.image || ''}
-                  onChange={(e) => updateNested('sections.startNow.image', e.target.value)}
+                  placeholder="https://..."
+                  value={configData.sections?.startNow?.desktopImage || configData.sections?.startNow?.image || ''}
+                  onChange={(e) => {
+                    updateNested('sections.startNow.desktopImage', e.target.value);
+                    updateNested('sections.startNow.image', e.target.value);
+                  }}
                   className="w-full px-3.5 py-2 rounded-xl border border-gray-200"
                 />
               </div>
+            </div>
+
+            <div>
+              <label className="block font-bold uppercase tracking-wider text-brand-dark mb-1">Mobile Image URL (Optional)</label>
+              <input
+                type="text"
+                placeholder="https://..."
+                value={configData.sections?.startNow?.mobileImage || ''}
+                onChange={(e) => updateNested('sections.startNow.mobileImage', e.target.value)}
+                className="w-full px-3.5 py-2 rounded-xl border border-gray-200"
+              />
             </div>
           </div>
         )}
@@ -461,6 +500,22 @@ export default function AdminHomepageEditor() {
                     }}
                     className="w-full px-3 py-1.5 rounded-lg border border-gray-200"
                   />
+                  <input
+                    type="text"
+                    placeholder="Stage Image URL (e.g. photo or diagram)"
+                    value={stage.image || ''}
+                    onChange={(e) => {
+                      const copy = [...configData.sections.hairThinning.stages];
+                      copy[sIdx].image = e.target.value;
+                      updateNested('sections.hairThinning.stages', copy);
+                    }}
+                    className="w-full px-3 py-1.5 rounded-lg border border-gray-200 text-xs"
+                  />
+                  {stage.image && (
+                    <div className="w-24 h-16 rounded overflow-hidden border border-gray-200">
+                      <img src={stage.image} alt="Preview" className="w-full h-full object-cover" />
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
@@ -512,6 +567,32 @@ export default function AdminHomepageEditor() {
                 onChange={(e) => updateNested('sections.howMinoxidilWorks.scienceNote', e.target.value)}
                 className="w-full px-3.5 py-2 rounded-xl border border-gray-200"
               />
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label className="block font-bold uppercase tracking-wider text-brand-dark mb-1">Desktop Illustration Image URL</label>
+                <input
+                  type="text"
+                  placeholder="https://..."
+                  value={configData.sections?.howMinoxidilWorks?.desktopImage || configData.sections?.howMinoxidilWorks?.image || ''}
+                  onChange={(e) => {
+                    updateNested('sections.howMinoxidilWorks.desktopImage', e.target.value);
+                    updateNested('sections.howMinoxidilWorks.image', e.target.value);
+                  }}
+                  className="w-full px-3.5 py-2 rounded-xl border border-gray-200"
+                />
+              </div>
+              <div>
+                <label className="block font-bold uppercase tracking-wider text-brand-dark mb-1">Mobile Illustration Image URL (Optional)</label>
+                <input
+                  type="text"
+                  placeholder="https://..."
+                  value={configData.sections?.howMinoxidilWorks?.mobileImage || ''}
+                  onChange={(e) => updateNested('sections.howMinoxidilWorks.mobileImage', e.target.value)}
+                  className="w-full px-3.5 py-2 rounded-xl border border-gray-200"
+                />
+              </div>
             </div>
           </div>
         )}
@@ -712,6 +793,22 @@ export default function AdminHomepageEditor() {
                     }}
                     className="w-full px-3 py-1.5 rounded-lg border border-gray-200"
                   />
+                  <input
+                    type="text"
+                    placeholder="Step Illustrative Image URL (e.g. wash, dropper, roller, massage)"
+                    value={step.image || ''}
+                    onChange={(e) => {
+                      const copy = [...configData.sections.usageGuide.steps];
+                      copy[uIdx].image = e.target.value;
+                      updateNested('sections.usageGuide.steps', copy);
+                    }}
+                    className="w-full px-3 py-1.5 rounded-lg border border-gray-200 text-xs"
+                  />
+                  {step.image && (
+                    <div className="w-24 h-16 rounded overflow-hidden border border-gray-200">
+                      <img src={step.image} alt="Step Preview" className="w-full h-full object-cover" />
+                    </div>
+                  )}
                 </div>
               ))}
             </div>

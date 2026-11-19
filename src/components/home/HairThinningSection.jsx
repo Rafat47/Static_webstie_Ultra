@@ -1,6 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { ShieldCheck, TrendingDown, AlertCircle, ArrowRight } from 'lucide-react';
 import { useConfig } from '../../context/ConfigContext';
 
 export default function HairThinningSection() {
@@ -11,57 +9,76 @@ export default function HairThinningSection() {
 
   const stages = sectionData.stages || [];
 
+  // Default stage images if not provided in config
+  const defaultStageImages = [
+    'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=600&auto=format&fit=crop&q=80',
+    'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&auto=format&fit=crop&q=80',
+    'https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=600&auto=format&fit=crop&q=80'
+  ];
+
   return (
-    <section className="py-12 sm:py-16 bg-white border-b border-gray-100" id="hair-thinning">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="py-10 sm:py-16 bg-white border-b border-gray-100" id="hair-thinning">
+      <div className="max-w-[1536px] mx-auto px-3 sm:px-6">
         
         {/* Section Header */}
-        <div className="max-w-3xl mb-8 sm:mb-12 space-y-1.5">
-          <span className="text-[11px] font-bold uppercase tracking-wider text-gray-500">
+        <div className="max-w-3xl mb-8 sm:mb-12 space-y-2">
+          <span className="text-xs sm:text-sm font-bold uppercase tracking-wider text-gray-500">
             Biological Progression
           </span>
-          <h2 className="text-2xl sm:text-3xl font-black text-gray-900 tracking-tight">
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black text-gray-900 tracking-tight uppercase">
             {sectionData.title || 'Understanding Hair Thinning'}
           </h2>
-          <p className="text-xs sm:text-sm text-gray-600">
-            {sectionData.subtitle || 'Why hair loses density and how early detection saves thinning crowns & temples.'}
+          <p className="text-sm sm:text-base text-gray-700">
+            {sectionData.subtitle || 'Visual guide: why follicles lose diameter and how timely topical stimulation prevents permanent loss.'}
           </p>
         </div>
 
-        {/* 3 Visual Stages */}
+        {/* 3 Visual Stage Cards with Real Photography / Illustrations */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6">
-          {stages.map((stage, idx) => (
-            <div
-              key={idx}
-              className="bg-white rounded-lg p-5 sm:p-6 border border-gray-200 hover:border-black transition-all flex flex-col justify-between space-y-4 shadow-2xs"
-            >
-              <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <span className="text-xs font-mono font-bold text-gray-400">
+          {stages.map((stage, idx) => {
+            const stageImg = stage.image || defaultStageImages[idx % defaultStageImages.length];
+
+            return (
+              <div
+                key={idx}
+                className="bg-white rounded-lg border border-gray-200 hover:border-black transition-all flex flex-col justify-between overflow-hidden shadow-2xs hover:shadow-subtle group"
+              >
+                {/* Visual Image Stage Header */}
+                <div className="w-full h-40 sm:h-48 overflow-hidden bg-gray-50 border-b border-gray-100 relative">
+                  <img
+                    src={stageImg}
+                    alt={stage.title}
+                    className="w-full h-full object-cover object-center group-hover:scale-103 transition-transform duration-300"
+                  />
+                  <div className="absolute top-2.5 left-2.5 bg-black/80 backdrop-blur-xs text-white text-[11px] font-mono font-bold px-2 py-0.5 rounded shadow-xs">
                     STAGE 0{idx + 1}
-                  </span>
-                  <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-gray-100 text-gray-700">
+                  </div>
+                  <div className="absolute top-2.5 right-2.5 bg-white/90 backdrop-blur-xs text-gray-900 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded shadow-xs border border-gray-200">
                     {stage.badge || `Phase ${idx + 1}`}
-                  </span>
+                  </div>
                 </div>
 
-                <h3 className="text-base font-bold text-gray-900">
-                  {stage.title}
-                </h3>
+                {/* Content */}
+                <div className="p-5 sm:p-6 flex-1 flex flex-col justify-between space-y-4">
+                  <div className="space-y-2">
+                    <h3 className="text-base sm:text-lg font-bold text-gray-900 leading-snug">
+                      {stage.title}
+                    </h3>
+                    <p className="text-sm text-gray-600 leading-relaxed">
+                      {stage.description}
+                    </p>
+                  </div>
 
-                <p className="text-xs text-gray-600 leading-relaxed">
-                  {stage.description}
-                </p>
+                  <div className="pt-3 border-t border-gray-100 flex items-center justify-between text-xs font-semibold text-gray-500">
+                    <span>Follicle Health:</span>
+                    <span className="text-gray-900 font-bold">
+                      {idx === 0 ? 'Active Anagen' : idx === 1 ? 'Miniaturizing' : 'Action Required'}
+                    </span>
+                  </div>
+                </div>
               </div>
-
-              <div className="pt-3 border-t border-gray-100 flex items-center justify-between text-[11px] font-semibold text-gray-500">
-                <span>Follicle State:</span>
-                <span className="text-gray-900 font-bold">
-                  {idx === 0 ? 'Active Anagen' : idx === 1 ? 'Miniaturizing' : 'Action Required'}
-                </span>
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
       </div>

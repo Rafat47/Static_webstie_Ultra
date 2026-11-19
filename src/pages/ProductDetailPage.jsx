@@ -148,7 +148,7 @@ export default function ProductDetailPage() {
         image={images[0]}
       />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-[1536px] mx-auto px-3 sm:px-6">
         
         {/* Breadcrumb Navigation */}
         <nav className="flex items-center space-x-2 text-xs text-gray-500 mb-6 sm:mb-8">
