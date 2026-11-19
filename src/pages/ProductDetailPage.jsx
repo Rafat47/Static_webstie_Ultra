@@ -168,10 +168,10 @@ export default function ProductDetailPage() {
            ========================================================================= */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 pb-12 border-b border-gray-200">
           
-          {/* Left Column: Image Stage & Thumbnails */}
-          <div className="lg:col-span-6 space-y-4">
-            {/* Primary Main Image Card */}
-            <div className="relative aspect-square rounded-xl overflow-hidden border border-gray-200 bg-white flex items-center justify-center group shadow-xs">
+          {/* Left Column: Image Stage & Thumbnails (Restrained viewport height on desktop, max 450px on mobile) */}
+          <div className="lg:col-span-6 space-y-4 max-w-[450px] lg:max-w-[500px] mx-auto w-full lg:sticky lg:top-32 self-start">
+            {/* Primary Main Image Card - 100% visible on screen without scrolling */}
+            <div className="relative aspect-square w-full max-h-[450px] lg:max-h-[calc(100vh-190px)] rounded-xl overflow-hidden border border-gray-200 bg-white flex items-center justify-center group shadow-xs">
               <img
                 src={images[selectedImageIndex] || images[0]}
                 alt={product.name}
@@ -188,12 +188,12 @@ export default function ProductDetailPage() {
 
             {/* Thumbnail Strip */}
             {images.length > 1 && (
-              <div className="flex items-center gap-3 overflow-x-auto no-scrollbar py-1">
+              <div className="flex items-center gap-2.5 overflow-x-auto no-scrollbar py-1">
                 {images.map((img, idx) => (
                   <button
                     key={idx}
                     onClick={() => setSelectedImageIndex(idx)}
-                    className={`relative w-20 h-20 rounded-lg overflow-hidden border-2 flex-shrink-0 transition-all ${
+                    className={`relative w-16 h-16 sm:w-20 sm:h-20 rounded-lg overflow-hidden border-2 flex-shrink-0 transition-all ${
                       selectedImageIndex === idx
                         ? 'border-black shadow-xs'
                         : 'border-gray-200 hover:border-gray-400 opacity-70 hover:opacity-100'

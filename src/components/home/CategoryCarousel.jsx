@@ -14,11 +14,11 @@ export default function CategoryCarousel({ categories = [] }) {
   const activeCategories = categories.filter(c => c.isActive !== false);
   if (activeCategories.length === 0) return null;
 
-  const isFewCategories = activeCategories.length <= 5;
+  const isFewCategories = activeCategories.length <= 4;
 
   const scroll = (direction) => {
     if (scrollRef.current) {
-      const scrollAmount = direction === 'left' ? -340 : 340;
+      const scrollAmount = direction === 'left' ? -360 : 360;
       scrollRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
     }
   };
@@ -80,7 +80,7 @@ export default function CategoryCarousel({ categories = [] }) {
             </p>
           </div>
 
-          {/* Desktop Arrow Controls (Visible only if more than 5 categories) */}
+          {/* Desktop Arrow Controls (Visible only if more than 4 categories) */}
           {!isFewCategories && (
             <div className="hidden sm:flex items-center space-x-1.5">
               <button
@@ -102,7 +102,11 @@ export default function CategoryCarousel({ categories = [] }) {
         </div>
 
         {/* =========================================================================
-            DESKTOP LAYOUT: Centered in the page when items <= 5, scrollable if many
+            DESKTOP LAYOUT:
+            - Wider rectangular cards (~20% wider: w-72 lg:w-80)
+            - Box is 100% filled by image (No text inside the box)
+            - Category name cleanly placed underneath the box
+            - Centered when <= 4 categories
            ========================================================================= */}
         <div
           ref={scrollRef}
@@ -112,7 +116,7 @@ export default function CategoryCarousel({ categories = [] }) {
           onMouseLeave={handleMouseUp}
           className={`hidden sm:flex items-center ${
             isFewCategories ? 'justify-center' : 'justify-start'
-          } space-x-4 lg:space-x-6 overflow-x-auto no-scrollbar scroll-smooth py-1 select-none ${
+          } space-x-5 lg:space-x-7 overflow-x-auto no-scrollbar scroll-smooth py-1 select-none ${
             isDragging ? 'cursor-grabbing' : isFewCategories ? 'cursor-default' : 'cursor-grab'
           }`}
           style={{ WebkitOverflowScrolling: 'touch' }}
@@ -121,20 +125,20 @@ export default function CategoryCarousel({ categories = [] }) {
             <div
               key={cat._id || cat.slug}
               onClick={() => handleCategoryClick(cat.slug)}
-              className="w-60 lg:w-64 flex-shrink-0 group cursor-pointer bg-white border border-gray-200 hover:border-black rounded-lg p-3.5 transition-all duration-200 shadow-2xs hover:shadow-subtle"
+              className="w-72 lg:w-80 flex-shrink-0 group cursor-pointer transition-all duration-200"
             >
-              {/* Category Image */}
-              <div className="w-full h-36 rounded bg-gray-50 overflow-hidden flex items-center justify-center border border-gray-100">
+              {/* Pure Rectangular Image Box - 100% Image Filled, Zero Text Inside */}
+              <div className="w-full h-44 lg:h-48 rounded-xl overflow-hidden border border-gray-200 group-hover:border-black transition-all shadow-2xs group-hover:shadow-subtle bg-gray-50">
                 <img
-                  src={cat.image || 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=400&auto=format&fit=crop&q=80'}
+                  src={cat.image || 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=500&auto=format&fit=crop&q=80'}
                   alt={cat.name}
                   draggable="false"
-                  className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-300 pointer-events-none"
+                  className="w-full h-full object-cover object-center group-hover:scale-104 transition-transform duration-300 pointer-events-none"
                 />
               </div>
-              {/* Category Name */}
-              <div className="mt-3 text-center">
-                <h3 className="text-sm font-bold text-gray-900 group-hover:text-black line-clamp-1">
+              {/* Category Name Cleanly Below the Box */}
+              <div className="mt-2.5 text-center">
+                <h3 className="text-xs sm:text-sm font-bold text-gray-800 group-hover:text-black line-clamp-1 uppercase tracking-wide">
                   {cat.name}
                 </h3>
               </div>
@@ -143,9 +147,10 @@ export default function CategoryCarousel({ categories = [] }) {
         </div>
 
         {/* =========================================================================
-            MOBILE LAYOUT: Full-Width 100% utilization (No empty dead corners!)
-            - If <= 4 categories: 2-column full-width grid filling entire mobile screen
-            - If > 4 categories: 2-row horizontal scroll filling mobile screen width
+            MOBILE LAYOUT:
+            - Full-Width 100% utilization
+            - Rectangular image boxes, no text inside the box
+            - Category name placed underneath each box
            ========================================================================= */}
         <div className="sm:hidden w-full">
           {activeCategories.length <= 4 ? (
@@ -155,18 +160,18 @@ export default function CategoryCarousel({ categories = [] }) {
                 <div
                   key={cat._id || cat.slug}
                   onClick={() => handleCategoryClick(cat.slug)}
-                  className="w-full flex flex-col bg-white border border-gray-200 active:border-black rounded-lg p-2.5 shadow-2xs transition-all"
+                  className="w-full flex flex-col group cursor-pointer transition-all"
                 >
-                  <div className="w-full h-28 rounded bg-gray-50 overflow-hidden flex items-center justify-center border border-gray-100">
+                  <div className="w-full h-32 rounded-lg overflow-hidden border border-gray-200 active:border-black bg-gray-50 shadow-2xs">
                     <img
-                      src={cat.image || 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=300&auto=format&fit=crop&q=80'}
+                      src={cat.image || 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=350&auto=format&fit=crop&q=80'}
                       alt={cat.name}
                       draggable="false"
                       className="w-full h-full object-cover object-center pointer-events-none"
                     />
                   </div>
-                  <div className="mt-2 text-center">
-                    <h3 className="text-xs font-bold text-gray-900 line-clamp-1">
+                  <div className="mt-1.5 text-center">
+                    <h3 className="text-xs font-bold text-gray-800 line-clamp-1 uppercase tracking-wider">
                       {cat.name}
                     </h3>
                   </div>
@@ -183,18 +188,18 @@ export default function CategoryCarousel({ categories = [] }) {
                 <div
                   key={cat._id || cat.slug}
                   onClick={() => handleCategoryClick(cat.slug)}
-                  className="flex flex-col bg-white border border-gray-200 active:border-black rounded-lg p-2.5 shadow-2xs transition-all"
+                  className="flex flex-col group cursor-pointer transition-all"
                 >
-                  <div className="w-full h-24 rounded bg-gray-50 overflow-hidden flex items-center justify-center border border-gray-100">
+                  <div className="w-full h-28 rounded-lg overflow-hidden border border-gray-200 active:border-black bg-gray-50 shadow-2xs">
                     <img
-                      src={cat.image || 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=300&auto=format&fit=crop&q=80'}
+                      src={cat.image || 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=350&auto=format&fit=crop&q=80'}
                       alt={cat.name}
                       draggable="false"
                       className="w-full h-full object-cover object-center pointer-events-none"
                     />
                   </div>
-                  <div className="mt-2 text-center">
-                    <h3 className="text-xs font-bold text-gray-900 line-clamp-1">
+                  <div className="mt-1.5 text-center">
+                    <h3 className="text-xs font-bold text-gray-800 line-clamp-1 uppercase tracking-wider">
                       {cat.name}
                     </h3>
                   </div>

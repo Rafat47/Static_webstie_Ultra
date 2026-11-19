@@ -127,6 +127,16 @@ export const api = {
     return res.data;
   },
 
+  createAdminOrder: async (orderData) => {
+    const res = await apiClient.post('/admin/orders', orderData);
+    return res.data;
+  },
+
+  deleteAdminOrder: async (id) => {
+    const res = await apiClient.delete(`/admin/orders/${id}`);
+    return res.data;
+  },
+
   // Admin Site Config (Homepage & CMS Editor)
   getAdminSiteConfig: async () => {
     const res = await apiClient.get('/admin/site-config');

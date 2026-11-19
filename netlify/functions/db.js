@@ -695,6 +695,11 @@ class InMemoryStore {
     });
     return order;
   }
+
+  async deleteOrder(orderId) {
+    this.orders = this.orders.filter(o => o.orderId !== orderId && o._id !== orderId);
+    return true;
+  }
 }
 
 export const memoryStore = new InMemoryStore();

@@ -7,7 +7,12 @@ const OrderItemSchema = new mongoose.Schema({
   image: { type: String, default: "" },
   unitPrice: { type: Number, required: true },
   quantity: { type: Number, required: true, min: 1 },
-  itemTotal: { type: Number, required: true }
+  itemTotal: {
+    type: Number,
+    default: function() {
+      return (this.unitPrice || 0) * (this.quantity || 1);
+    }
+  }
 });
 
 const StatusHistorySchema = new mongoose.Schema({

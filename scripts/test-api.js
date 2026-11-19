@@ -146,8 +146,45 @@ async function runTests() {
       throw new Error('CMS update failed');
     }
 
+    // 12. Admin Create Manual Order
+    console.log('\n--- 12. Testing POST /api/admin/orders (Manual Order Creation) ---');
+    const manualOrderRes = await fetch(`${baseUrl}/admin/orders`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${adminToken}`
+      },
+      body: JSON.stringify({
+        customer: {
+          fullName: 'Manual Admin Customer',
+          phoneNumber: '01811223344',
+          address: 'Mirpur 10, Dhaka',
+          deliveryArea: 'inside_dhaka'
+        },
+        items: [
+          {
+            productId: prodRes.data[0]._id,
+            quantity: 1
+          }
+        ],
+        orderStatus: 'Confirmed',
+        internalNotes: 'Order taken over phone'
+      })
+    }).then(r => r.json());
+    console.log('Manual Order Response:', manualOrderRes);
+    if (!manualOrderRes.orderId) throw new Error('Manual order creation failed');
+
+    // 13. Admin Delete Order
+    console.log('\n--- 13. Testing DELETE /api/admin/orders/:id (Delete Mistaken Order) ---');
+    const deleteOrderRes = await fetch(`${baseUrl}/admin/orders/${manualOrderRes.orderId}`, {
+      method: 'DELETE',
+      headers: { 'Authorization': `Bearer ${adminToken}` }
+    }).then(r => r.json());
+    console.log('Order Deletion Result:', deleteOrderRes.message);
+    if (!deleteOrderRes.success) throw new Error('Order deletion failed');
+
     console.log('\n========================================');
-    console.log('✅ ALL 11 END-TO-END TESTS PASSED CLEANLY!');
+    console.log('✅ ALL 13 END-TO-END TESTS PASSED CLEANLY!');
     console.log('========================================\n');
 
   } catch (err) {

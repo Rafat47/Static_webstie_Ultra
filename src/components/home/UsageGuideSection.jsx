@@ -13,15 +13,17 @@ export default function UsageGuideSection() {
   // Default step-specific illustrative imagery if not provided in config
   const defaultStepImages = [
     // Step 1: Wash & Dry Scalp
-    'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=500&auto=format&fit=crop&q=80',
-    // Step 2: Derma Roller
-    'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=500&auto=format&fit=crop&q=80',
-    // Step 3: Precision Dropper
-    'https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=500&auto=format&fit=crop&q=80',
-    // Step 4: Gentle Massage
-    'https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=500&auto=format&fit=crop&q=80',
-    // Step 5: Consistency
-    'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=500&auto=format&fit=crop&q=80'
+    'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=600&auto=format&fit=crop&q=80',
+    // Step 2: Derma Roller Micro-Needling
+    'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=600&auto=format&fit=crop&q=80',
+    // Step 3: Precision Dropper Application
+    'https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=600&auto=format&fit=crop&q=80',
+    // Step 4: Gentle Scalp Massage
+    'https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=600&auto=format&fit=crop&q=80',
+    // Step 5: Consistency Morning & Night
+    'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=600&auto=format&fit=crop&q=80',
+    // Step 6: Maintain & Monitor Progress
+    'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=600&auto=format&fit=crop&q=80'
   ];
 
   return (
@@ -43,42 +45,37 @@ export default function UsageGuideSection() {
 
         {/* 
           Visual Step Cards:
-          - Image on TOP of each step card so customer visualizes the action immediately
-          - Text acts as concise supporting guidance
-          - Desktop: 5-column grid (sm:grid-cols-2 lg:grid-cols-5 gap-4 lg:gap-5)
-          - Mobile: Smooth horizontal swipe or 2-column cards
+          - 2 Rows with 3 Cards each on Desktop (grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8)
+          - Double-size prominent images (h-56 sm:h-64) for maximum clarity and visual understanding
         */}
-        <div
-          className="flex sm:grid sm:grid-cols-2 lg:grid-cols-5 gap-4 sm:gap-4 lg:gap-5 overflow-x-auto sm:overflow-visible no-scrollbar pb-3 sm:pb-0 snap-x snap-mandatory"
-          style={{ WebkitOverflowScrolling: 'touch' }}
-        >
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
           {steps.map((step, idx) => {
             const stepImg = step.image || defaultStepImages[idx % defaultStepImages.length];
 
             return (
               <div
                 key={idx}
-                className="w-[240px] sm:w-auto flex-shrink-0 sm:flex-shrink snap-start bg-white rounded-lg border border-gray-200 hover:border-black transition-all overflow-hidden flex flex-col justify-between shadow-2xs hover:shadow-subtle group"
+                className="bg-white rounded-xl border border-gray-200 hover:border-black transition-all overflow-hidden flex flex-col justify-between shadow-2xs hover:shadow-subtle group"
               >
-                {/* Step Image on Top */}
-                <div className="w-full h-36 sm:h-40 overflow-hidden bg-gray-50 relative border-b border-gray-100">
+                {/* Double-Size Prominent Step Image on Top */}
+                <div className="w-full h-56 sm:h-64 overflow-hidden bg-gray-50 relative border-b border-gray-100">
                   <img
                     src={stepImg}
                     alt={step.title}
-                    className="w-full h-full object-cover object-center group-hover:scale-104 transition-transform duration-300"
+                    className="w-full h-full object-cover object-center group-hover:scale-103 transition-transform duration-300"
                   />
-                  <div className="absolute top-2.5 left-2.5 bg-black text-white font-mono font-bold text-xs px-2.5 py-1 rounded shadow-xs">
+                  <div className="absolute top-3 left-3 bg-black text-white font-mono font-bold text-xs sm:text-sm px-3 py-1 rounded shadow-xs">
                     STEP {step.stepNumber || `0${idx + 1}`}
                   </div>
                 </div>
 
                 {/* Step Content */}
-                <div className="p-4 flex-1 flex flex-col justify-between space-y-2">
+                <div className="p-5 sm:p-6 flex-1 flex flex-col justify-between space-y-2.5">
                   <div>
-                    <h3 className="font-bold text-sm sm:text-base text-gray-900 leading-snug">
+                    <h3 className="font-bold text-base sm:text-lg text-gray-900 leading-snug">
                       {step.title}
                     </h3>
-                    <p className="text-xs text-gray-600 leading-relaxed mt-1.5 line-clamp-4">
+                    <p className="text-xs sm:text-sm text-gray-600 leading-relaxed mt-2">
                       {step.description}
                     </p>
                   </div>

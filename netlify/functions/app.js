@@ -47,6 +47,13 @@ async function getDbStatus() {
 }
 
 // Admin Auth Middleware
+function generateOrderId() {
+  const now = new Date();
+  const datePrefix = `${String(now.getFullYear()).slice(-2)}${String(now.getMonth() + 1).padStart(2, '0')}`;
+  const randomSuffix = Math.random().toString(36).substring(2, 6).toUpperCase();
+  return `HAIR-${datePrefix}-${randomSuffix}`;
+}
+
 const requireAdmin = async (req, res, next) => {
   try {
     const authHeader = req.headers.authorization;
@@ -932,6 +939,152 @@ app.put('/api/admin/orders/:id/status', requireAdmin, async (req, res) => {
     }
 
     return res.json({ success: true, message: `Order status updated to ${status}`, data: updatedOrder });
+  } catch (err) {
+    return res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+app.delete('/api/admin/orders/:id', requireAdmin, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const dbStatus = await getDbStatus();
+
+    if (dbStatus.isConnected) {
+      const deleted = await Order.findOneAndDelete({
+        $or: [
+          { orderId: id },
+          { _id: id.match(/^[0-9a-fA-F]{24}$/) ? id : null }
+        ]
+      });
+      if (!deleted) {
+        return res.status(404).json({ success: false, message: 'Order not found' });
+      }
+    } else {
+      await memoryStore.deleteOrder(id);
+    }
+
+    return res.json({ success: true, message: `Order #${id} deleted successfully` });
+  } catch (err) {
+    return res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+app.post('/api/admin/orders', requireAdmin, async (req, res) => {
+  try {
+    const { customer, items, orderStatus = 'Confirmed', internalNotes } = req.body;
+
+    if (!customer || !customer.fullName || !customer.phoneNumber || !customer.address) {
+      return res.status(400).json({
+        success: false,
+        message: 'Customer fullName, phoneNumber, and address are required'
+      });
+    }
+
+    if (!items || !Array.isArray(items) || items.length === 0) {
+      return res.status(400).json({
+        success: false,
+        message: 'At least one order item is required'
+      });
+    }
+
+    const dbStatus = await getDbStatus();
+
+    let deliverySettings = defaultWebsiteConfig.deliverySettings;
+    if (dbStatus.isConnected) {
+      const cfg = await WebsiteConfig.findById('main');
+      if (cfg && cfg.deliverySettings) deliverySettings = cfg.deliverySettings;
+    } else {
+      const cfg = await memoryStore.getWebsiteConfig();
+      if (cfg && cfg.deliverySettings) deliverySettings = cfg.deliverySettings;
+    }
+
+    const deliveryFee = customer.deliveryArea === 'inside_dhaka'
+      ? (deliverySettings.insideDhakaFee ?? 70)
+      : (deliverySettings.outsideDhakaFee ?? 130);
+
+    let verifiedItems = [];
+    let calculatedSubtotal = 0;
+
+    for (const item of items) {
+      let productDoc = null;
+      if (dbStatus.isConnected) {
+        productDoc = await Product.findOne({
+          $or: [
+            { slug: item.slug || item.productId },
+            { _id: item.productId?.match(/^[0-9a-fA-F]{24}$/) ? item.productId : null }
+          ]
+        });
+      } else {
+        productDoc = await memoryStore.getProductBySlug(item.slug || item.productId);
+      }
+
+      const unitPrice = item.unitPrice !== undefined ? Number(item.unitPrice) : (productDoc ? productDoc.salePrice : 0);
+      const productName = item.productName || (productDoc ? productDoc.name : 'Custom Hair Care Product');
+      const resolvedSlug = item.slug || (productDoc ? productDoc.slug : '') || '';
+      const resolvedImage = item.image || (productDoc && productDoc.images?.[0]) || '';
+      const quantity = Math.max(1, parseInt(item.quantity) || 1);
+
+      calculatedSubtotal += unitPrice * quantity;
+
+      verifiedItems.push({
+        productId: productDoc ? productDoc._id.toString() : (item.productId || resolvedSlug || 'manual-item'),
+        slug: resolvedSlug,
+        productName,
+        quantity,
+        unitPrice,
+        itemTotal: unitPrice * quantity,
+        image: resolvedImage
+      });
+    }
+
+    const finalTotal = calculatedSubtotal + deliveryFee;
+    const orderId = generateOrderId();
+
+    const orderPayload = {
+      orderId,
+      customer: {
+        fullName: customer.fullName.trim(),
+        phoneNumber: customer.phoneNumber.trim(),
+        district: customer.district || (customer.deliveryArea === 'inside_dhaka' ? 'Dhaka' : 'Outside Dhaka'),
+        deliveryArea: customer.deliveryArea || 'inside_dhaka',
+        address: customer.address.trim(),
+        notes: customer.notes?.trim() || ''
+      },
+      items: verifiedItems,
+      subtotal: calculatedSubtotal,
+      deliveryCharge: deliveryFee,
+      finalTotal,
+      paymentMethod: 'Cash on Delivery',
+      paymentStatus: 'Pending',
+      orderStatus,
+      internalNotes: internalNotes || 'Manually created by Admin',
+      statusHistory: [
+        {
+          status: orderStatus,
+          timestamp: new Date(),
+          note: 'Order manually created via Admin Panel',
+          updatedBy: req.admin?.username || 'Admin'
+        }
+      ],
+      attribution: {
+        utmSource: 'admin_manual',
+        utmMedium: 'admin_dashboard'
+      }
+    };
+
+    let createdOrder = null;
+    if (dbStatus.isConnected) {
+      createdOrder = await Order.create(orderPayload);
+    } else {
+      createdOrder = await memoryStore.addOrder(orderPayload);
+    }
+
+    return res.status(201).json({
+      success: true,
+      message: `Manual order #${orderId} created successfully`,
+      orderId,
+      data: createdOrder
+    });
   } catch (err) {
     return res.status(500).json({ success: false, message: err.message });
   }

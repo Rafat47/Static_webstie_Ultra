@@ -110,10 +110,10 @@ export default function Navbar() {
             </span>
           </Link>
 
-          {/* 2. BuyAzz-Style Search Bar with Solid Flush SEARCH Button */}
+          {/* 2. BuyAzz-Style Search Bar with Solid Flush SEARCH Button (Expanded Width) */}
           <form
             onSubmit={handleSearchSubmit}
-            className="flex-1 max-w-2xl mx-auto hidden sm:flex items-stretch h-11 border border-gray-300 rounded-lg overflow-hidden focus-within:border-black focus-within:ring-1 focus-within:ring-black bg-white transition-all shadow-2xs"
+            className="flex-1 max-w-3xl mx-auto hidden sm:flex items-stretch h-11 border border-gray-300 rounded-lg overflow-hidden focus-within:border-black focus-within:ring-1 focus-within:ring-black bg-white transition-all shadow-2xs"
           >
             <div className="pl-3.5 pr-2 flex items-center text-gray-400">
               <Search className="w-4 h-4" />
@@ -224,7 +224,7 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* FLOATING HOVER PREVIEW: Small Image Only */}
+      {/* FLOATING HOVER PREVIEW: Full-Box Image Only (No Text) */}
       {hoveredCategory && hoveredCategory.image && (
         <div
           onMouseEnter={() => {
@@ -239,18 +239,13 @@ export default function Navbar() {
         >
           <div
             onClick={() => handleCategoryClick(hoveredCategory.slug)}
-            className="bg-white border border-gray-200 rounded-lg p-2 shadow-preview cursor-pointer hover:border-black transition-all flex flex-col items-center"
+            className="w-48 h-36 bg-white border-2 border-black rounded-lg overflow-hidden shadow-preview cursor-pointer hover:scale-102 transition-transform duration-200"
           >
-            <div className="w-36 h-28 rounded overflow-hidden bg-gray-50 flex items-center justify-center border border-gray-100">
-              <img
-                src={hoveredCategory.image}
-                alt={hoveredCategory.name}
-                className="w-full h-full object-cover object-center"
-              />
-            </div>
-            <span className="mt-1.5 text-xs font-bold text-gray-900 tracking-tight">
-              {hoveredCategory.name}
-            </span>
+            <img
+              src={hoveredCategory.image}
+              alt={hoveredCategory.name}
+              className="w-full h-full object-cover object-center"
+            />
           </div>
         </div>
       )}

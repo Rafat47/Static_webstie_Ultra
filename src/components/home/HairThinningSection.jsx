@@ -11,9 +11,9 @@ export default function HairThinningSection() {
 
   // Default stage images if not provided in config
   const defaultStageImages = [
-    'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=600&auto=format&fit=crop&q=80',
-    'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&auto=format&fit=crop&q=80',
-    'https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=600&auto=format&fit=crop&q=80'
+    'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=800&auto=format&fit=crop&q=80',
+    'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&auto=format&fit=crop&q=80',
+    'https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=800&auto=format&fit=crop&q=80'
   ];
 
   return (
@@ -33,27 +33,27 @@ export default function HairThinningSection() {
           </p>
         </div>
 
-        {/* 3 Visual Stage Cards with Real Photography / Illustrations */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6">
+        {/* 3 Vertically Taller Stage Cards with Large Visual Stage Photography */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
           {stages.map((stage, idx) => {
             const stageImg = stage.image || defaultStageImages[idx % defaultStageImages.length];
 
             return (
               <div
                 key={idx}
-                className="bg-white rounded-lg border border-gray-200 hover:border-black transition-all flex flex-col justify-between overflow-hidden shadow-2xs hover:shadow-subtle group"
+                className="bg-white rounded-xl border border-gray-200 hover:border-black transition-all flex flex-col justify-between overflow-hidden shadow-2xs hover:shadow-subtle group h-full min-h-[460px] lg:min-h-[500px]"
               >
-                {/* Visual Image Stage Header */}
-                <div className="w-full h-40 sm:h-48 overflow-hidden bg-gray-50 border-b border-gray-100 relative">
+                {/* Large Prominent Visual Image Stage Header (h-56 sm:h-64) */}
+                <div className="w-full h-56 sm:h-64 overflow-hidden bg-gray-50 border-b border-gray-100 relative">
                   <img
                     src={stageImg}
                     alt={stage.title}
                     className="w-full h-full object-cover object-center group-hover:scale-103 transition-transform duration-300"
                   />
-                  <div className="absolute top-2.5 left-2.5 bg-black/80 backdrop-blur-xs text-white text-[11px] font-mono font-bold px-2 py-0.5 rounded shadow-xs">
+                  <div className="absolute top-3 left-3 bg-black/85 backdrop-blur-xs text-white text-xs font-mono font-bold px-2.5 py-1 rounded shadow-xs">
                     STAGE 0{idx + 1}
                   </div>
-                  <div className="absolute top-2.5 right-2.5 bg-white/90 backdrop-blur-xs text-gray-900 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded shadow-xs border border-gray-200">
+                  <div className="absolute top-3 right-3 bg-white/95 backdrop-blur-xs text-gray-900 text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded shadow-xs border border-gray-200">
                     {stage.badge || `Phase ${idx + 1}`}
                   </div>
                 </div>
@@ -64,7 +64,7 @@ export default function HairThinningSection() {
                     <h3 className="text-base sm:text-lg font-bold text-gray-900 leading-snug">
                       {stage.title}
                     </h3>
-                    <p className="text-sm text-gray-600 leading-relaxed">
+                    <p className="text-xs sm:text-sm text-gray-600 leading-relaxed">
                       {stage.description}
                     </p>
                   </div>
