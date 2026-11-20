@@ -45,16 +45,16 @@ export default function CategoryProductSection({ category, products = [] }) {
         {/* 
           Category Product Cards:
           - Desktop: Clean 4-column grid (sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-5) with slightly larger cards
-          - Mobile: Single row, left-to-right horizontal scroll showing EXACTLY 2 to 2.5 cards (w-[calc(46vw-10px)]) with proper aspect ratio!
+          - Mobile: Single row horizontal scroll showing ~1.5 cards (w-[68vw] min-w-[230px] max-w-[290px]) for optimal width & readability!
         */}
         <div
-          className="flex sm:grid sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-5 overflow-x-auto sm:overflow-visible no-scrollbar snap-x snap-mandatory pb-2 sm:pb-0"
+          className="flex sm:grid sm:grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-4 lg:gap-5 overflow-x-auto sm:overflow-visible no-scrollbar snap-x snap-mandatory pb-2 sm:pb-0"
           style={{ WebkitOverflowScrolling: 'touch' }}
         >
           {categoryProducts.map((product) => (
             <div
               key={product._id || product.slug}
-              className="w-[calc(46vw-10px)] sm:w-auto flex-shrink-0 sm:flex-shrink snap-start"
+              className="w-[68vw] min-w-[230px] max-w-[290px] sm:w-auto sm:min-w-0 sm:max-w-none flex-shrink-0 sm:flex-shrink snap-start"
             >
               <ProductCard product={product} />
             </div>

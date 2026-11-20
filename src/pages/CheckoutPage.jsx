@@ -11,7 +11,10 @@ import {
   Phone,
   User,
   Home,
-  MessageSquare
+  MessageSquare,
+  Plus,
+  Minus,
+  Trash2
 } from 'lucide-react';
 import SEOHead from '../components/common/SEOHead';
 import { useCart } from '../context/CartContext';
@@ -20,18 +23,47 @@ import { formatCurrency, validateBDPhone } from '../utils/formatters';
 import { metaEvents, captureAttribution } from '../utils/metaPixel';
 import api from '../services/api';
 
+const CHECKOUT_STORAGE_KEY = 'hair_shurokkha_checkout_customer';
+
 export default function CheckoutPage() {
-  const { cartItems, subtotal, clearCart } = useCart();
+  const { cartItems, subtotal, clearCart, updateQuantity, removeFromCart } = useCart();
   const { config } = useConfig();
   const navigate = useNavigate();
 
-  const [formData, setFormData] = useState({
-    fullName: '',
-    phoneNumber: '',
-    address: '',
-    deliveryArea: 'inside_dhaka',
-    notes: ''
+  // Auto-fill from browser cache (localStorage) so user never loses their filled fields
+  const [formData, setFormData] = useState(() => {
+    try {
+      const saved = localStorage.getItem(CHECKOUT_STORAGE_KEY);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        return {
+          fullName: parsed.fullName || '',
+          phoneNumber: parsed.phoneNumber || '',
+          address: parsed.address || '',
+          deliveryArea: parsed.deliveryArea || 'inside_dhaka',
+          notes: parsed.notes || ''
+        };
+      }
+    } catch (e) {
+      console.warn('Failed to parse cached checkout form data:', e);
+    }
+    return {
+      fullName: '',
+      phoneNumber: '',
+      address: '',
+      deliveryArea: 'inside_dhaka',
+      notes: ''
+    };
   });
+
+  // Automatically cache filled form fields on any change
+  useEffect(() => {
+    try {
+      localStorage.setItem(CHECKOUT_STORAGE_KEY, JSON.stringify(formData));
+    } catch (e) {
+      console.warn('Failed to cache checkout form data:', e);
+    }
+  }, [formData]);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
@@ -128,6 +160,12 @@ export default function CheckoutPage() {
 
       if (res && res.success && res.orderId) {
         clearCart();
+        try {
+          // Keep customer name, phone and address cached so returning customers have it auto-filled,
+          // but clear order-specific notes:
+          const updatedCache = { ...formData, notes: '' };
+          localStorage.setItem(CHECKOUT_STORAGE_KEY, JSON.stringify(updatedCache));
+        } catch (e) {}
         navigate(`/order-success/${res.orderId}`);
       } else {
         setErrorMessage(res?.message || 'Failed to place order. Please check your information and try again.');
@@ -362,27 +400,73 @@ export default function CheckoutPage() {
             </h3>
 
             {/* Items Mini List */}
-            <div className="divide-y divide-brand-border max-h-72 overflow-y-auto no-scrollbar">
-              {cartItems.map((item) => (
-                <div key={item.productId || item.slug} className="py-3 flex gap-3 items-center">
-                  <img
-                    src={item.image || 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=100&auto=format&fit=crop&q=80'}
-                    alt={item.productName}
-                    className="w-14 h-14 object-cover border border-brand-border bg-gray-50 flex-shrink-0"
-                  />
-                  <div className="flex-1 min-w-0">
-                    <h5 className="text-xs font-bold text-brand-dark truncate leading-tight">
-                      {item.productName}
-                    </h5>
-                    <p className="text-[11px] text-brand-muted mt-0.5">
-                      Qty: {item.quantity} × {formatCurrency(item.unitPrice, currency)}
-                    </p>
+            <div className="divide-y divide-brand-border max-h-80 overflow-y-auto no-scrollbar">
+              {cartItems.map((item) => {
+                const itemId = item.productId || item.slug;
+                return (
+                  <div key={itemId} className="py-3.5 flex gap-3 items-center">
+                    <img
+                      src={item.image || 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=100&auto=format&fit=crop&q=80'}
+                      alt={item.productName}
+                      className="w-14 h-14 object-cover border border-brand-border bg-gray-50 flex-shrink-0 rounded-md"
+                    />
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-start justify-between gap-1">
+                        <h5 className="text-xs font-bold text-brand-dark truncate leading-tight">
+                          {item.productName}
+                        </h5>
+                        <button
+                          type="button"
+                          onClick={() => removeFromCart(itemId)}
+                          title="Remove item"
+                          className="text-gray-400 hover:text-red-600 transition-colors p-0.5 -mr-1"
+                          aria-label="Remove item"
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
+
+                      {/* Quantity Controller & Price Row */}
+                      <div className="flex items-center justify-between mt-2">
+                        {/* Minus / Quantity / Plus Controller */}
+                        <div className="inline-flex items-center border border-gray-300 rounded bg-white shadow-2xs">
+                          <button
+                            type="button"
+                            onClick={() => updateQuantity(itemId, -1)}
+                            className="w-6 h-6 flex items-center justify-center text-gray-600 hover:text-brand-dark hover:bg-gray-100 transition-colors rounded-l"
+                            aria-label="Decrease quantity"
+                          >
+                            <Minus className="w-3 h-3" />
+                          </button>
+                          <span className="w-7 text-center font-bold text-xs text-brand-dark font-mono">
+                            {item.quantity}
+                          </span>
+                          <button
+                            type="button"
+                            onClick={() => updateQuantity(itemId, 1)}
+                            className="w-6 h-6 flex items-center justify-center text-gray-600 hover:text-brand-dark hover:bg-gray-100 transition-colors rounded-r"
+                            aria-label="Increase quantity"
+                          >
+                            <Plus className="w-3 h-3" />
+                          </button>
+                        </div>
+
+                        {/* Price Breakdown */}
+                        <div className="text-right">
+                          <span className="text-xs font-extrabold text-brand-dark block">
+                            {formatCurrency(item.unitPrice * item.quantity, currency)}
+                          </span>
+                          {item.quantity > 1 && (
+                            <span className="text-[10px] text-brand-muted block font-mono">
+                              {formatCurrency(item.unitPrice, currency)} each
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                  <span className="text-xs font-bold text-brand-dark">
-                    {formatCurrency(item.unitPrice * item.quantity, currency)}
-                  </span>
-                </div>
-              ))}
+                );
+              })}
             </div>
 
             {/* Calculations Breakdown */}
