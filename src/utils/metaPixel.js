@@ -132,10 +132,8 @@ export async function trackMetaEvent(eventName, customData = {}, userData = {}, 
           eventId,
           eventSourceUrl: window.location.href,
           userData: mergedUserData,
-          customData: {
-            ...customData,
-            attribution
-          }
+          customData: customData || {},
+          attribution
         })
       }).catch(() => {
         // Non-blocking background catch

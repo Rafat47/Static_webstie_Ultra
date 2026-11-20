@@ -155,15 +155,29 @@ export async function sendMetaCapiEvent({
   }
 
   // 2. Prepare Outgoing CAPI Payload
+  // Clean customData non-destructively: remove nested attribution if present
+  let metaCustomData = undefined;
+  if (customData && typeof customData === 'object' && !Array.isArray(customData)) {
+    const { attribution, ...rest } = customData;
+    if (Object.keys(rest).length > 0) {
+      metaCustomData = { ...rest };
+    }
+  }
+
   const eventData = {
     event_name: eventName,
     event_time: Math.floor(Date.now() / 1000),
     event_id: eventId,
     event_source_url: eventSourceUrl || '',
     action_source: 'website',
-    user_data: normalizedUserData,
-    custom_data: customData
+    user_data: normalizedUserData
   };
+
+  // If custom_data has valid parameters after removing attribution, include it.
+  // If attribution was the only property, omit custom_data entirely.
+  if (metaCustomData) {
+    eventData.custom_data = metaCustomData;
+  }
 
   const payload = {
     data: [eventData]
@@ -213,27 +227,59 @@ export async function sendMetaCapiEvent({
   }
 
   // 4. Send HTTP Request to Meta Graph API
-  // Access token passed securely via Authorization header to prevent query param exposure
+  // Access token passed securely via Authorization header to prevent query param or log exposure
   const url = `https://graph.facebook.com/v19.0/${finalPixelId}/events`;
 
   try {
-    const response = await axios.post(url, payload, {
+    const response = await fetch(url, {
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${finalToken}`
       },
-      timeout: 8000
+      body: JSON.stringify(payload),
+      signal: AbortSignal.timeout(10000)
     });
 
     const durationMs = Date.now() - startTime;
-    const resData = response.data || {};
-    const eventsReceived = typeof resData.events_received === 'number' ? resData.events_received : 0;
-    const messages = Array.isArray(resData.messages) ? resData.messages : [];
-    const fbtraceId = resData.fbtrace_id || null;
+    const httpStatus = response.status;
+    const httpStatusText = response.statusText;
+
+    // Read response body stream exactly once
+    let rawText = '';
+    try {
+      rawText = await response.text();
+    } catch (readErr) {
+      console.warn('[Meta CAPI] Error reading response body:', readErr.message);
+    }
+
+    let parsedBody = null;
+    let responseParseStatus = 'empty';
+    let parseError = null;
+
+    if (rawText && rawText.trim().length > 0) {
+      try {
+        parsedBody = JSON.parse(rawText);
+        responseParseStatus = 'success';
+      } catch (jsonErr) {
+        responseParseStatus = 'failed';
+        parseError = jsonErr.message;
+      }
+    }
+
+    // Extract diagnostic info from parsedBody if available
+    const eventsReceived = typeof parsedBody?.events_received === 'number' ? parsedBody.events_received : 0;
+    const messages = Array.isArray(parsedBody?.messages) ? parsedBody.messages : [];
+    const fbtraceId = parsedBody?.fbtrace_id || parsedBody?.error?.fbtrace_id || response.headers.get('x-fb-trace-id') || null;
+    const errorObj = parsedBody?.error || null;
+    const errorCode = errorObj?.code || (response.ok ? null : httpStatus);
+    const errorMessage = errorObj?.message || (response.ok ? null : (httpStatusText || 'HTTP Error'));
 
     // Determine clean delivery status
     let status = 'success';
-    if (eventsReceived === 0) {
+    if (!response.ok) {
+      status = httpStatus === 400 ? 'invalid_payload' : 'failed';
+    } else if (eventsReceived === 0) {
       status = 'failed';
     } else if (messages.length > 0) {
       status = 'partial_success'; // Events received, but Meta flagged diagnostic warnings
@@ -244,11 +290,17 @@ export async function sendMetaCapiEvent({
       try {
         logRecord.status = status;
         logRecord.response = {
-          httpStatus: response.status,
+          httpStatus,
+          httpStatusText,
           eventsReceived,
           messages,
           fbtraceId,
-          rawBody: resData
+          errorCode,
+          errorMessage,
+          rawBody: rawText,
+          metaResponseBody: parsedBody,
+          responseParseStatus,
+          parseError
         };
         logRecord.durationMs = durationMs;
         logRecord.completedAt = new Date();
@@ -263,35 +315,51 @@ export async function sendMetaCapiEvent({
       }
     }
 
+    if (!response.ok) {
+      console.warn(`[Meta CAPI] Dispatch HTTP error ${httpStatus} for ${eventName}:`, errorMessage);
+      return {
+        success: false,
+        status,
+        httpStatus,
+        httpStatusText,
+        error: errorMessage,
+        response: parsedBody || rawText,
+        fbtraceId,
+        logId: logRecord?._id
+      };
+    }
+
     return {
       success: status !== 'failed',
       status,
+      httpStatus,
+      httpStatusText,
       eventsReceived,
       messages,
       fbtraceId,
+      response: parsedBody,
       logId: logRecord?._id
     };
-  } catch (error) {
+  } catch (networkError) {
     const durationMs = Date.now() - startTime;
-    const httpStatus = error.response?.status || null;
-    const errorData = error.response?.data?.error || {};
-    const isTimeout = error.code === 'ECONNABORTED' || error.message?.includes('timeout');
-    const isInvalid = httpStatus === 400;
-
-    let finalStatus = 'failed';
-    if (isTimeout) finalStatus = 'timeout';
-    else if (isInvalid) finalStatus = 'invalid_payload';
+    const isTimeout = networkError.name === 'TimeoutError' || networkError.message?.includes('timeout') || networkError.code === 'ECONNABORTED';
+    const finalStatus = isTimeout ? 'timeout' : 'failed';
 
     if (logRecord) {
       try {
         logRecord.status = finalStatus;
         logRecord.response = {
-          httpStatus,
+          httpStatus: null,
+          httpStatusText: networkError.name || 'NetworkError',
           eventsReceived: 0,
           messages: [],
-          fbtraceId: errorData.fbtrace_id || null,
-          errorCode: errorData.code || error.code || null,
-          errorMessage: errorData.message || error.message
+          fbtraceId: null,
+          errorCode: networkError.code || networkError.name || 'NETWORK_ERROR',
+          errorMessage: networkError.message,
+          rawBody: null,
+          metaResponseBody: null,
+          responseParseStatus: 'network_error',
+          parseError: networkError.message
         };
         logRecord.durationMs = durationMs;
         logRecord.completedAt = new Date();
@@ -301,12 +369,12 @@ export async function sendMetaCapiEvent({
       }
     }
 
-    console.warn(`[Meta CAPI] Dispatch error for ${eventName}:`, errorData.message || error.message);
+    console.warn(`[Meta CAPI] Network error for ${eventName}:`, networkError.message);
     return {
       success: false,
       status: finalStatus,
-      httpStatus,
-      error: errorData.message || error.message,
+      httpStatus: null,
+      error: networkError.message,
       logId: logRecord?._id
     };
   }
@@ -332,60 +400,136 @@ export async function retryMetaCapiEvent(logId) {
     return { success: false, message: 'No payload stored in log record to retry' };
   }
 
-  const eventData = payload.data[0];
+  const rawEventData = payload.data[0];
+  const outgoingEventData = { ...rawEventData };
+
+  // Sanitize nested attribution from custom_data non-destructively if present in stored retry payload
+  if (outgoingEventData.custom_data && typeof outgoingEventData.custom_data === 'object' && !Array.isArray(outgoingEventData.custom_data)) {
+    const { attribution, ...rest } = outgoingEventData.custom_data;
+    if (Object.keys(rest).length > 0) {
+      outgoingEventData.custom_data = { ...rest };
+    } else {
+      delete outgoingEventData.custom_data;
+    }
+  }
+
+  const outgoingPayload = {
+    ...payload,
+    data: [outgoingEventData]
+  };
+
   const startTime = Date.now();
-  const url = `https://graph.facebook.com/v19.0/${siteMeta.pixelId || process.env.META_PIXEL_ID}/events`;
+  const pixelId = siteMeta.pixelId || process.env.META_PIXEL_ID;
+  const token = siteMeta.accessToken || process.env.META_CAPI_ACCESS_TOKEN;
+  const url = `https://graph.facebook.com/v19.0/${pixelId}/events`;
 
   logRecord.attempts = (logRecord.attempts || 1) + 1;
   logRecord.status = 'retrying';
   await logRecord.save();
 
   try {
-    const response = await axios.post(url, payload, {
+    const response = await fetch(url, {
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${siteMeta.accessToken || process.env.META_CAPI_ACCESS_TOKEN}`
+        'Authorization': `Bearer ${token}`
       },
-      timeout: 8000
+      body: JSON.stringify(outgoingPayload),
+      signal: AbortSignal.timeout(10000)
     });
 
-    const resData = response.data || {};
-    const eventsReceived = typeof resData.events_received === 'number' ? resData.events_received : 0;
-    const messages = Array.isArray(resData.messages) ? resData.messages : [];
+    const durationMs = Date.now() - startTime;
+    const httpStatus = response.status;
+    const httpStatusText = response.statusText;
+
+    let rawText = '';
+    try {
+      rawText = await response.text();
+    } catch (readErr) {
+      console.warn('[Meta CAPI Retry] Error reading response body:', readErr.message);
+    }
+
+    let parsedBody = null;
+    let responseParseStatus = 'empty';
+    let parseError = null;
+
+    if (rawText && rawText.trim().length > 0) {
+      try {
+        parsedBody = JSON.parse(rawText);
+        responseParseStatus = 'success';
+      } catch (jsonErr) {
+        responseParseStatus = 'failed';
+        parseError = jsonErr.message;
+      }
+    }
+
+    const eventsReceived = typeof parsedBody?.events_received === 'number' ? parsedBody.events_received : 0;
+    const messages = Array.isArray(parsedBody?.messages) ? parsedBody.messages : [];
+    const fbtraceId = parsedBody?.fbtrace_id || parsedBody?.error?.fbtrace_id || response.headers.get('x-fb-trace-id') || null;
+    const errorObj = parsedBody?.error || null;
+    const errorCode = errorObj?.code || (response.ok ? null : httpStatus);
+    const errorMessage = errorObj?.message || (response.ok ? null : (httpStatusText || 'HTTP Error'));
 
     let status = 'success';
-    if (eventsReceived === 0) status = 'failed';
-    else if (messages.length > 0) status = 'partial_success';
+    if (!response.ok) {
+      status = httpStatus === 400 ? 'invalid_payload' : 'failed';
+    } else if (eventsReceived === 0) {
+      status = 'failed';
+    } else if (messages.length > 0) {
+      status = 'partial_success';
+    }
 
     logRecord.status = status;
     logRecord.response = {
-      httpStatus: response.status,
+      httpStatus,
+      httpStatusText,
       eventsReceived,
       messages,
-      fbtraceId: resData.fbtrace_id || null,
-      rawBody: resData
+      fbtraceId,
+      errorCode,
+      errorMessage,
+      rawBody: rawText,
+      metaResponseBody: parsedBody,
+      responseParseStatus,
+      parseError
     };
-    logRecord.durationMs = Date.now() - startTime;
+    logRecord.durationMs = durationMs;
     logRecord.completedAt = new Date();
     await logRecord.save();
 
-    return { success: status !== 'failed', status, logRecord };
-  } catch (error) {
-    const httpStatus = error.response?.status || null;
-    const errorData = error.response?.data?.error || {};
-    logRecord.status = 'failed';
-    logRecord.response = {
+    return {
+      success: status !== 'failed',
+      status,
       httpStatus,
+      httpStatusText,
+      eventsReceived,
+      fbtraceId,
+      response: parsedBody,
+      logRecord
+    };
+  } catch (networkError) {
+    const durationMs = Date.now() - startTime;
+    const isTimeout = networkError.name === 'TimeoutError' || networkError.message?.includes('timeout') || networkError.code === 'ECONNABORTED';
+    const finalStatus = isTimeout ? 'timeout' : 'failed';
+
+    logRecord.status = finalStatus;
+    logRecord.response = {
+      httpStatus: null,
+      httpStatusText: networkError.name || 'NetworkError',
       eventsReceived: 0,
       messages: [],
-      fbtraceId: errorData.fbtrace_id || null,
-      errorCode: errorData.code || error.code || null,
-      errorMessage: errorData.message || error.message
+      fbtraceId: null,
+      errorCode: networkError.code || networkError.name || 'NETWORK_ERROR',
+      errorMessage: networkError.message,
+      rawBody: null,
+      metaResponseBody: null,
+      responseParseStatus: 'network_error',
+      parseError: networkError.message
     };
-    logRecord.durationMs = Date.now() - startTime;
+    logRecord.durationMs = durationMs;
     logRecord.completedAt = new Date();
     await logRecord.save();
 
-    return { success: false, status: 'failed', error: errorData.message || error.message, logRecord };
+    return { success: false, status: finalStatus, error: networkError.message, logRecord };
   }
 }

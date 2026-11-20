@@ -39,12 +39,20 @@ const MetaEventLogSchema = new mongoose.Schema({
   },
   response: {
     httpStatus: { type: Number, default: null },
+    httpStatusText: { type: String, default: '' },
     eventsReceived: { type: Number, default: null },
     messages: { type: [String], default: [] },
     fbtraceId: { type: String, default: null },
     errorCode: { type: mongoose.Schema.Types.Mixed, default: null },
     errorMessage: { type: String, default: null },
-    rawBody: { type: mongoose.Schema.Types.Mixed, default: null }
+    rawBody: { type: mongoose.Schema.Types.Mixed, default: null },
+    metaResponseBody: { type: mongoose.Schema.Types.Mixed, default: null },
+    responseParseStatus: {
+      type: String,
+      enum: ['success', 'empty', 'failed', 'network_error'],
+      default: 'success'
+    },
+    parseError: { type: String, default: null }
   },
   attempts: {
     type: Number,

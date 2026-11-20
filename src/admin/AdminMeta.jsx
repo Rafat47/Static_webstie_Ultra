@@ -748,7 +748,10 @@ export default function AdminMeta() {
                 </div>
                 <div>
                   <span className="text-[10px] uppercase font-bold text-gray-400">HTTP Status</span>
-                  <p className="font-mono font-black text-brand-dark mt-1">{selectedLog.response?.httpStatus || 'N/A'}</p>
+                  <p className="font-mono font-black text-brand-dark mt-1">
+                    {selectedLog.response?.httpStatus || 'N/A'}
+                    {selectedLog.response?.httpStatusText ? ` (${selectedLog.response.httpStatusText})` : ''}
+                  </p>
                 </div>
                 <div>
                   <span className="text-[10px] uppercase font-bold text-gray-400">Events Received</span>
@@ -760,7 +763,7 @@ export default function AdminMeta() {
                 </div>
               </div>
 
-              {/* Warnings / Error Alert */}
+              {/* Warnings / Diagnostic Warnings Alert */}
               {selectedLog.response?.messages?.length > 0 && (
                 <div className="p-3.5 bg-amber-50 border border-amber-200 rounded-xl text-amber-900 space-y-1">
                   <div className="flex items-center gap-2 font-bold text-amber-800">
@@ -775,13 +778,29 @@ export default function AdminMeta() {
                 </div>
               )}
 
-              {selectedLog.response?.errorMessage && (
-                <div className="p-3.5 bg-red-50 border border-red-200 rounded-xl text-red-900 space-y-1">
+              {/* Meta API Error Alert (Detailed) */}
+              {(selectedLog.response?.errorMessage || selectedLog.response?.errorCode || selectedLog.response?.parseError) && (
+                <div className="p-3.5 bg-red-50 border border-red-200 rounded-xl text-red-900 space-y-1.5">
                   <div className="flex items-center gap-2 font-bold text-red-800">
                     <XCircle className="w-4 h-4 text-red-600" />
-                    <span>Meta Error: {selectedLog.response.errorCode || 'Request Error'}</span>
+                    <span>Meta Error: {selectedLog.response.errorCode || 'Request Failed'}</span>
+                    {selectedLog.response?.metaResponseBody?.error?.error_subcode && (
+                      <span className="text-[10px] bg-red-200 text-red-800 px-1.5 py-0.5 rounded font-mono">
+                        Subcode: {selectedLog.response.metaResponseBody.error.error_subcode}
+                      </span>
+                    )}
                   </div>
-                  <p className="text-[11px]">{selectedLog.response.errorMessage}</p>
+                  {selectedLog.response?.errorMessage && (
+                    <p className="text-[11px] font-medium">{selectedLog.response.errorMessage}</p>
+                  )}
+                  {selectedLog.response?.metaResponseBody?.error?.error_user_title && (
+                    <p className="text-[11px] font-bold text-red-950 mt-1">
+                      {selectedLog.response.metaResponseBody.error.error_user_title}: {selectedLog.response.metaResponseBody.error.error_user_msg}
+                    </p>
+                  )}
+                  {selectedLog.response?.parseError && (
+                    <p className="text-[10px] font-mono text-red-700">JSON Parse Status: {selectedLog.response.responseParseStatus} ({selectedLog.response.parseError})</p>
+                  )}
                 </div>
               )}
 
@@ -791,7 +810,7 @@ export default function AdminMeta() {
                   <span className="font-bold text-gray-700 uppercase tracking-wider text-[11px]">
                     Sanitized Outgoing Payload (Transmitted to Meta)
                   </span>
-                  <span className="text-[10px] text-gray-400">Hashed SHA-256 Customer Data</span>
+                  <span className="text-[10px] text-gray-400">Cleaned & Hashed SHA-256 Customer Data</span>
                 </div>
                 <pre className="bg-gray-900 text-emerald-400 p-4 rounded-2xl overflow-x-auto text-[11px] font-mono leading-relaxed max-h-60">
                   {JSON.stringify(selectedLog.request?.payload, null, 2)}
@@ -801,15 +820,34 @@ export default function AdminMeta() {
               {/* Meta API Response */}
               <div>
                 <div className="flex items-center justify-between mb-1.5">
-                  <span className="font-bold text-gray-700 uppercase tracking-wider text-[11px]">
-                    Meta Graph API Response Body
-                  </span>
+                  <div className="flex items-center gap-2">
+                    <span className="font-bold text-gray-700 uppercase tracking-wider text-[11px]">
+                      Complete Meta Graph API Response Body
+                    </span>
+                    {selectedLog.response?.responseParseStatus && (
+                      <span className={`text-[10px] px-1.5 py-0.5 rounded font-mono uppercase font-bold ${
+                        selectedLog.response.responseParseStatus === 'success' ? 'bg-emerald-100 text-emerald-700' :
+                        selectedLog.response.responseParseStatus === 'empty' ? 'bg-gray-100 text-gray-600' :
+                        'bg-red-100 text-red-700'
+                      }`}>
+                        {selectedLog.response.responseParseStatus}
+                      </span>
+                    )}
+                  </div>
                   {selectedLog.response?.fbtraceId && (
                     <span className="text-[10px] font-mono text-gray-500">fbtrace_id: {selectedLog.response.fbtraceId}</span>
                   )}
                 </div>
                 <pre className="bg-gray-900 text-blue-300 p-4 rounded-2xl overflow-x-auto text-[11px] font-mono leading-relaxed max-h-60">
-                  {JSON.stringify(selectedLog.response?.rawBody || selectedLog.response, null, 2)}
+                  {JSON.stringify(
+                    selectedLog.response?.metaResponseBody ?? (
+                      typeof selectedLog.response?.rawBody === 'string'
+                        ? selectedLog.response.rawBody
+                        : (selectedLog.response?.rawBody || selectedLog.response)
+                    ),
+                    null,
+                    2
+                  )}
                 </pre>
               </div>
             </div>
