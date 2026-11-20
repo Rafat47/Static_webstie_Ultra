@@ -21,26 +21,89 @@ apiClient.interceptors.request.use((config) => {
   return Promise.reject(error);
 });
 
+// =========================================================================
+// Client-Side In-Memory Cache & In-Flight Request Deduplication
+// - Eliminates repetitive MongoDB database hits on internal page navigation
+// - Delivers instant (0ms) page switches for customers
+// - Deduplicates concurrent calls from multiple components (e.g. Navbar + Home)
+// - Automatically invalidates cache whenever Admin creates/edits/deletes items
+// =========================================================================
+const apiCache = new Map();
+const inFlightRequests = new Map();
+const DEFAULT_TTL_MS = 5 * 60 * 1000; // 5 minutes cache lifetime
+
+const getCachedOrFetch = async (cacheKey, fetchFn, ttlMs = DEFAULT_TTL_MS, force = false) => {
+  const now = Date.now();
+  const cached = apiCache.get(cacheKey);
+
+  if (!force && cached && (now - cached.timestamp < ttlMs)) {
+    return cached.data;
+  }
+
+  // Deduplicate concurrent in-flight requests for the same endpoint
+  if (!force && inFlightRequests.has(cacheKey)) {
+    return inFlightRequests.get(cacheKey);
+  }
+
+  const requestPromise = (async () => {
+    try {
+      const data = await fetchFn();
+      apiCache.set(cacheKey, { data, timestamp: Date.now() });
+      return data;
+    } finally {
+      inFlightRequests.delete(cacheKey);
+    }
+  })();
+
+  inFlightRequests.set(cacheKey, requestPromise);
+  return requestPromise;
+};
+
+export const clearApiCache = (keyPrefix = '') => {
+  if (!keyPrefix) {
+    apiCache.clear();
+  } else {
+    for (const key of apiCache.keys()) {
+      if (key.startsWith(keyPrefix)) {
+        apiCache.delete(key);
+      }
+    }
+  }
+};
+
 export const api = {
-  // Public APIs
-  getSiteConfig: async () => {
-    const res = await apiClient.get('/site-config');
-    return res.data;
+  // Public Cache Utilities
+  clearCache: clearApiCache,
+
+  // Public APIs with Caching
+  getSiteConfig: async (force = false) => {
+    return getCachedOrFetch('site-config', async () => {
+      const res = await apiClient.get('/site-config');
+      return res.data;
+    }, 5 * 60 * 1000, force);
   },
 
-  getCategories: async () => {
-    const res = await apiClient.get('/categories');
-    return res.data;
+  getCategories: async (force = false) => {
+    return getCachedOrFetch('categories', async () => {
+      const res = await apiClient.get('/categories');
+      return res.data;
+    }, 5 * 60 * 1000, force);
   },
 
-  getProducts: async (params = {}) => {
-    const res = await apiClient.get('/products', { params });
-    return res.data;
+  getProducts: async (params = {}, force = false) => {
+    const cacheKey = `products_${JSON.stringify(params)}`;
+    return getCachedOrFetch(cacheKey, async () => {
+      const res = await apiClient.get('/products', { params });
+      return res.data;
+    }, 3 * 60 * 1000, force);
   },
 
-  getProductBySlug: async (slug) => {
-    const res = await apiClient.get(`/products/${slug}`);
-    return res.data;
+  getProductBySlug: async (slug, force = false) => {
+    const cacheKey = `product_${slug}`;
+    return getCachedOrFetch(cacheKey, async () => {
+      const res = await apiClient.get(`/products/${slug}`);
+      return res.data;
+    }, 3 * 60 * 1000, force);
   },
 
   createOrder: async (orderPayload) => {
@@ -69,7 +132,7 @@ export const api = {
     return res.data;
   },
 
-  // Admin Products
+  // Admin Products (auto-clears cache on mutations)
   getAdminProducts: async () => {
     const res = await apiClient.get('/admin/products');
     return res.data;
@@ -77,20 +140,26 @@ export const api = {
 
   createAdminProduct: async (productData) => {
     const res = await apiClient.post('/admin/products', productData);
+    clearApiCache('products');
+    clearApiCache('product_');
     return res.data;
   },
 
   updateAdminProduct: async (id, productData) => {
     const res = await apiClient.put(`/admin/products/${id}`, productData);
+    clearApiCache('products');
+    clearApiCache('product_');
     return res.data;
   },
 
   deleteAdminProduct: async (id) => {
     const res = await apiClient.delete(`/admin/products/${id}`);
+    clearApiCache('products');
+    clearApiCache('product_');
     return res.data;
   },
 
-  // Admin Categories
+  // Admin Categories (auto-clears cache on mutations)
   getAdminCategories: async () => {
     const res = await apiClient.get('/admin/categories');
     return res.data;
@@ -98,16 +167,19 @@ export const api = {
 
   createAdminCategory: async (categoryData) => {
     const res = await apiClient.post('/admin/categories', categoryData);
+    clearApiCache('categories');
     return res.data;
   },
 
   updateAdminCategory: async (id, categoryData) => {
     const res = await apiClient.put(`/admin/categories/${id}`, categoryData);
+    clearApiCache('categories');
     return res.data;
   },
 
   deleteAdminCategory: async (id) => {
     const res = await apiClient.delete(`/admin/categories/${id}`);
+    clearApiCache('categories');
     return res.data;
   },
 
@@ -145,6 +217,7 @@ export const api = {
 
   updateAdminSiteConfig: async (configData) => {
     const res = await apiClient.put('/admin/site-config', configData);
+    clearApiCache('site-config');
     return res.data;
   },
 

@@ -88,6 +88,7 @@ app.get('/api/health', async (req, res) => {
 // GET /api/site-config - Retrieve full website configuration for public rendering
 app.get('/api/site-config', async (req, res) => {
   try {
+    res.set('Cache-Control', 'public, max-age=60, s-maxage=120, stale-while-revalidate=300');
     const dbStatus = await getDbStatus();
     if (dbStatus.isConnected) {
       let config = await WebsiteConfig.findById('main');
@@ -118,6 +119,7 @@ app.get('/api/site-config', async (req, res) => {
 // GET /api/categories - Retrieve active product categories
 app.get('/api/categories', async (req, res) => {
   try {
+    res.set('Cache-Control', 'public, max-age=60, s-maxage=120, stale-while-revalidate=300');
     const dbStatus = await getDbStatus();
     if (dbStatus.isConnected) {
       let count = await Category.countDocuments();
@@ -139,6 +141,7 @@ app.get('/api/categories', async (req, res) => {
 // GET /api/products - Retrieve products with search, category filtering & sorting
 app.get('/api/products', async (req, res) => {
   try {
+    res.set('Cache-Control', 'public, max-age=60, s-maxage=120, stale-while-revalidate=300');
     const { category, search, featured, sort } = req.query;
     const dbStatus = await getDbStatus();
 
@@ -199,6 +202,7 @@ app.get('/api/products', async (req, res) => {
 // GET /api/products/:slug - Retrieve single product details (supports Facebook Ad direct linking)
 app.get('/api/products/:slug', async (req, res) => {
   try {
+    res.set('Cache-Control', 'public, max-age=60, s-maxage=120, stale-while-revalidate=300');
     const { slug } = req.params;
     const dbStatus = await getDbStatus();
 
