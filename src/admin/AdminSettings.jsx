@@ -106,7 +106,7 @@ export default function AdminSettings() {
     }
   };
 
-  const currentLogoUrl = configData.siteSettings?.logoUrl || '/images/hair_shurokkha_logo.svg';
+  const currentLogoUrl = configData.siteSettings?.logoUrl || '/images/hair-shurokkha-logo-transparent.png';
 
   return (
     <div className="space-y-6">
@@ -191,18 +191,18 @@ export default function AdminSettings() {
                   type="text"
                   value={configData.siteSettings?.logoUrl || ''}
                   onChange={(e) => updateNested('siteSettings.logoUrl', e.target.value)}
-                  placeholder="/images/hair_shurokkha_logo.svg"
+                  placeholder="/images/hair-shurokkha-logo-transparent.png"
                   className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 font-mono text-[11px] text-gray-900"
                 />
                 <p className="text-[11px] text-brand-muted mt-1">
-                  Path or CDN link (e.g. <code className="bg-gray-100 px-1 py-0.5 rounded">/images/hair_shurokkha_logo.svg</code>)
+                  Path or CDN link (e.g. <code className="bg-gray-100 px-1 py-0.5 rounded">/images/hair-shurokkha-logo-transparent.png</code>)
                 </p>
               </div>
 
               {/* Upload Button & Action Chips */}
               <div className="space-y-2 pt-1">
                 <label className="block font-bold uppercase tracking-wider text-brand-dark">
-                  Upload Logo File (SVG / PNG / JPG)
+                  Upload Logo File (Transparent PNG / SVG / JPG)
                 </label>
                 <div className="flex flex-wrap items-center gap-2">
                   <label className="cursor-pointer inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-brand-dark hover:bg-brand-navy text-white font-bold text-xs shadow-xs transition-colors">
@@ -210,7 +210,7 @@ export default function AdminSettings() {
                     <span>{uploadingLogo ? 'Uploading...' : 'Choose File to Upload'}</span>
                     <input
                       type="file"
-                      accept=".svg,image/svg+xml,image/png,image/jpeg,image/webp"
+                      accept=".png,.svg,image/svg+xml,image/png,image/jpeg,image/webp"
                       onChange={handleLogoUpload}
                       disabled={uploadingLogo}
                       className="hidden"
@@ -219,10 +219,10 @@ export default function AdminSettings() {
 
                   <button
                     type="button"
-                    onClick={() => updateNested('siteSettings.logoUrl', '/images/hair_shurokkha_logo.svg')}
+                    onClick={() => updateNested('siteSettings.logoUrl', '/images/hair-shurokkha-logo-transparent.png')}
                     className="px-3 py-2 rounded-xl border border-gray-200 hover:border-brand-dark text-gray-700 hover:text-brand-dark font-medium text-xs transition-colors"
                   >
-                    Reset to Hair Shurokkha SVG
+                    Reset to Hair Shurokkha PNG
                   </button>
 
                   {configData.siteSettings?.logoUrl && (
@@ -267,10 +267,10 @@ export default function AdminSettings() {
                 </div>
               </div>
 
-              {/* Preview on Dark Footer Background (#0F172A) */}
-              <div className="p-4 rounded-2xl border border-brand-navy bg-[#0F172A] text-white space-y-1.5">
+              {/* Preview on Dark Footer Background (#080438) */}
+              <div className="p-4 rounded-2xl border border-brand-navy bg-[#080438] text-white space-y-1.5">
                 <div className="flex items-center justify-between text-[11px] font-bold text-gray-400 uppercase tracking-wider">
-                  <span>Footer View (#0F172A)</span>
+                  <span>Footer View (#080438)</span>
                   <span className="text-[10px] bg-white/10 px-2 py-0.5 rounded border border-white/10 text-gray-300 font-mono">Footer</span>
                 </div>
                 <div className="h-16 flex items-center justify-center p-2 border border-dashed border-white/20 rounded-xl bg-white/5">

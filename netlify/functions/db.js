@@ -11,7 +11,7 @@ export const defaultWebsiteConfig = {
   siteSettings: {
     siteName: "Hair Shurokkha Bangladesh",
     logoText: "Hair Shurokkha",
-    logoUrl: "/images/hair_shurokkha_logo.svg",
+    logoUrl: "/images/hair-shurokkha-logo-transparent.png",
     tagline: "Science-Backed Hair Restoration & Scalp Wellness",
     currency: "৳",
     contactPhone: "+880 1711-234567",

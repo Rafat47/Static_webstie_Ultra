@@ -72,12 +72,12 @@ export default function Footer() {
           {/* Brand Info */}
           <div className="space-y-4">
             <div className="flex items-center space-x-2">
-              {(siteSettings.logoUrl || '/images/hair_shurokkha_logo.svg') ? (
-                <div className="bg-white/95 p-1.5 rounded-lg inline-block shadow-xs">
+              {(siteSettings.logoUrl || '/images/hair-shurokkha-logo-transparent.png') ? (
+                <div className="bg-white/95 px-3 py-1.5 rounded-xl inline-block shadow-xs">
                   <img
-                    src={siteSettings.logoUrl || '/images/hair_shurokkha_logo.svg'}
+                    src={siteSettings.logoUrl || '/images/hair-shurokkha-logo-transparent.png'}
                     alt={siteSettings.siteName || siteSettings.logoText || "Hair Shurokkha"}
-                    className="h-9 sm:h-11 w-auto max-w-[160px] sm:max-w-[200px] object-contain"
+                    className="h-11 sm:h-13 w-auto max-w-[200px] sm:max-w-[250px] object-contain"
                   />
                 </div>
               ) : (

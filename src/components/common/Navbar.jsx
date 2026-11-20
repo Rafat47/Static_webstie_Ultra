@@ -21,7 +21,7 @@ export default function Navbar() {
 
   const siteSettings = config?.siteSettings || {};
   const logoText = siteSettings.logoText || 'Hair Shurokkha';
-  const logoUrl = siteSettings.logoUrl || '/images/hair_shurokkha_logo.svg';
+  const logoUrl = siteSettings.logoUrl || '/images/hair-shurokkha-logo-transparent.png';
 
   useEffect(() => {
     loadCategories();
@@ -109,7 +109,7 @@ export default function Navbar() {
               <img
                 src={logoUrl}
                 alt={siteSettings.siteName || logoText}
-                className="h-10 sm:h-12 w-auto max-w-[190px] sm:max-w-[240px] object-contain transition-transform group-hover:scale-102"
+                className="h-12 sm:h-16 w-auto max-w-[220px] sm:max-w-[280px] object-contain transition-transform group-hover:scale-102"
               />
             ) : (
               <span className="text-2xl sm:text-3xl font-black tracking-tight text-brand-dark group-hover:text-brand-navy">

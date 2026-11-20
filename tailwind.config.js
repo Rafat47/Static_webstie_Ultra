@@ -8,13 +8,13 @@ export default {
     extend: {
       colors: {
         brand: {
-          dark: '#0F172A',      // BuyAzz / Footer dark navy slate (#0F172A)
-          navy: '#1E293B',      // Refined hover state navy (Slate 800)
+          dark: '#080438',      // User custom midnight navy (#080438) for buttons and primary elements
+          navy: '#150D5E',      // Refined hover state midnight navy
           blue: '#1E40AF',      // Deep royal blue accent
-          accent: '#0F172A',    // High-contrast primary action (solid dark navy)
+          accent: '#080438',    // High-contrast primary action (#080438)
           light: '#F8FAFD',     // 99% white with ultra subtle bluish tint
           surface: '#F8FAFC',   // Subtle light slate background
-          text: '#0F172A',      // Near-black typography
+          text: '#080438',      // Midnight navy typography
           muted: '#64748B',     // Refined slate secondary text
           border: '#E2E8F0',    // Crisp 1px borders
           red: '#DC2626',       // Discount badges

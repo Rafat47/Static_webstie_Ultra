@@ -13,7 +13,7 @@ async function main() {
   const existing = await WebsiteConfig.findById('main');
   if (existing) {
     existing.siteSettings = existing.siteSettings || {};
-    existing.siteSettings.logoUrl = '/images/hair_shurokkha_logo.svg';
+    existing.siteSettings.logoUrl = '/images/hair-shurokkha-logo-transparent.png';
     existing.siteSettings.logoText = 'Hair Shurokkha';
     existing.siteSettings.siteName = 'Hair Shurokkha Bangladesh';
     await existing.save();
@@ -33,3 +33,4 @@ main().catch(err => {
   console.error('Error syncing logo in DB:', err);
   process.exit(1);
 });
+
