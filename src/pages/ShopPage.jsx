@@ -47,7 +47,7 @@ export default function ShopPage() {
     } else if (sortBy === 'newest') {
       result.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
     } else {
-      result.sort((a, b) => (a.carouselOrder || 0) - (b.carouselOrder || 0));
+      result.sort((a, b) => (Number(a.displayOrder ?? a.carouselOrder) || 0) - (Number(b.displayOrder ?? b.carouselOrder) || 0));
     }
 
     return result;

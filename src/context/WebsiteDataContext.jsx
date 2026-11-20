@@ -78,12 +78,12 @@ export function WebsiteDataProvider({ children }) {
   const allCategories = websiteData?.categories || [];
   const categories = allCategories
     .filter(c => c.isActive !== false)
-    .sort((a, b) => (a.displayOrder || 0) - (b.displayOrder || 0));
+    .sort((a, b) => (Number(a.displayOrder) || 0) - (Number(b.displayOrder) || 0));
 
   const allProducts = websiteData?.products || [];
   const products = allProducts
     .filter(p => p.isActive !== false)
-    .sort((a, b) => (a.carouselOrder || 0) - (b.carouselOrder || 0));
+    .sort((a, b) => (Number(a.displayOrder ?? a.carouselOrder) || 0) - (Number(b.displayOrder ?? b.carouselOrder) || 0));
 
   const config = websiteData || null;
   const version = websiteData?.version || 1;

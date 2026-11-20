@@ -715,7 +715,7 @@ app.get('/api/admin/products', requireAdmin, async (req, res) => {
 
 app.post('/api/admin/products', requireAdmin, async (req, res) => {
   try {
-    const { name, slug, regularPrice, salePrice, category, stock, shortDescription, description, images, isFeatured, isActive, productType, comboItems, badge, keyBenefits, specifications } = req.body;
+    const { name, slug, regularPrice, salePrice, category, stock, shortDescription, description, images, isFeatured, isActive, productType, comboItems, badge, keyBenefits, specifications, displayOrder } = req.body;
 
     if (!name || !regularPrice || !salePrice || !category) {
       return res.status(400).json({ success: false, message: 'Name, Category, Regular Price, and Sale Price are required' });
@@ -745,7 +745,8 @@ app.post('/api/admin/products', requireAdmin, async (req, res) => {
       badge: badge || '',
       keyBenefits: Array.isArray(keyBenefits) ? keyBenefits : [],
       specifications: Array.isArray(specifications) ? specifications : [],
-      carouselOrder: 0,
+      displayOrder: Number(displayOrder || 0),
+      carouselOrder: Number(displayOrder || 0),
       createdAt: new Date(),
       updatedAt: new Date()
     };
@@ -786,6 +787,11 @@ app.put('/api/admin/products/:id', requireAdmin, async (req, res) => {
 
     if (updateData.slug) {
       updateData.slug = updateData.slug.trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+    }
+
+    if (updateData.displayOrder !== undefined) {
+      updateData.displayOrder = Number(updateData.displayOrder || 0);
+      updateData.carouselOrder = updateData.displayOrder;
     }
 
     const dbStatus = await getDbStatus();
@@ -923,6 +929,10 @@ app.put('/api/admin/categories/:id', requireAdmin, async (req, res) => {
     const { id } = req.params;
     const updateData = { ...req.body };
     delete updateData._id;
+
+    if (updateData.displayOrder !== undefined) {
+      updateData.displayOrder = Number(updateData.displayOrder || 0);
+    }
 
     const dbStatus = await getDbStatus();
 

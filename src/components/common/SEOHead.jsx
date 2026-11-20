@@ -1,9 +1,15 @@
 import { useEffect } from 'react';
 
-export default function SEOHead({ title, description, image }) {
+export default function SEOHead({ description, image }) {
   useEffect(() => {
-    if (title) {
-      document.title = title.includes('Regrow') ? title : `${title} | Regrow Hair Care BD`;
+    // Keep browser tab title always constant as the brand name across all pages
+    document.title = 'Hair Shurokkha';
+
+    // Ensure tab icon is the transparent brand logo
+    let linkIcon = document.querySelector('link[rel="icon"]');
+    if (linkIcon) {
+      linkIcon.href = '/hair-shurokkha-logo-transparent.png';
+      linkIcon.type = 'image/png';
     }
 
     if (description) {
@@ -22,7 +28,7 @@ export default function SEOHead({ title, description, image }) {
         metaOgImage.content = image;
       }
     }
-  }, [title, description, image]);
+  }, [description, image]);
 
   return null;
 }

@@ -54,6 +54,7 @@ function RouteTracker() {
   const location = useLocation();
 
   useEffect(() => {
+    document.title = 'Hair Shurokkha';
     trackRoutePageView(location.pathname + location.search);
   }, [location.pathname, location.search]);
 

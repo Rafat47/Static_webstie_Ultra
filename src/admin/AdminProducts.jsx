@@ -47,6 +47,7 @@ export default function AdminProducts() {
     isActive: true,
     productType: 'minoxidil',
     badge: '',
+    displayOrder: 1,
     comboItems: []
   });
 
@@ -86,6 +87,7 @@ export default function AdminProducts() {
       isActive: true,
       productType: 'minoxidil',
       badge: '',
+      displayOrder: 1,
       comboItems: []
     });
     setModalError('');
@@ -108,6 +110,7 @@ export default function AdminProducts() {
       isActive: prod.isActive !== false,
       productType: prod.productType || 'minoxidil',
       badge: prod.badge || '',
+      displayOrder: prod.displayOrder ?? prod.carouselOrder ?? 0,
       comboItems: prod.comboItems || []
     });
     setModalError('');
@@ -230,12 +233,19 @@ export default function AdminProducts() {
     }
   };
 
-  // Filtered Products List
-  const filteredProducts = products.filter(p => {
-    const matchesCategory = selectedCategory === 'All' || p.category.toLowerCase() === selectedCategory.toLowerCase();
-    const matchesSearch = !searchTerm || p.name.toLowerCase().includes(searchTerm.toLowerCase()) || p.slug.includes(searchTerm.toLowerCase());
-    return matchesCategory && matchesSearch;
-  });
+  // Filtered Products List with Serial Ordering
+  const filteredProducts = products
+    .filter(p => {
+      const matchesCategory = selectedCategory === 'All' || p.category.toLowerCase() === selectedCategory.toLowerCase();
+      const matchesSearch = !searchTerm || p.name.toLowerCase().includes(searchTerm.toLowerCase()) || p.slug.includes(searchTerm.toLowerCase());
+      return matchesCategory && matchesSearch;
+    })
+    .sort((a, b) => {
+      const catA = (a.category || '').toLowerCase();
+      const catB = (b.category || '').toLowerCase();
+      if (selectedCategory === 'All' && catA !== catB) return catA.localeCompare(catB);
+      return (Number(a.displayOrder ?? a.carouselOrder) || 0) - (Number(b.displayOrder ?? b.carouselOrder) || 0);
+    });
 
   return (
     <div className="space-y-6">
@@ -306,6 +316,7 @@ export default function AdminProducts() {
                 <tr>
                   <th className="py-3 px-4">Item</th>
                   <th className="py-3 px-4">Category</th>
+                  <th className="py-3 px-4">Serial / Order</th>
                   <th className="py-3 px-4">Pricing</th>
                   <th className="py-3 px-4">Stock</th>
                   <th className="py-3 px-4">Featured</th>
@@ -335,6 +346,13 @@ export default function AdminProducts() {
                     <td className="py-3 px-4">
                       <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-blue-50 text-brand-accent">
                         {prod.category}
+                      </span>
+                    </td>
+
+                    {/* Serial / Order */}
+                    <td className="py-3 px-4">
+                      <span className="px-2 py-0.5 rounded text-[10px] font-black bg-brand-dark text-white shadow-2xs">
+                        Serial #{prod.displayOrder ?? prod.carouselOrder ?? 0}
                       </span>
                     </td>
 
@@ -472,8 +490,8 @@ export default function AdminProducts() {
                 />
               </div>
 
-              {/* Category & Product Type */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {/* Category, Serial Order & Product Type */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div>
                   <label className="block font-bold uppercase tracking-wider text-brand-dark mb-1">
                     Category *
@@ -487,6 +505,22 @@ export default function AdminProducts() {
                       <option key={c._id || c.slug} value={c.name}>{c.name}</option>
                     ))}
                   </select>
+                </div>
+
+                <div>
+                  <label className="block font-bold uppercase tracking-wider text-brand-dark mb-1">
+                    Serial / Order in Category *
+                  </label>
+                  <input
+                    type="number"
+                    min="0"
+                    required
+                    value={formData.displayOrder}
+                    onChange={(e) => setFormData({ ...formData, displayOrder: parseInt(e.target.value) || 0 })}
+                    placeholder="e.g. 1"
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 font-bold"
+                  />
+                  <p className="text-[10px] text-gray-400 mt-1">Lower numbers appear first (1 shows before 2).</p>
                 </div>
 
                 <div>

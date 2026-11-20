@@ -48,6 +48,7 @@ const ProductSubschema = new mongoose.Schema({
       value: String
     }
   ],
+  displayOrder: { type: Number, default: 0 },
   carouselOrder: { type: Number, default: 0 },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now }

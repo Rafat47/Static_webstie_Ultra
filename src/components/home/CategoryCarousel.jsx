@@ -10,8 +10,10 @@ export default function CategoryCarousel({ categories = [] }) {
   const [scrollLeftState, setScrollLeftState] = useState(0);
   const [hasMoved, setHasMoved] = useState(false);
 
-  // Filter active categories
-  const activeCategories = categories.filter(c => c.isActive !== false);
+  // Filter active categories and sort by serial number (displayOrder)
+  const activeCategories = categories
+    .filter(c => c.isActive !== false)
+    .sort((a, b) => (Number(a.displayOrder) || 0) - (Number(b.displayOrder) || 0));
   if (activeCategories.length === 0) return null;
 
   const isFewCategories = activeCategories.length <= 4;

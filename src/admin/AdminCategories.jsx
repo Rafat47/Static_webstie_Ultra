@@ -27,7 +27,8 @@ export default function AdminCategories() {
       setLoading(true);
       const res = await api.getAdminCategories();
       if (res && res.success) {
-        setCategories(res.data);
+        const sorted = (res.data || []).sort((a, b) => (Number(a.displayOrder) || 0) - (Number(b.displayOrder) || 0));
+        setCategories(sorted);
       }
     } catch (err) {
       console.warn('Failed to load categories:', err);
@@ -58,7 +59,7 @@ export default function AdminCategories() {
       description: cat.description || '',
       image: cat.image || '',
       isActive: cat.isActive !== false,
-      displayOrder: cat.displayOrder || 0
+      displayOrder: cat.displayOrder ?? 0
     });
     setModalError('');
     setIsModalOpen(true);
@@ -139,20 +140,43 @@ export default function AdminCategories() {
               key={cat._id || cat.slug}
               className="bg-white rounded-2xl border border-brand-border p-5 shadow-xs flex flex-col justify-between space-y-4"
             >
-              <div className="space-y-2">
+              <div className="space-y-3">
                 <div className="flex items-center justify-between">
-                  <div className="w-9 h-9 rounded-xl bg-blue-50 text-brand-accent flex items-center justify-center">
+                  <div className="flex items-center gap-2">
+                    <span className="px-2.5 py-0.5 rounded-full text-[10px] font-black bg-brand-dark text-white shadow-2xs">
+                      Serial: #{cat.displayOrder ?? 0}
+                    </span>
+                    <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
+                      cat.isActive ? 'bg-emerald-100 text-emerald-800' : 'bg-gray-100 text-gray-500'
+                    }`}>
+                      {cat.isActive ? 'Active' : 'Hidden'}
+                    </span>
+                  </div>
+                  <div className="w-8 h-8 rounded-lg bg-blue-50 text-brand-accent flex items-center justify-center">
                     <Layers className="w-4 h-4" />
                   </div>
-                  <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold ${
-                    cat.isActive ? 'bg-emerald-100 text-emerald-800' : 'bg-gray-100 text-gray-500'
-                  }`}>
-                    {cat.isActive ? 'Active' : 'Hidden'}
-                  </span>
                 </div>
-                <h3 className="font-bold text-base text-brand-dark">{cat.name}</h3>
+
+                {/* Category Image Thumbnail */}
+                <div className="flex items-center gap-3">
+                  {cat.image ? (
+                    <img
+                      src={cat.image}
+                      alt={cat.name}
+                      className="w-16 h-12 rounded-lg object-cover border border-gray-200 bg-gray-50 flex-shrink-0"
+                    />
+                  ) : (
+                    <div className="w-16 h-12 rounded-lg bg-gray-100 border border-dashed border-gray-300 text-gray-400 flex items-center justify-center text-[10px] font-bold flex-shrink-0">
+                      No Image
+                    </div>
+                  )}
+                  <div className="min-w-0 flex-1">
+                    <h3 className="font-bold text-base text-brand-dark truncate">{cat.name}</h3>
+                    <p className="text-[10px] font-mono text-gray-400">/{cat.slug}</p>
+                  </div>
+                </div>
+
                 <p className="text-xs text-brand-muted line-clamp-2">{cat.description || 'No description provided.'}</p>
-                <p className="text-[10px] font-mono text-gray-400">Slug: {cat.slug}</p>
               </div>
 
               <div className="pt-3 border-t border-gray-100 flex items-center justify-end gap-2">
@@ -218,6 +242,56 @@ export default function AdminCategories() {
                   onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
                   className="w-full px-3.5 py-2 rounded-xl border border-gray-200 font-mono"
                 />
+              </div>
+
+              {/* Serial Number / Display Order */}
+              <div>
+                <label className="block font-bold uppercase tracking-wider text-brand-dark mb-1">
+                  Display Serial Number (Order) *
+                </label>
+                <input
+                  type="number"
+                  min="0"
+                  required
+                  value={formData.displayOrder}
+                  onChange={(e) => setFormData({ ...formData, displayOrder: parseInt(e.target.value) || 0 })}
+                  placeholder="e.g. 1"
+                  className="w-full px-3.5 py-2 rounded-xl border border-gray-200 font-bold"
+                />
+                <p className="text-[11px] text-gray-500 mt-1">
+                  Controls the order on the homepage, navbar, and carousel. Smaller numbers appear first (e.g. 1 appears before 2).
+                </p>
+              </div>
+
+              {/* Category Image URL (Navbar Hover & Carousel) */}
+              <div>
+                <label className="block font-bold uppercase tracking-wider text-brand-dark mb-1">
+                  Category Image URL (Navbar Hover Preview & Carousel)
+                </label>
+                <input
+                  type="text"
+                  value={formData.image}
+                  onChange={(e) => setFormData({ ...formData, image: e.target.value })}
+                  placeholder="https://images.unsplash.com/..."
+                  className="w-full px-3.5 py-2 rounded-xl border border-gray-200 font-mono text-xs"
+                />
+                <p className="text-[11px] text-gray-500 mt-1">
+                  This image is shown when hovering over the category in Navbar and inside the Category Carousel cards.
+                </p>
+                {formData.image && (
+                  <div className="mt-2 p-2 bg-gray-50 rounded-xl border border-gray-200 flex items-center gap-3">
+                    <img
+                      src={formData.image}
+                      alt="Category Preview"
+                      className="h-16 w-24 object-cover rounded-lg border border-gray-200 bg-white"
+                      onError={(e) => { e.target.style.display = 'none'; }}
+                    />
+                    <div className="text-[11px] text-gray-500">
+                      <p className="font-bold text-gray-700">Image Preview</p>
+                      <p className="text-[10px] text-gray-400">Used for Navbar hover preview and homepage carousel card.</p>
+                    </div>
+                  </div>
+                )}
               </div>
 
               <div>

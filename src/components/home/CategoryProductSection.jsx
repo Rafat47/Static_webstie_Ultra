@@ -6,12 +6,14 @@ import ProductCard from '../common/ProductCard';
 export default function CategoryProductSection({ category, products = [] }) {
   if (!category) return null;
 
-  // Filter products for this specific category (case-insensitive)
-  const categoryProducts = products.filter(p =>
-    p.isActive !== false &&
-    p.category &&
-    p.category.toLowerCase() === category.name.toLowerCase()
-  );
+  // Filter products for this specific category (case-insensitive) and sort by displayOrder
+  const categoryProducts = products
+    .filter(p =>
+      p.isActive !== false &&
+      p.category &&
+      p.category.toLowerCase() === category.name.toLowerCase()
+    )
+    .sort((a, b) => (Number(a.displayOrder ?? a.carouselOrder) || 0) - (Number(b.displayOrder ?? b.carouselOrder) || 0));
 
   // If no products in this category, don't render an empty section
   if (categoryProducts.length === 0) return null;

@@ -33,6 +33,7 @@ const ProductSchema = new mongoose.Schema({
       value: String
     }
   ],
+  displayOrder: { type: Number, default: 0 },
   carouselOrder: { type: Number, default: 0 }
 }, {
   timestamps: true,
