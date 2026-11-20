@@ -386,7 +386,7 @@ app.post('/api/orders', async (req, res) => {
     if (isCapiActive) {
       sendMetaCapiEvent({
         pixelId: siteMeta?.pixelId || process.env.META_PIXEL_ID,
-        accessToken: process.env.META_CAPI_ACCESS_TOKEN,
+        accessToken: siteMeta?.capiAccessToken || process.env.META_CAPI_ACCESS_TOKEN,
         testEventCode: siteMeta?.testEventCode || process.env.META_TEST_EVENT_CODE,
         isLoggingEnabled: siteMeta?.isLoggingEnabled !== false,
         logRetentionDays: siteMeta?.logRetentionDays || 7,
@@ -491,7 +491,7 @@ app.post('/api/meta/events', async (req, res) => {
 
     const result = await sendMetaCapiEvent({
       pixelId: siteMeta?.pixelId || process.env.META_PIXEL_ID,
-      accessToken: process.env.META_CAPI_ACCESS_TOKEN,
+      accessToken: siteMeta?.capiAccessToken || process.env.META_CAPI_ACCESS_TOKEN,
       testEventCode: siteMeta?.testEventCode || process.env.META_TEST_EVENT_CODE,
       isLoggingEnabled: siteMeta?.isLoggingEnabled !== false,
       logRetentionDays: siteMeta?.logRetentionDays || 7,

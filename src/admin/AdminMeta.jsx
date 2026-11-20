@@ -30,12 +30,14 @@ export default function AdminMeta() {
   // Settings State
   const [metaSettings, setMetaSettings] = useState({
     pixelId: '',
+    capiAccessToken: '',
     testEventCode: '',
     isPixelEnabled: true,
     isCapiEnabled: true,
     isLoggingEnabled: true,
     logRetentionDays: 7
   });
+  const [showToken, setShowToken] = useState(false);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
@@ -72,6 +74,7 @@ export default function AdminMeta() {
       if (res && res.success && res.data?.metaSettings) {
         setMetaSettings({
           pixelId: res.data.metaSettings.pixelId || '',
+          capiAccessToken: res.data.metaSettings.capiAccessToken || '',
           testEventCode: res.data.metaSettings.testEventCode || '',
           isPixelEnabled: res.data.metaSettings.isPixelEnabled !== false,
           isCapiEnabled: res.data.metaSettings.isCapiEnabled !== false,
@@ -351,6 +354,32 @@ export default function AdminMeta() {
                 />
                 <p className="text-[11px] text-brand-muted mt-1">
                   Found in Meta Events Manager under Data Sources &gt; Settings.
+                </p>
+              </div>
+
+              {/* Conversions API (CAPI) Access Token */}
+              <div>
+                <div className="flex items-center justify-between mb-1">
+                  <label className="block font-bold uppercase tracking-wider text-brand-dark">
+                    Conversions API (CAPI) Access Token
+                  </label>
+                  <button
+                    type="button"
+                    onClick={() => setShowToken(!showToken)}
+                    className="text-[11px] text-gray-500 hover:text-black font-bold underline"
+                  >
+                    {showToken ? 'Hide Token' : 'Show Token'}
+                  </button>
+                </div>
+                <input
+                  type={showToken ? 'text' : 'password'}
+                  placeholder="Paste your Conversions API Access Token (EAAB...)"
+                  value={metaSettings.capiAccessToken || ''}
+                  onChange={(e) => setMetaSettings({ ...metaSettings, capiAccessToken: e.target.value.trim() })}
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 font-mono text-xs focus:ring-2 focus:ring-black"
+                />
+                <p className="text-[11px] text-brand-muted mt-1">
+                  Paste token here OR set via <code className="bg-gray-100 px-1 py-0.5 rounded font-mono font-bold text-gray-800">META_CAPI_ACCESS_TOKEN</code> in your <code className="bg-gray-100 px-1 py-0.5 rounded font-mono font-bold text-gray-800">.env</code> / Netlify settings.
                 </p>
               </div>
 

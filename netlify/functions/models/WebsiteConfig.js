@@ -160,6 +160,7 @@ const WebsiteConfigSchema = new mongoose.Schema({
   },
   metaSettings: {
     pixelId: String,
+    capiAccessToken: String,
     testEventCode: String,
     isPixelEnabled: { type: Boolean, default: true },
     isCapiEnabled: { type: Boolean, default: true },
