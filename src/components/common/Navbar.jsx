@@ -4,6 +4,7 @@ import { ShoppingBag, Search, Heart, ChevronDown, Sparkles, X, Globe } from 'luc
 import { useCart } from '../../context/CartContext';
 import { useConfig } from '../../context/ConfigContext';
 import api from '../../services/api';
+import { metaEvents } from '../../utils/metaPixel';
 
 export default function Navbar() {
   const { totalItemsCount, setIsCartOpen } = useCart();
@@ -39,6 +40,7 @@ export default function Navbar() {
   const handleSearchSubmit = (e) => {
     e.preventDefault();
     if (searchQuery.trim()) {
+      metaEvents.search(searchQuery.trim());
       navigate(`/shop?search=${encodeURIComponent(searchQuery.trim())}`);
     }
   };

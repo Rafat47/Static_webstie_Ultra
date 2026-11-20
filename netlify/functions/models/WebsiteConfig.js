@@ -162,7 +162,9 @@ const WebsiteConfigSchema = new mongoose.Schema({
     pixelId: String,
     testEventCode: String,
     isPixelEnabled: { type: Boolean, default: true },
-    isCapiEnabled: { type: Boolean, default: true }
+    isCapiEnabled: { type: Boolean, default: true },
+    isLoggingEnabled: { type: Boolean, default: true },
+    logRetentionDays: { type: Number, default: 7 }
   }
 }, { timestamps: true });
 

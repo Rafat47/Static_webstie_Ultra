@@ -221,6 +221,29 @@ export const api = {
     return res.data;
   },
 
+  // Admin Meta CAPI Logs
+  getAdminMetaLogs: async (params = {}) => {
+    const res = await apiClient.get('/admin/meta/logs', { params });
+    return res.data;
+  },
+
+  getAdminMetaLogById: async (id) => {
+    const res = await apiClient.get(`/admin/meta/logs/${id}`);
+    return res.data;
+  },
+
+  retryAdminMetaLog: async (id) => {
+    const res = await apiClient.post(`/admin/meta/logs/${id}/retry`);
+    return res.data;
+  },
+
+  clearAdminMetaLogs: async (olderThanDays = null) => {
+    const res = await apiClient.delete('/admin/meta/logs', {
+      params: olderThanDays ? { olderThanDays } : {}
+    });
+    return res.data;
+  },
+
   // Image Upload
   uploadImage: async (imagePayload) => {
     const res = await apiClient.post('/upload', imagePayload);

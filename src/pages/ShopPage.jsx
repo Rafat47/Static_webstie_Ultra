@@ -19,7 +19,6 @@ export default function ShopPage() {
   const [featuredOnly, setFeaturedOnly] = useState(false);
 
   useEffect(() => {
-    metaEvents.pageView();
     loadCategories();
   }, []);
 
@@ -51,6 +50,7 @@ export default function ShopPage() {
       }
       if (searchTerm.trim()) {
         params.search = searchTerm.trim();
+        metaEvents.search(searchTerm.trim());
       }
       if (featuredOnly) {
         params.featured = 'true';

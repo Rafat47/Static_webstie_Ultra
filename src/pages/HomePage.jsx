@@ -20,8 +20,6 @@ export default function HomePage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    metaEvents.pageView();
-
     const loadData = async () => {
       try {
         setLoading(true);

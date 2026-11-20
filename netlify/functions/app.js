@@ -18,7 +18,8 @@ import Product from './models/Product.js';
 import Category from './models/Category.js';
 import Order from './models/Order.js';
 import Admin from './models/Admin.js';
-import { sendMetaCapiEvent } from './utils/metaCapi.js';
+import MetaEventLog from './models/MetaEventLog.js';
+import { sendMetaCapiEvent, retryMetaCapiEvent } from './utils/metaCapi.js';
 
 dotenv.config();
 
@@ -387,8 +388,12 @@ app.post('/api/orders', async (req, res) => {
         pixelId: siteMeta?.pixelId || process.env.META_PIXEL_ID,
         accessToken: process.env.META_CAPI_ACCESS_TOKEN,
         testEventCode: siteMeta?.testEventCode || process.env.META_TEST_EVENT_CODE,
+        isLoggingEnabled: siteMeta?.isLoggingEnabled !== false,
+        logRetentionDays: siteMeta?.logRetentionDays || 7,
         eventName: 'Purchase',
         eventId: orderPayload.metaEventId,
+        orderId: orderId,
+        eventSource: 'server_order',
         eventSourceUrl: attribution?.landingPage || req.headers['referer'] || '',
         userData: {
           phone: customer.phoneNumber,
@@ -396,7 +401,9 @@ app.post('/api/orders', async (req, res) => {
           lastName: customer.fullName.split(' ').slice(1).join(' ') || '',
           city: orderPayload.customer.district,
           clientIpAddress: orderPayload.attribution.ip,
-          clientUserAgent: orderPayload.attribution.userAgent
+          clientUserAgent: orderPayload.attribution.userAgent,
+          fbp: attribution?.fbp || '',
+          fbc: attribution?.fbc || ''
         },
         customData: {
           currency: 'BDT',
@@ -411,7 +418,7 @@ app.post('/api/orders', async (req, res) => {
           num_items: verifiedItems.reduce((acc, i) => acc + i.quantity, 0)
         },
         req
-      }).catch(err => console.warn('Background CAPI error:', err.message));
+      }).catch(err => console.warn('Background CAPI Purchase error:', err.message));
     }
 
     return res.status(201).json({
@@ -462,6 +469,12 @@ app.post('/api/meta/events', async (req, res) => {
       return res.status(400).json({ success: false, message: 'eventName and eventId are required' });
     }
 
+    // Deduplication guard: Purchase events are dispatched directly by the server order creation.
+    // Prevent redundant secondary server dispatch from browser forwarder
+    if (eventName === 'Purchase') {
+      return res.json({ success: true, message: 'Purchase event already handled on server order creation' });
+    }
+
     const dbStatus = await getDbStatus();
     let siteMeta = defaultWebsiteConfig.metaSettings;
     if (dbStatus.isConnected) {
@@ -472,13 +485,21 @@ app.post('/api/meta/events', async (req, res) => {
       if (cfg && cfg.metaSettings) siteMeta = cfg.metaSettings;
     }
 
+    if (siteMeta?.isCapiEnabled === false) {
+      return res.json({ success: true, message: 'CAPI is disabled in settings' });
+    }
+
     const result = await sendMetaCapiEvent({
       pixelId: siteMeta?.pixelId || process.env.META_PIXEL_ID,
       accessToken: process.env.META_CAPI_ACCESS_TOKEN,
       testEventCode: siteMeta?.testEventCode || process.env.META_TEST_EVENT_CODE,
+      isLoggingEnabled: siteMeta?.isLoggingEnabled !== false,
+      logRetentionDays: siteMeta?.logRetentionDays || 7,
       eventName,
       eventId,
+      eventSource: 'browser_forwarded',
       eventSourceUrl,
+      orderId: customData?.order_id || '',
       userData: userData || {},
       customData: customData || {},
       req
@@ -1180,6 +1201,134 @@ app.post('/api/upload', requireAdmin, async (req, res) => {
   } catch (err) {
     console.error('Image upload error:', err);
     return res.status(500).json({ success: false, message: 'Failed to upload image: ' + err.message });
+  }
+});
+
+// =========================================================================
+// 8. ADMIN META CAPI EVENT LOGS MANAGEMENT
+// =========================================================================
+
+// GET /api/admin/meta/logs - Paginated logs with search & filters
+app.get('/api/admin/meta/logs', requireAdmin, async (req, res) => {
+  try {
+    const page = Math.max(1, parseInt(req.query.page) || 1);
+    const limit = Math.min(100, Math.max(1, parseInt(req.query.limit) || 20));
+    const skip = (page - 1) * limit;
+
+    const filter = {};
+    if (req.query.eventName && req.query.eventName !== 'ALL') {
+      filter.eventName = req.query.eventName;
+    }
+    if (req.query.status && req.query.status !== 'ALL') {
+      filter.status = req.query.status;
+    }
+    if (req.query.search) {
+      const s = req.query.search.trim();
+      filter.$or = [
+        { eventId: { $regex: s, $options: 'i' } },
+        { orderId: { $regex: s, $options: 'i' } }
+      ];
+    }
+    if (req.query.orderId) {
+      filter.orderId = { $regex: req.query.orderId.trim(), $options: 'i' };
+    }
+    if (req.query.eventId) {
+      filter.eventId = { $regex: req.query.eventId.trim(), $options: 'i' };
+    }
+
+    const [logs, totalCount, stats] = await Promise.all([
+      MetaEventLog.find(filter)
+        .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(limit)
+        .select('-request.payload.user_data.em -request.payload.user_data.ph'),
+      MetaEventLog.countDocuments(filter),
+      MetaEventLog.aggregate([
+        {
+          $group: {
+            _id: '$status',
+            count: { $sum: 1 }
+          }
+        }
+      ])
+    ]);
+
+    const statusCounts = {
+      total: totalCount,
+      success: 0,
+      partial_success: 0,
+      failed: 0,
+      pending: 0,
+      timeout: 0,
+      invalid_payload: 0
+    };
+    stats.forEach(st => {
+      if (statusCounts[st._id] !== undefined) {
+        statusCounts[st._id] = st.count;
+      }
+    });
+
+    return res.json({
+      success: true,
+      data: logs,
+      pagination: {
+        page,
+        limit,
+        totalCount,
+        totalPages: Math.ceil(totalCount / limit)
+      },
+      stats: statusCounts
+    });
+  } catch (err) {
+    console.error('Error fetching Meta CAPI logs:', err);
+    return res.status(500).json({ success: false, message: 'Failed to retrieve CAPI logs: ' + err.message });
+  }
+});
+
+// GET /api/admin/meta/logs/:id - Full individual log inspection
+app.get('/api/admin/meta/logs/:id', requireAdmin, async (req, res) => {
+  try {
+    const log = await MetaEventLog.findById(req.params.id);
+    if (!log) {
+      return res.status(404).json({ success: false, message: 'Log record not found' });
+    }
+    return res.json({ success: true, data: log });
+  } catch (err) {
+    return res.status(500).json({ success: false, message: 'Failed to fetch log details: ' + err.message });
+  }
+});
+
+// POST /api/admin/meta/logs/:id/retry - Manual retry of a failed or timed-out CAPI event
+app.post('/api/admin/meta/logs/:id/retry', requireAdmin, async (req, res) => {
+  try {
+    const result = await retryMetaCapiEvent(req.params.id);
+    if (!result.success) {
+      return res.status(400).json(result);
+    }
+    return res.json(result);
+  } catch (err) {
+    return res.status(500).json({ success: false, message: 'Retry operation failed: ' + err.message });
+  }
+});
+
+// DELETE /api/admin/meta/logs - Safe manual cleanup of CAPI logs
+app.delete('/api/admin/meta/logs', requireAdmin, async (req, res) => {
+  try {
+    const { olderThanDays } = req.query;
+    let deleteFilter = {};
+    if (olderThanDays) {
+      const days = parseInt(olderThanDays) || 0;
+      const cutoff = new Date(Date.now() - days * 24 * 60 * 60 * 1000);
+      deleteFilter = { createdAt: { $lt: cutoff } };
+    }
+    const result = await MetaEventLog.deleteMany(deleteFilter);
+    return res.json({
+      success: true,
+      message: `Successfully deleted ${result.deletedCount} log records`,
+      deletedCount: result.deletedCount
+    });
+  } catch (err) {
+    return res.status(500).json({ success: false, message: 'Failed to clear logs: ' + err.message });
   }
 });
 

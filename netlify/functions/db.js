@@ -246,7 +246,9 @@ export const defaultWebsiteConfig = {
     pixelId: process.env.META_PIXEL_ID || "",
     testEventCode: process.env.META_TEST_EVENT_CODE || "",
     isPixelEnabled: true,
-    isCapiEnabled: true
+    isCapiEnabled: true,
+    isLoggingEnabled: true,
+    logRetentionDays: 7
   }
 };
 

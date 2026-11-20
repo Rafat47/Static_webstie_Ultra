@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import { trackRoutePageView } from './utils/metaPixel';
 import Navbar from './components/common/Navbar';
 import Footer from './components/common/Footer';
 import CartDrawer from './components/common/CartDrawer';
@@ -48,12 +49,24 @@ function ProtectedAdminRoute({ children }) {
   return children;
 }
 
+// Centralized Route Tracker for Meta Pixel & CAPI PageView
+function RouteTracker() {
+  const location = useLocation();
+
+  useEffect(() => {
+    trackRoutePageView(location.pathname + location.search);
+  }, [location.pathname, location.search]);
+
+  return null;
+}
+
 export default function App() {
   const location = useLocation();
   const isAdminRoute = location.pathname.startsWith('/admin');
 
   return (
     <div className="min-h-screen flex flex-col bg-brand-light text-brand-text">
+      <RouteTracker />
       {/* Show storefront chrome only on public routes */}
       {!isAdminRoute && <Navbar />}
 
