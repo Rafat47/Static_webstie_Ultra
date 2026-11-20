@@ -202,7 +202,7 @@ export default function ShopPage() {
             </p>
             <button
               onClick={clearFilters}
-              className="px-6 py-3 bg-brand-dark hover:bg-black text-white font-bold text-xs uppercase tracking-wider transition-colors"
+              className="px-6 py-3 bg-brand-dark hover:bg-brand-navy text-white font-bold text-xs uppercase tracking-wider transition-colors shadow-xs"
             >
               Reset All Filters
             </button>

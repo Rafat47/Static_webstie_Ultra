@@ -67,7 +67,7 @@ export default function CheckoutPage() {
           </p>
           <Link
             to="/shop"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-brand-dark text-white text-xs font-bold uppercase tracking-wider hover:bg-black transition-colors"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-brand-dark text-white text-xs font-bold uppercase tracking-wider hover:bg-brand-navy transition-colors shadow-xs"
           >
             Browse Products
           </Link>
@@ -338,7 +338,7 @@ export default function CheckoutPage() {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full py-4 px-6 bg-brand-dark hover:bg-black text-white font-black text-sm uppercase tracking-wider transition-colors flex items-center justify-center gap-2 disabled:opacity-50"
+                className="w-full py-4 px-6 bg-brand-dark hover:bg-brand-navy text-white font-black text-sm uppercase tracking-wider transition-colors flex items-center justify-center gap-2 disabled:opacity-50 shadow-md"
               >
                 {isSubmitting ? (
                   <span>Securing Order...</span>

@@ -9,18 +9,19 @@ let isConnected = false;
 export const defaultWebsiteConfig = {
   _id: "main",
   siteSettings: {
-    siteName: "Regrow Hair Care Bangladesh",
-    logoText: "REGROW",
+    siteName: "Hair Shurokkha Bangladesh",
+    logoText: "Hair Shurokkha",
+    logoUrl: "/images/hair_shurokkha_logo.svg",
     tagline: "Science-Backed Hair Restoration & Scalp Wellness",
     currency: "৳",
     contactPhone: "+880 1711-234567",
-    contactEmail: "support@regrowhaircare.bd",
+    contactEmail: "support@hairshurokkha.bd",
     whatsappNumber: "+8801711234567",
     address: "House 42, Road 11, Banani, Dhaka-1213, Bangladesh",
     socialLinks: {
-      facebook: "https://facebook.com/regrowhaircarebd",
-      instagram: "https://instagram.com/regrowhaircarebd",
-      youtube: "https://youtube.com/@regrowhaircarebd"
+      facebook: "https://facebook.com/hairshurokkhabd",
+      instagram: "https://instagram.com/hairshurokkhabd",
+      youtube: "https://youtube.com/@hairshurokkhabd"
     }
   },
   navigation: {

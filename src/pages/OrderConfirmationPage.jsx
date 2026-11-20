@@ -208,7 +208,7 @@ export default function OrderConfirmationPage() {
           <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-3 border-t border-brand-border">
             <Link
               to="/shop"
-              className="w-full sm:w-auto px-6 py-3 bg-brand-dark hover:bg-black text-white text-xs font-bold uppercase tracking-wider text-center transition-colors"
+              className="w-full sm:w-auto px-6 py-3 bg-brand-dark hover:bg-brand-navy text-white text-xs font-bold uppercase tracking-wider text-center transition-colors shadow-xs"
             >
               Continue Shopping
             </Link>

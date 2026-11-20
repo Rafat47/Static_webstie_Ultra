@@ -27,7 +27,7 @@ export default function UsageGuideSection() {
   ];
 
   return (
-    <section className="py-10 sm:py-16 bg-white border-b border-gray-100" id="how-to-use">
+    <section className="py-10 sm:py-16 bg-[#F8FAFD] border-b border-gray-100" id="how-to-use">
       <div className="max-w-[1536px] mx-auto px-3 sm:px-6">
         
         {/* Section Header */}
@@ -55,7 +55,7 @@ export default function UsageGuideSection() {
             return (
               <div
                 key={idx}
-                className="bg-white rounded-xl border border-gray-200 hover:border-black transition-all overflow-hidden flex flex-col justify-between shadow-2xs hover:shadow-subtle group"
+                className="bg-white rounded-xl border border-gray-200 hover:border-brand-dark transition-all overflow-hidden flex flex-col justify-between shadow-2xs hover:shadow-subtle group"
               >
                 {/* Double-Size Prominent Step Image on Top */}
                 <div className="w-full h-56 sm:h-64 overflow-hidden bg-gray-50 relative border-b border-gray-100">
@@ -64,7 +64,7 @@ export default function UsageGuideSection() {
                     alt={step.title}
                     className="w-full h-full object-cover object-center group-hover:scale-103 transition-transform duration-300"
                   />
-                  <div className="absolute top-3 left-3 bg-black text-white font-mono font-bold text-xs sm:text-sm px-3 py-1 rounded shadow-xs">
+                  <div className="absolute top-3 left-3 bg-brand-dark text-white font-mono font-bold text-xs sm:text-sm px-3 py-1 rounded shadow-xs">
                     STEP {step.stepNumber || `0${idx + 1}`}
                   </div>
                 </div>

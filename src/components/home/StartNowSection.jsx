@@ -13,7 +13,7 @@ export default function StartNowSection() {
   const mobileImg = sectionData.mobileImage || desktopImg;
 
   return (
-    <section className="py-10 sm:py-16 bg-white border-b border-gray-100" id="start-now">
+    <section className="py-10 sm:py-16 bg-[#F8FAFD] border-b border-gray-100" id="start-now">
       <div className="max-w-[1536px] mx-auto px-3 sm:px-6">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-12 items-center">
           
@@ -67,7 +67,7 @@ export default function StartNowSection() {
             <div className="pt-2">
               <Link
                 to={sectionData.ctaLink || '/shop'}
-                className="inline-flex items-center gap-2 px-6 py-3 rounded bg-black hover:bg-gray-800 text-white text-xs sm:text-sm font-bold uppercase tracking-wider transition-colors shadow-xs"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded bg-brand-dark hover:bg-brand-navy text-white text-xs sm:text-sm font-bold uppercase tracking-wider transition-colors shadow-xs"
               >
                 <span>{sectionData.ctaText || 'Explore Hair Care Products'}</span>
                 <ArrowRight className="w-4 h-4" />

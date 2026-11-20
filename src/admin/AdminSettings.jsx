@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Save, RefreshCw, CheckCircle, AlertCircle, Phone, Mail, MapPin, Truck, Store } from 'lucide-react';
+import { Save, RefreshCw, CheckCircle, AlertCircle, Phone, Mail, MapPin, Truck, Store, Image, Upload, Eye, Trash2 } from 'lucide-react';
 import api from '../services/api';
 import { useConfig } from '../context/ConfigContext';
 
@@ -8,6 +8,7 @@ export default function AdminSettings() {
   const [configData, setConfigData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [uploadingLogo, setUploadingLogo] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
   const [saveError, setSaveError] = useState('');
 
@@ -74,6 +75,39 @@ export default function AdminSettings() {
     });
   };
 
+  const handleLogoUpload = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    try {
+      setUploadingLogo(true);
+      const reader = new FileReader();
+      reader.onloadend = async () => {
+        try {
+          const base64Data = reader.result;
+          const res = await api.uploadImage(base64Data);
+          if (res && res.success && res.url) {
+            updateNested('siteSettings.logoUrl', res.url);
+          } else {
+            // fallback: use data URL or local public path
+            updateNested('siteSettings.logoUrl', base64Data);
+          }
+        } catch (uploadErr) {
+          console.warn('Image upload endpoint fallback to data URL:', uploadErr);
+          updateNested('siteSettings.logoUrl', reader.result);
+        } finally {
+          setUploadingLogo(false);
+        }
+      };
+      reader.readAsDataURL(file);
+    } catch (err) {
+      console.error('Failed to read logo file:', err);
+      setUploadingLogo(false);
+    }
+  };
+
+  const currentLogoUrl = configData.siteSettings?.logoUrl || '/images/hair_shurokkha_logo.svg';
+
   return (
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -109,6 +143,156 @@ export default function AdminSettings() {
       )}
 
       <form onSubmit={handleSave} className="space-y-6">
+        {/* Website Branding & Logo Settings */}
+        <div className="bg-white rounded-3xl border border-brand-border p-6 sm:p-8 shadow-xs space-y-5">
+          <div className="flex items-center gap-2 border-b border-gray-100 pb-3">
+            <Image className="w-4 h-4 text-brand-accent" />
+            <h3 className="font-bold text-sm text-brand-dark uppercase tracking-wider">
+              Website Branding & Logo Settings
+            </h3>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Left Column: Brand Inputs & Uploader */}
+            <div className="space-y-4 text-xs">
+              <div>
+                <label className="block font-bold uppercase tracking-wider text-brand-dark mb-1">
+                  Store / Website Name *
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={configData.siteSettings?.siteName || ''}
+                  onChange={(e) => updateNested('siteSettings.siteName', e.target.value)}
+                  placeholder="Hair Shurokkha Bangladesh"
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 font-semibold text-gray-900"
+                />
+              </div>
+
+              <div>
+                <label className="block font-bold uppercase tracking-wider text-brand-dark mb-1">
+                  Header Logo Text (Fallback)
+                </label>
+                <input
+                  type="text"
+                  value={configData.siteSettings?.logoText || ''}
+                  onChange={(e) => updateNested('siteSettings.logoText', e.target.value)}
+                  placeholder="Hair Shurokkha"
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 font-semibold text-gray-900"
+                />
+                <p className="text-[11px] text-brand-muted mt-1">Displayed when image logo is not configured</p>
+              </div>
+
+              <div>
+                <label className="block font-bold uppercase tracking-wider text-brand-dark mb-1">
+                  Logo Image URL (SVG, PNG, JPG, or WebP)
+                </label>
+                <input
+                  type="text"
+                  value={configData.siteSettings?.logoUrl || ''}
+                  onChange={(e) => updateNested('siteSettings.logoUrl', e.target.value)}
+                  placeholder="/images/hair_shurokkha_logo.svg"
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 font-mono text-[11px] text-gray-900"
+                />
+                <p className="text-[11px] text-brand-muted mt-1">
+                  Path or CDN link (e.g. <code className="bg-gray-100 px-1 py-0.5 rounded">/images/hair_shurokkha_logo.svg</code>)
+                </p>
+              </div>
+
+              {/* Upload Button & Action Chips */}
+              <div className="space-y-2 pt-1">
+                <label className="block font-bold uppercase tracking-wider text-brand-dark">
+                  Upload Logo File (SVG / PNG / JPG)
+                </label>
+                <div className="flex flex-wrap items-center gap-2">
+                  <label className="cursor-pointer inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-brand-dark hover:bg-brand-navy text-white font-bold text-xs shadow-xs transition-colors">
+                    <Upload className="w-3.5 h-3.5" />
+                    <span>{uploadingLogo ? 'Uploading...' : 'Choose File to Upload'}</span>
+                    <input
+                      type="file"
+                      accept=".svg,image/svg+xml,image/png,image/jpeg,image/webp"
+                      onChange={handleLogoUpload}
+                      disabled={uploadingLogo}
+                      className="hidden"
+                    />
+                  </label>
+
+                  <button
+                    type="button"
+                    onClick={() => updateNested('siteSettings.logoUrl', '/images/hair_shurokkha_logo.svg')}
+                    className="px-3 py-2 rounded-xl border border-gray-200 hover:border-brand-dark text-gray-700 hover:text-brand-dark font-medium text-xs transition-colors"
+                  >
+                    Reset to Hair Shurokkha SVG
+                  </button>
+
+                  {configData.siteSettings?.logoUrl && (
+                    <button
+                      type="button"
+                      onClick={() => updateNested('siteSettings.logoUrl', '')}
+                      className="px-3 py-2 rounded-xl border border-red-200 text-red-600 hover:bg-red-50 font-medium text-xs flex items-center gap-1 transition-colors"
+                    >
+                      <Trash2 className="w-3 h-3" />
+                      <span>Use Text Only</span>
+                    </button>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* Right Column: Live Dual Logo Preview */}
+            <div className="space-y-3">
+              <div className="flex items-center gap-1.5 text-xs font-bold text-brand-dark uppercase tracking-wider">
+                <Eye className="w-3.5 h-3.5 text-brand-muted" />
+                <span>Live Logo Preview</span>
+              </div>
+
+              {/* Preview on Light Navbar Background (#F8FAFD) */}
+              <div className="p-4 rounded-2xl border border-gray-200 bg-[#F8FAFD] space-y-1.5">
+                <div className="flex items-center justify-between text-[11px] font-bold text-gray-500 uppercase tracking-wider">
+                  <span>Storefront Header View (#F8FAFD)</span>
+                  <span className="text-[10px] bg-white px-2 py-0.5 rounded border border-gray-200 text-gray-600 font-mono">Navbar</span>
+                </div>
+                <div className="h-16 flex items-center justify-center p-2 border border-dashed border-gray-300 rounded-xl bg-white/60">
+                  {currentLogoUrl ? (
+                    <img
+                      src={currentLogoUrl}
+                      alt="Logo Preview"
+                      className="max-h-12 max-w-[200px] w-auto object-contain"
+                    />
+                  ) : (
+                    <span className="text-xl font-black text-brand-dark">
+                      {configData.siteSettings?.logoText || 'Hair Shurokkha'}
+                    </span>
+                  )}
+                </div>
+              </div>
+
+              {/* Preview on Dark Footer Background (#0F172A) */}
+              <div className="p-4 rounded-2xl border border-brand-navy bg-[#0F172A] text-white space-y-1.5">
+                <div className="flex items-center justify-between text-[11px] font-bold text-gray-400 uppercase tracking-wider">
+                  <span>Footer View (#0F172A)</span>
+                  <span className="text-[10px] bg-white/10 px-2 py-0.5 rounded border border-white/10 text-gray-300 font-mono">Footer</span>
+                </div>
+                <div className="h-16 flex items-center justify-center p-2 border border-dashed border-white/20 rounded-xl bg-white/5">
+                  {currentLogoUrl ? (
+                    <div className="bg-white/95 p-1 rounded-lg inline-block">
+                      <img
+                        src={currentLogoUrl}
+                        alt="Logo Preview Footer"
+                        className="max-h-10 max-w-[180px] w-auto object-contain"
+                      />
+                    </div>
+                  ) : (
+                    <span className="text-lg font-black text-white uppercase tracking-wider">
+                      {configData.siteSettings?.logoText || 'Hair Shurokkha'}
+                    </span>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         {/* Delivery Settings */}
         <div className="bg-white rounded-3xl border border-brand-border p-6 sm:p-8 shadow-xs space-y-4">
           <div className="flex items-center gap-2 border-b border-gray-100 pb-3">

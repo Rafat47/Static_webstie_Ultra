@@ -11,7 +11,7 @@ export default function HeroSection() {
   const mobileImg = hero.mobileImage || hero.heroMobileImage || desktopImg;
 
   return (
-    <section className="bg-white py-2 sm:py-4 w-full overflow-hidden" id="hero">
+    <section className="bg-[#F8FAFD] py-2 sm:py-4 w-full overflow-hidden" id="hero">
       <div className="max-w-[1536px] w-full mx-auto px-3 sm:px-6">
         {/* Main Banner Container - Pure Visual Photography Banner */}
         <div className="relative w-full rounded-xl overflow-hidden border border-gray-200 bg-gray-50 aspect-[16/9] sm:aspect-[21/9] min-h-[220px] sm:min-h-[380px] lg:min-h-[460px] shadow-xs">
@@ -35,7 +35,7 @@ export default function HeroSection() {
           <div className="absolute bottom-4 left-4 sm:bottom-8 sm:left-8 z-10">
             <Link
               to={hero.primaryBtnLink || '/shop'}
-              className="px-7 py-3.5 sm:px-9 sm:py-4 rounded-lg bg-white hover:bg-gray-100 text-black font-black text-xs sm:text-sm uppercase tracking-wider shadow-lg hover:shadow-xl transition-all flex items-center gap-2.5 border border-black/10"
+              className="px-7 py-3.5 sm:px-9 sm:py-4 rounded-lg bg-brand-dark hover:bg-brand-navy text-white font-black text-xs sm:text-sm uppercase tracking-wider shadow-lg hover:shadow-xl transition-all flex items-center gap-2.5 border border-white/20"
             >
               <span>{hero.primaryBtnText || 'Shop Now'}</span>
               <ArrowRight className="w-4 h-4 stroke-[2.5]" />

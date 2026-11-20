@@ -11,7 +11,7 @@ export default function ProgressTimelineSection() {
   const stages = sectionData.stages || [];
 
   return (
-    <section className="py-10 sm:py-16 bg-white border-b border-gray-100" id="progress">
+    <section className="py-10 sm:py-16 bg-[#F8FAFD] border-b border-gray-100" id="progress">
       <div className="max-w-[1536px] mx-auto px-3 sm:px-6">
         
         {/* Section Header */}
@@ -38,7 +38,7 @@ export default function ProgressTimelineSection() {
           {stages.map((stage, idx) => (
             <div
               key={idx}
-              className="bg-white rounded-lg border border-gray-200 overflow-hidden shadow-2xs hover:border-black transition-all flex flex-col justify-between group"
+              className="bg-white rounded-lg border border-gray-200 overflow-hidden shadow-2xs hover:border-brand-dark transition-all flex flex-col justify-between group"
             >
               {/* Image Preview */}
               <div className="relative aspect-4/3 overflow-hidden bg-gray-50 border-b border-gray-100">
@@ -48,7 +48,7 @@ export default function ProgressTimelineSection() {
                   loading="lazy"
                   className="w-full h-full object-cover group-hover:scale-103 transition-transform duration-300"
                 />
-                <div className="absolute top-2.5 left-2.5 bg-black text-white text-[11px] font-bold px-2 py-0.5 rounded shadow-xs">
+                <div className="absolute top-2.5 left-2.5 bg-brand-dark text-white text-[11px] font-bold px-2 py-0.5 rounded shadow-xs">
                   {stage.period || stage.stage}
                 </div>
               </div>

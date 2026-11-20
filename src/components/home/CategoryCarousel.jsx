@@ -66,7 +66,7 @@ export default function CategoryCarousel({ categories = [] }) {
   };
 
   return (
-    <section className="bg-white py-3 sm:py-5 border-b border-gray-100" id="categories-carousel">
+    <section className="bg-[#F8FAFD] py-3 sm:py-5 border-b border-gray-100" id="categories-carousel">
       <div className="max-w-[1536px] mx-auto px-3 sm:px-6">
 
         {/* =========================================================================
@@ -82,7 +82,7 @@ export default function CategoryCarousel({ categories = [] }) {
             <button
               onClick={() => scroll('left')}
               aria-label="Scroll left"
-              className="absolute -left-2 lg:-left-3 top-1/2 -translate-y-1/2 z-20 w-9 h-9 lg:w-10 lg:h-10 rounded-full bg-white/95 hover:bg-black text-gray-800 hover:text-white border border-gray-200 shadow-md flex items-center justify-center transition-all hover:scale-105"
+              className="absolute -left-2 lg:-left-3 top-1/2 -translate-y-1/2 z-20 w-9 h-9 lg:w-10 lg:h-10 rounded-full bg-white/95 hover:bg-brand-dark text-gray-800 hover:text-white border border-gray-200 shadow-md flex items-center justify-center transition-all hover:scale-105"
             >
               <ChevronLeft className="w-5 h-5" />
             </button>
@@ -106,7 +106,7 @@ export default function CategoryCarousel({ categories = [] }) {
                 className="w-72 lg:w-80 flex-shrink-0 group/card cursor-pointer transition-all duration-200"
               >
                 {/* Pure Rectangular Image Box - 100% Image Filled, Zero Text Inside */}
-                <div className="w-full h-44 lg:h-48 rounded-xl overflow-hidden border border-gray-200 group-hover/card:border-black transition-all shadow-2xs group-hover/card:shadow-subtle bg-gray-50">
+                <div className="w-full h-44 lg:h-48 rounded-xl overflow-hidden border border-gray-200 group-hover/card:border-brand-dark transition-all shadow-2xs group-hover/card:shadow-subtle bg-gray-50">
                   <img
                     src={cat.image || 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=500&auto=format&fit=crop&q=80'}
                     alt={cat.name}
@@ -116,7 +116,7 @@ export default function CategoryCarousel({ categories = [] }) {
                 </div>
                 {/* Category Name Cleanly Below the Box */}
                 <div className="mt-2.5 text-center">
-                  <h3 className="text-xs sm:text-sm font-bold text-gray-800 group-hover/card:text-black line-clamp-1 uppercase tracking-wide">
+                  <h3 className="text-xs sm:text-sm font-bold text-gray-800 group-hover/card:text-brand-dark line-clamp-1 uppercase tracking-wide">
                     {cat.name}
                   </h3>
                 </div>
@@ -129,7 +129,7 @@ export default function CategoryCarousel({ categories = [] }) {
             <button
               onClick={() => scroll('right')}
               aria-label="Scroll right"
-              className="absolute -right-2 lg:-right-3 top-1/2 -translate-y-1/2 z-20 w-9 h-9 lg:w-10 lg:h-10 rounded-full bg-white/95 hover:bg-black text-gray-800 hover:text-white border border-gray-200 shadow-md flex items-center justify-center transition-all hover:scale-105"
+              className="absolute -right-2 lg:-right-3 top-1/2 -translate-y-1/2 z-20 w-9 h-9 lg:w-10 lg:h-10 rounded-full bg-white/95 hover:bg-brand-dark text-gray-800 hover:text-white border border-gray-200 shadow-md flex items-center justify-center transition-all hover:scale-105"
             >
               <ChevronRight className="w-5 h-5" />
             </button>
@@ -152,7 +152,7 @@ export default function CategoryCarousel({ categories = [] }) {
                   onClick={() => handleCategoryClick(cat.slug)}
                   className="w-full flex flex-col group cursor-pointer transition-all"
                 >
-                  <div className="w-full h-32 rounded-lg overflow-hidden border border-gray-200 active:border-black bg-gray-50 shadow-2xs">
+                  <div className="w-full h-32 rounded-lg overflow-hidden border border-gray-200 active:border-brand-dark bg-gray-50 shadow-2xs">
                     <img
                       src={cat.image || 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=350&auto=format&fit=crop&q=80'}
                       alt={cat.name}
@@ -180,7 +180,7 @@ export default function CategoryCarousel({ categories = [] }) {
                   onClick={() => handleCategoryClick(cat.slug)}
                   className="flex flex-col group cursor-pointer transition-all"
                 >
-                  <div className="w-full h-28 rounded-lg overflow-hidden border border-gray-200 active:border-black bg-gray-50 shadow-2xs">
+                  <div className="w-full h-28 rounded-lg overflow-hidden border border-gray-200 active:border-brand-dark bg-gray-50 shadow-2xs">
                     <img
                       src={cat.image || 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=350&auto=format&fit=crop&q=80'}
                       alt={cat.name}

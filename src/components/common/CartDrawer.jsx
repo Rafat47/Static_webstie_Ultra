@@ -63,7 +63,7 @@ export default function CartDrawer() {
                     setIsCartOpen(false);
                     navigate('/shop');
                   }}
-                  className="mt-2 px-5 py-2.5 sm:px-6 sm:py-3 bg-brand-dark hover:bg-black text-white text-xs font-black uppercase tracking-wider transition-colors"
+                  className="mt-2 px-5 py-2.5 sm:px-6 sm:py-3 bg-brand-dark hover:bg-brand-navy text-white text-xs font-black uppercase tracking-wider transition-colors"
                 >
                   Browse Products
                 </button>
@@ -154,7 +154,7 @@ export default function CartDrawer() {
 
               <button
                 onClick={handleCheckout}
-                className="w-full py-2.5 sm:py-3.5 px-4 bg-brand-dark hover:bg-black text-white font-black text-xs uppercase tracking-wider flex items-center justify-center space-x-2 transition-colors"
+                className="w-full py-2.5 sm:py-3.5 px-4 bg-brand-dark hover:bg-brand-navy text-white font-black text-xs uppercase tracking-wider flex items-center justify-center space-x-2 transition-colors shadow-xs"
               >
                 <span>Proceed to Checkout</span>
                 <ArrowRight className="w-4 h-4" />

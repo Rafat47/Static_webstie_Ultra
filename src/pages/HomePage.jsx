@@ -50,7 +50,7 @@ export default function HomePage() {
   const seo = config?.seo || {};
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-brand-light">
       <SEOHead
         title={seo.metaTitle || 'Regrow Hair Care — Premium Minoxidil & Scalp Wellness Bangladesh'}
         description={seo.metaDescription || 'Authentic topical Minoxidil 5%, Titanium Derma Rollers, and targeted scalp care routines in Bangladesh. Cash on Delivery nationwide.'}

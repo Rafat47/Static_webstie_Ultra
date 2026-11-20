@@ -110,7 +110,7 @@ export default function ProductDetailPage() {
           </p>
           <Link
             to="/shop"
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded bg-black text-white text-xs font-bold uppercase tracking-wider"
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded bg-brand-dark hover:bg-brand-navy text-white text-xs font-bold uppercase tracking-wider transition-colors shadow-xs"
           >
             <span>Return to Shop</span>
             <ArrowRight className="w-3.5 h-3.5" />
@@ -195,7 +195,7 @@ export default function ProductDetailPage() {
                     onClick={() => setSelectedImageIndex(idx)}
                     className={`relative w-12 h-12 sm:w-18 sm:h-18 rounded-lg overflow-hidden border-2 flex-shrink-0 transition-all ${
                       selectedImageIndex === idx
-                        ? 'border-black shadow-xs'
+                        ? 'border-brand-dark shadow-xs'
                         : 'border-gray-200 hover:border-gray-400 opacity-70 hover:opacity-100'
                     }`}
                   >
@@ -288,17 +288,17 @@ export default function ProductDetailPage() {
                 <button
                   onClick={handleAddToCart}
                   disabled={isOutOfStock}
-                  className="flex-1 py-3 px-5 rounded-lg border-2 border-black bg-white hover:bg-gray-50 text-black font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-colors disabled:opacity-40"
+                  className="flex-1 py-3 px-5 rounded-lg border-2 border-brand-dark bg-white hover:bg-slate-50 text-brand-dark font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-colors disabled:opacity-40"
                 >
                   <ShoppingBag className="w-4 h-4" />
                   <span>Add to Cart</span>
                 </button>
 
-                {/* Buy Now (Solid Black) */}
+                {/* Buy Now (Solid Dark Navy) */}
                 <button
                   onClick={handleBuyNow}
                   disabled={isOutOfStock}
-                  className="flex-1 py-3 px-5 rounded-lg bg-black hover:bg-gray-800 text-white font-extrabold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-xs transition-colors disabled:opacity-40"
+                  className="flex-1 py-3 px-5 rounded-lg bg-brand-dark hover:bg-brand-navy text-white font-extrabold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-xs transition-colors disabled:opacity-40"
                 >
                   <span>Buy Now</span>
                   <ArrowRight className="w-4 h-4" />
@@ -308,7 +308,7 @@ export default function ProductDetailPage() {
                 <button
                   onClick={() => setIsWishlisted(!isWishlisted)}
                   title="Save to Wishlist"
-                  className="p-3 rounded-lg border border-gray-300 hover:border-black text-gray-700 hover:text-black transition-colors"
+                  className="p-3 rounded-lg border border-gray-300 hover:border-brand-dark text-gray-700 hover:text-brand-dark transition-colors"
                 >
                   <Heart className={`w-4 h-4 ${isWishlisted ? 'fill-red-500 text-red-500' : ''}`} />
                 </button>
@@ -317,7 +317,7 @@ export default function ProductDetailPage() {
                 <button
                   onClick={handleShare}
                   title="Share Product"
-                  className="p-3 rounded-lg border border-gray-300 hover:border-black text-gray-700 hover:text-black transition-colors"
+                  className="p-3 rounded-lg border border-gray-300 hover:border-brand-dark text-gray-700 hover:text-brand-dark transition-colors"
                 >
                   {copiedLink ? <Check className="w-4 h-4 text-emerald-600" /> : <Share2 className="w-4 h-4" />}
                 </button>

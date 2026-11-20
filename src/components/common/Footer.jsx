@@ -72,9 +72,19 @@ export default function Footer() {
           {/* Brand Info */}
           <div className="space-y-4">
             <div className="flex items-center space-x-2">
-              <span className="font-black text-xl tracking-wider text-white uppercase">
-                {siteSettings.logoText || 'REGROW'}
-              </span>
+              {(siteSettings.logoUrl || '/images/hair_shurokkha_logo.svg') ? (
+                <div className="bg-white/95 p-1.5 rounded-lg inline-block shadow-xs">
+                  <img
+                    src={siteSettings.logoUrl || '/images/hair_shurokkha_logo.svg'}
+                    alt={siteSettings.siteName || siteSettings.logoText || "Hair Shurokkha"}
+                    className="h-9 sm:h-11 w-auto max-w-[160px] sm:max-w-[200px] object-contain"
+                  />
+                </div>
+              ) : (
+                <span className="font-black text-xl tracking-wider text-white uppercase">
+                  {siteSettings.logoText || 'Hair Shurokkha'}
+                </span>
+              )}
             </div>
             <p className="text-xs text-gray-400 leading-relaxed">
               {footerData.aboutText || 'Science-backed topical Minoxidil 5% solutions and titanium micro-needling systems for men & women experiencing hair thinning.'}

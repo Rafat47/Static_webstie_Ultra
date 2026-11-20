@@ -12,7 +12,7 @@ export default function HowMinoxidilWorksSection() {
   const mobileImg = sectionData.mobileImage || desktopImg;
 
   return (
-    <section className="py-10 sm:py-16 bg-white border-b border-gray-100" id="how-it-works">
+    <section className="py-10 sm:py-16 bg-[#F8FAFD] border-b border-gray-100" id="how-it-works">
       <div className="max-w-[1536px] mx-auto px-3 sm:px-6">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-12 items-center">
           
@@ -35,7 +35,7 @@ export default function HowMinoxidilWorksSection() {
               {points.map((pt, idx) => (
                 <div
                   key={idx}
-                  className="p-4 rounded-lg bg-white border border-gray-200 hover:border-black transition-colors flex gap-3.5 items-start shadow-2xs"
+                  className="p-4 rounded-lg bg-white border border-gray-200 hover:border-brand-dark transition-colors flex gap-3.5 items-start shadow-2xs"
                 >
                   <div className="w-8 h-8 rounded bg-gray-100 text-gray-900 text-xs font-bold font-mono flex items-center justify-center flex-shrink-0">
                     0{idx + 1}

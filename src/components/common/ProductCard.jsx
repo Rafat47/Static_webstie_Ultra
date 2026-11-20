@@ -40,7 +40,7 @@ export default function ProductCard({ product }) {
   };
 
   return (
-    <div className="group relative bg-white rounded-lg border border-gray-200 hover:border-black transition-all duration-200 flex flex-col h-full overflow-hidden shadow-2xs hover:shadow-subtle">
+    <div className="group relative bg-white rounded-lg border border-gray-200 hover:border-brand-dark transition-all duration-200 flex flex-col h-full overflow-hidden shadow-2xs hover:shadow-subtle">
       {/* Product Image Stage */}
       <Link to={`/product/${product.slug}`} className="relative block aspect-square bg-gray-50 overflow-hidden">
         <img
@@ -53,12 +53,12 @@ export default function ProductCard({ product }) {
         {/* Top Badges */}
         <div className="absolute top-2 left-2 flex flex-col gap-1 z-10">
           {discountPercent > 0 && (
-            <span className="bg-black text-white text-[10px] sm:text-xs font-bold px-2 py-0.5 rounded shadow-xs">
+            <span className="bg-brand-dark text-white text-[10px] sm:text-xs font-bold px-2 py-0.5 rounded shadow-xs">
               {discountPercent}% off
             </span>
           )}
           {product.badge && (
-            <span className="bg-gray-800 text-white text-[9px] font-semibold px-1.5 py-0.5 rounded">
+            <span className="bg-brand-navy text-white text-[9px] font-semibold px-1.5 py-0.5 rounded">
               {product.badge}
             </span>
           )}
@@ -76,7 +76,7 @@ export default function ProductCard({ product }) {
         {/* Out of stock overlay */}
         {isOutOfStock && (
           <div className="absolute inset-0 bg-white/80 backdrop-blur-xs flex items-center justify-center">
-            <span className="bg-black text-white font-bold text-[10px] uppercase px-2.5 py-1 rounded">
+            <span className="bg-brand-dark text-white font-bold text-[10px] uppercase px-2.5 py-1 rounded">
               Out of Stock
             </span>
           </div>
@@ -93,7 +93,7 @@ export default function ProductCard({ product }) {
 
           {/* Product Title */}
           <Link to={`/product/${product.slug}`} className="block">
-            <h3 className="font-bold text-xs sm:text-sm text-gray-900 group-hover:text-black line-clamp-2 leading-snug">
+            <h3 className="font-bold text-xs sm:text-sm text-gray-900 group-hover:text-brand-dark line-clamp-2 leading-snug">
               {product.name}
             </h3>
           </Link>
@@ -123,7 +123,7 @@ export default function ProductCard({ product }) {
             <button
               onClick={handleAddToCart}
               disabled={isOutOfStock}
-              className="py-1.5 sm:py-2 px-2 rounded border border-gray-300 hover:border-black text-gray-900 text-[11px] sm:text-xs font-bold flex items-center justify-center gap-1 transition-colors disabled:opacity-40"
+              className="py-1.5 sm:py-2 px-2 rounded border border-gray-300 hover:border-brand-dark text-gray-900 hover:text-brand-dark hover:bg-slate-50 text-[11px] sm:text-xs font-bold flex items-center justify-center gap-1 transition-colors disabled:opacity-40"
             >
               <ShoppingBag className="w-3.5 h-3.5" />
               <span className="hidden sm:inline">Add Cart</span>
@@ -133,7 +133,7 @@ export default function ProductCard({ product }) {
             <button
               onClick={handleBuyNow}
               disabled={isOutOfStock}
-              className="py-1.5 sm:py-2 px-2 rounded bg-black hover:bg-gray-800 text-white text-[11px] sm:text-xs font-extrabold flex items-center justify-center gap-1 transition-colors disabled:opacity-40 shadow-xs"
+              className="py-1.5 sm:py-2 px-2 rounded bg-brand-dark hover:bg-brand-navy text-white text-[11px] sm:text-xs font-extrabold flex items-center justify-center gap-1 transition-colors disabled:opacity-40 shadow-xs"
             >
               <span>Buy Now</span>
               <ArrowRight className="w-3 h-3" />

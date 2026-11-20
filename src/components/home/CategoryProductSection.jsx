@@ -19,7 +19,7 @@ export default function CategoryProductSection({ category, products = [] }) {
   const anchorId = `category-${category.slug}`;
 
   return (
-    <section className="bg-white py-6 sm:py-10 border-b border-gray-100" id={anchorId}>
+    <section className="bg-[#F8FAFD] py-6 sm:py-10 border-b border-gray-100" id={anchorId}>
       <div className="max-w-[1536px] mx-auto px-3 sm:px-6">
         
         {/* Category Section Header: Name on left, Prominent "View All >" on right */}
@@ -35,7 +35,7 @@ export default function CategoryProductSection({ category, products = [] }) {
 
           <Link
             to={`/shop?category=${encodeURIComponent(category.name)}`}
-            className="text-sm sm:text-base font-extrabold text-black hover:text-gray-600 flex items-center gap-1.5 transition-colors uppercase tracking-wider group"
+            className="text-sm sm:text-base font-extrabold text-brand-dark hover:text-brand-navy flex items-center gap-1.5 transition-colors uppercase tracking-wider group"
           >
             <span>View All</span>
             <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform stroke-[2.5]" />

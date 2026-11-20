@@ -17,7 +17,7 @@ export default function HairThinningSection() {
   ];
 
   return (
-    <section className="py-10 sm:py-16 bg-white border-b border-gray-100" id="hair-thinning">
+    <section className="py-10 sm:py-16 bg-[#F8FAFD] border-b border-gray-100" id="hair-thinning">
       <div className="max-w-[1536px] mx-auto px-3 sm:px-6">
         
         {/* Section Header */}
@@ -41,7 +41,7 @@ export default function HairThinningSection() {
             return (
               <div
                 key={idx}
-                className="bg-white rounded-xl border border-gray-200 hover:border-black transition-all flex flex-col justify-between overflow-hidden shadow-2xs hover:shadow-subtle group h-full min-h-[460px] lg:min-h-[500px]"
+                className="bg-white rounded-xl border border-gray-200 hover:border-brand-dark transition-all flex flex-col justify-between overflow-hidden shadow-2xs hover:shadow-subtle group h-full min-h-[460px] lg:min-h-[500px]"
               >
                 {/* Large Prominent Visual Image Stage Header (h-56 sm:h-64) */}
                 <div className="w-full h-56 sm:h-64 overflow-hidden bg-gray-50 border-b border-gray-100 relative">
@@ -50,7 +50,7 @@ export default function HairThinningSection() {
                     alt={stage.title}
                     className="w-full h-full object-cover object-center group-hover:scale-103 transition-transform duration-300"
                   />
-                  <div className="absolute top-3 left-3 bg-black/85 backdrop-blur-xs text-white text-xs font-mono font-bold px-2.5 py-1 rounded shadow-xs">
+                  <div className="absolute top-3 left-3 bg-brand-dark/90 backdrop-blur-xs text-white text-xs font-mono font-bold px-2.5 py-1 rounded shadow-xs">
                     STAGE 0{idx + 1}
                   </div>
                   <div className="absolute top-3 right-3 bg-white/95 backdrop-blur-xs text-gray-900 text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded shadow-xs border border-gray-200">
