@@ -7,6 +7,36 @@ export function getCookie(name) {
   return match ? decodeURIComponent(match[3]) : '';
 }
 
+// Helper to safely set a first-party cookie
+export function setCookie(name, value, days = 90) {
+  if (typeof document === 'undefined' || !name || !value) return;
+  try {
+    const date = new Date();
+    date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+    const expires = '; expires=' + date.toUTCString();
+    document.cookie = `${name}=${encodeURIComponent(value)}${expires}; path=/; SameSite=Lax`;
+  } catch (e) {
+    // Non-blocking cookie set fallback
+  }
+}
+
+// Validation helpers for Meta identifiers
+export function isValidFbp(val) {
+  return typeof val === 'string' &&
+    val.startsWith('fb.') &&
+    val.split('.').length >= 3 &&
+    !val.includes('undefined') &&
+    !val.includes('null');
+}
+
+export function isValidFbc(val) {
+  return typeof val === 'string' &&
+    val.startsWith('fb.') &&
+    val.split('.').length >= 4 &&
+    !val.includes('undefined') &&
+    !val.includes('null');
+}
+
 // 1. Capture and persist UTM, fbclid, and Facebook browser/click cookies
 export function captureAttribution() {
   if (typeof window === 'undefined') return {};
@@ -22,24 +52,52 @@ export function captureAttribution() {
     keys.forEach(key => {
       const val = params.get(key);
       if (val) {
-        attributionData[key] = val;
+        attributionData[key] = val.trim();
         foundNew = true;
       }
     });
 
-    // Capture or compute Meta Click ID (_fbc)
+    // --- META CLICK ID (_fbc) CAPTURE / GENERATION ---
+    // Prefer actual _fbc cookie if available and valid
     const fbcCookie = getCookie('_fbc');
-    if (fbcCookie) {
+    const rawFbclid = params.get('fbclid');
+
+    if (isValidFbc(fbcCookie)) {
       attributionData.fbc = fbcCookie;
-    } else if (attributionData.fbclid) {
-      // Official Meta fbc format: fb.1.<creationTime>.<fbclid>
-      attributionData.fbc = `fb.1.${Date.now()}.${attributionData.fbclid}`;
+      attributionData.fbcSource = 'fbc_cookie';
+    } else if (rawFbclid && typeof rawFbclid === 'string' && rawFbclid.trim().length > 0) {
+      // Generate Meta format: fb.1.<creationTime>.<fbclid>
+      const cleanFbclid = rawFbclid.trim();
+      const creationTime = Date.now();
+      const computedFbc = `fb.1.${creationTime}.${cleanFbclid}`;
+
+      attributionData.fbc = computedFbc;
+      attributionData.fbcSource = 'fbclid_generated';
+      attributionData.fbclid = cleanFbclid;
+
+      // Set first-party cookie for 90 days as per Meta documentation
+      setCookie('_fbc', computedFbc, 90);
+    } else if (isValidFbc(existing.fbc)) {
+      // Preserve previously captured FBC from current session or storage
+      attributionData.fbc = existing.fbc;
+      attributionData.fbcSource = existing.fbcSource || 'stored_session';
+      if (!fbcCookie) {
+        setCookie('_fbc', existing.fbc, 90);
+      }
+    } else {
+      delete attributionData.fbc;
+      attributionData.fbcSource = 'none';
     }
 
-    // Capture Meta Browser ID (_fbp)
+    // --- META BROWSER ID (_fbp) CAPTURE ---
+    // Read actual _fbp cookie created by Meta Pixel. Do NOT generate fake random values.
     const fbpCookie = getCookie('_fbp');
-    if (fbpCookie) {
+    if (isValidFbp(fbpCookie)) {
       attributionData.fbp = fbpCookie;
+    } else if (isValidFbp(existing.fbp)) {
+      attributionData.fbp = existing.fbp;
+    } else {
+      delete attributionData.fbp;
     }
 
     if (foundNew || !attributionData.landingPage) {
@@ -102,13 +160,39 @@ export async function trackMetaEvent(eventName, customData = {}, userData = {}, 
   const eventId = customEventId || generateEventId(eventName.toLowerCase());
   const attribution = captureAttribution();
 
-  // Merge fbp and fbc into user data if available
+  // Validate and extract FBP (strictly unhashed, real cookie value only)
+  const effectiveFbp = (isValidFbp(userData.fbp) ? userData.fbp.trim() : null) ||
+                       (isValidFbp(attribution.fbp) ? attribution.fbp.trim() : null) ||
+                       (isValidFbp(getCookie('_fbp')) ? getCookie('_fbp').trim() : null) ||
+                       null;
+
+  // Validate and extract FBC
+  const effectiveFbc = (isValidFbc(userData.fbc) ? userData.fbc.trim() : null) ||
+                       (isValidFbc(attribution.fbc) ? attribution.fbc.trim() : null) ||
+                       (isValidFbc(getCookie('_fbc')) ? getCookie('_fbc').trim() : null) ||
+                       null;
+
+  const fbcSource = userData.fbcSource || attribution.fbcSource || (effectiveFbc ? 'fbc_cookie' : 'none');
+
+  // Build clean merged user data (omit missing fields, never send empty/null)
   const mergedUserData = {
     ...userData,
-    fbp: userData.fbp || attribution.fbp || getCookie('_fbp') || undefined,
-    fbc: userData.fbc || attribution.fbc || getCookie('_fbc') || undefined,
     clientUserAgent: navigator.userAgent
   };
+
+  if (effectiveFbp) {
+    mergedUserData.fbp = effectiveFbp;
+  } else {
+    delete mergedUserData.fbp;
+  }
+
+  if (effectiveFbc) {
+    mergedUserData.fbc = effectiveFbc;
+    mergedUserData.fbcSource = fbcSource;
+  } else {
+    delete mergedUserData.fbc;
+    delete mergedUserData.fbcSource;
+  }
 
   // A. Fire Browser Pixel
   if (window.fbq) {
@@ -202,7 +286,7 @@ export const metaEvents = {
     });
   },
 
-  initiateCheckout: (cartItems, subtotal) => {
+  initiateCheckout: (cartItems, subtotal, userData = {}) => {
     if (!cartItems || cartItems.length === 0) return;
     trackMetaEvent('InitiateCheckout', {
       content_ids: cartItems.map(item => String(item.productId || item.slug || item._id)),
@@ -210,7 +294,7 @@ export const metaEvents = {
       num_items: cartItems.reduce((acc, item) => acc + (item.quantity || 1), 0),
       value: subtotal,
       currency: 'BDT'
-    });
+    }, userData);
   },
 
   purchase: (order) => {
@@ -244,8 +328,9 @@ export const metaEvents = {
         firstName: order.customer?.fullName?.split(' ')[0],
         lastName: order.customer?.fullName?.split(' ').slice(1).join(' '),
         city: order.customer?.district,
-        fbp: attribution.fbp || getCookie('_fbp'),
-        fbc: attribution.fbc || getCookie('_fbc')
+        fbp: order.attribution?.fbp || attribution.fbp || getCookie('_fbp') || undefined,
+        fbc: order.attribution?.fbc || attribution.fbc || getCookie('_fbc') || undefined,
+        fbcSource: order.attribution?.fbcSource || attribution.fbcSource
       },
       eventId,
       true // skipServerCapi = true (server already dispatched it)

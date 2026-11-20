@@ -36,6 +36,45 @@ export function normalizePhone(rawPhone) {
   return digits;
 }
 
+// Helper to mask sensitive identifier for safe display/logs
+export function maskIdentifier(value, prefixLen = 5, suffixLen = 4) {
+  if (!value || typeof value !== 'string') return '';
+  if (value.length <= prefixLen + suffixLen) return '***';
+  return `${value.substring(0, prefixLen)}...${value.substring(value.length - suffixLen)}`;
+}
+
+// Mask IP address (e.g. 103.205.123.45 -> 103.205.***.***)
+export function maskIp(ip) {
+  if (!ip || typeof ip !== 'string') return '';
+  if (ip.includes('.')) {
+    const parts = ip.split('.');
+    if (parts.length === 4) return `${parts[0]}.${parts[1]}.***.***`;
+  }
+  if (ip.includes(':')) {
+    return `${ip.split(':')[0]}:***:***`;
+  }
+  return '***';
+}
+
+// Robust visitor IP extractor for Netlify Functions, reverse proxies, and local connections
+export function extractClientIp(req) {
+  if (!req) return '';
+  const headerIp =
+    req.headers?.['x-nf-client-connection-ip'] || // Official Netlify direct visitor IP
+    (req.headers?.['x-forwarded-for'] ? req.headers['x-forwarded-for'].split(',')[0].trim() : null) ||
+    req.headers?.['client-ip'] ||
+    req.headers?.['x-real-ip'] ||
+    req.ip ||
+    req.socket?.remoteAddress ||
+    '';
+
+  const trimmed = typeof headerIp === 'string' ? headerIp.trim() : '';
+  if (trimmed === '::1' || trimmed === '127.0.0.1' || trimmed === 'localhost') {
+    return '';
+  }
+  return trimmed;
+}
+
 // Sanitize user data to ensure only hashed/standard fields are stored in logs
 export function sanitizeUserDataForLog(userData = {}) {
   const sanitized = {};
@@ -44,7 +83,10 @@ export function sanitizeUserDataForLog(userData = {}) {
   if (userData.fn) sanitized.fn = userData.fn; // already hashed array
   if (userData.ln) sanitized.ln = userData.ln; // already hashed array
   if (userData.ct) sanitized.ct = userData.ct; // already hashed array
+  if (userData.st) sanitized.st = userData.st; // already hashed array
+  if (userData.zp) sanitized.zp = userData.zp; // already hashed array
   if (userData.country) sanitized.country = userData.country; // already hashed array
+  if (userData.external_id) sanitized.external_id = userData.external_id; // already hashed array
   if (userData.fbp) sanitized.fbp = userData.fbp;
   if (userData.fbc) sanitized.fbc = userData.fbc;
   if (userData.client_ip_address) sanitized.client_ip_address = userData.client_ip_address;
@@ -129,6 +171,12 @@ export async function sendMetaCapiEvent({
   if (userData.city) {
     normalizedUserData.ct = [hashValue(userData.city)];
   }
+  if (userData.state) {
+    normalizedUserData.st = [hashValue(userData.state)];
+  }
+  if (userData.zip) {
+    normalizedUserData.zp = [hashValue(userData.zip)];
+  }
   // Default country to Bangladesh if phone is BD or city is provided
   if (userData.country) {
     normalizedUserData.country = [hashValue(userData.country)];
@@ -136,23 +184,84 @@ export async function sendMetaCapiEvent({
     normalizedUserData.country = [hashValue('bd')];
   }
 
-  // Unhashed client identifiers
-  const clientIp = userData.clientIpAddress || (req && (req.headers['x-forwarded-for'] ? req.headers['x-forwarded-for'].split(',')[0].trim() : req.socket?.remoteAddress));
-  if (clientIp && clientIp !== '::1' && clientIp !== '127.0.0.1') {
+  // Stable external_id if available (hashed as required by Meta)
+  if (userData.externalId || userData.external_id) {
+    const rawExternalId = String(userData.externalId || userData.external_id).trim();
+    if (rawExternalId) {
+      normalizedUserData.external_id = [hashValue(rawExternalId)];
+    }
+  }
+
+  // Unhashed client IP address (exclude loopbacks and internal local dev IPs)
+  const clientIp = (userData.clientIpAddress && userData.clientIpAddress !== '::1' && userData.clientIpAddress !== '127.0.0.1' && userData.clientIpAddress !== 'localhost')
+    ? userData.clientIpAddress.trim()
+    : extractClientIp(req);
+  if (clientIp) {
     normalizedUserData.client_ip_address = clientIp;
   }
 
-  const clientUserAgent = userData.clientUserAgent || (req && req.headers['user-agent']);
-  if (clientUserAgent) {
-    normalizedUserData.client_user_agent = clientUserAgent;
+  // Unhashed client User-Agent
+  const clientUserAgent = userData.clientUserAgent || (req && req.headers?.['user-agent']);
+  if (clientUserAgent && typeof clientUserAgent === 'string' && clientUserAgent.trim().length > 0) {
+    normalizedUserData.client_user_agent = clientUserAgent.trim();
   }
 
-  if (userData.fbp) {
-    normalizedUserData.fbp = userData.fbp;
+  // FBP: Validate and include ONLY if valid string starting with 'fb.', otherwise omit
+  if (userData.fbp && typeof userData.fbp === 'string') {
+    const trimmedFbp = userData.fbp.trim();
+    if (trimmedFbp.startsWith('fb.') && trimmedFbp.length > 5) {
+      normalizedUserData.fbp = trimmedFbp;
+    }
   }
-  if (userData.fbc) {
-    normalizedUserData.fbc = userData.fbc;
+
+  // FBC: Validate and include ONLY if valid string starting with 'fb.', otherwise omit
+  if (userData.fbc && typeof userData.fbc === 'string') {
+    const trimmedFbc = userData.fbc.trim();
+    if (trimmedFbc.startsWith('fb.') && trimmedFbc.length > 10) {
+      normalizedUserData.fbc = trimmedFbc;
+    }
   }
+
+  // Matching Diagnostics for Verification & Audit
+  const hasFbp = Boolean(normalizedUserData.fbp);
+  const hasFbc = Boolean(normalizedUserData.fbc);
+  const fbcSource = userData.fbcSource || (hasFbc ? 'fbc_cookie' : 'none');
+  const hasIp = Boolean(normalizedUserData.client_ip_address);
+  const hasUserAgent = Boolean(normalizedUserData.client_user_agent);
+  const hasPhone = Boolean(normalizedUserData.ph);
+  const hasEmail = Boolean(normalizedUserData.em);
+  const hasCity = Boolean(normalizedUserData.ct);
+  const hasCountry = Boolean(normalizedUserData.country);
+  const hasExternalId = Boolean(normalizedUserData.external_id);
+
+  const presentParameters = [];
+  if (hasFbp) presentParameters.push('fbp');
+  if (hasFbc) presentParameters.push('fbc');
+  if (hasIp) presentParameters.push('client_ip_address');
+  if (hasUserAgent) presentParameters.push('client_user_agent');
+  if (hasPhone) presentParameters.push('ph');
+  if (hasEmail) presentParameters.push('em');
+  if (hasCity) presentParameters.push('ct');
+  if (hasCountry) presentParameters.push('country');
+  if (hasExternalId) presentParameters.push('external_id');
+
+  const standardParameters = ['fbp', 'fbc', 'client_ip_address', 'client_user_agent', 'ph', 'em', 'ct', 'country'];
+  const missingParameters = standardParameters.filter(p => !presentParameters.includes(p));
+
+  const matchingDiagnostics = {
+    hasFbp,
+    hasFbc,
+    fbcSource,
+    hasIp,
+    hasUserAgent,
+    hasPhone,
+    hasEmail,
+    hasCity,
+    hasCountry,
+    hasExternalId,
+    presentParameters,
+    missingParameters
+  };
 
   // 2. Prepare Outgoing CAPI Payload
   // Clean customData non-destructively: remove nested attribution if present
@@ -212,6 +321,7 @@ export async function sendMetaCapiEvent({
         eventSource,
         eventSourceUrl: eventSourceUrl || '',
         status: 'pending',
+        matching: matchingDiagnostics,
         request: {
           endpoint: `https://graph.facebook.com/v19.0/${finalPixelId}/events`,
           method: 'POST',

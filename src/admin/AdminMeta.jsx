@@ -638,8 +638,26 @@ export default function AdminMeta() {
                   ) : (
                     logs.map((log) => (
                       <tr key={log._id} className="hover:bg-gray-50/80 transition-colors">
-                        <td className="py-3.5 px-4 font-black text-brand-dark">
-                          {log.eventName}
+                        <td className="py-3.5 px-4">
+                          <p className="font-black text-brand-dark">{log.eventName}</p>
+                          <div className="flex items-center gap-1.5 mt-0.5">
+                            <span
+                              className={`text-[9px] font-mono px-1.5 py-0.5 rounded font-bold ${
+                                log.matching?.hasFbp ? 'bg-emerald-100 text-emerald-800' : 'bg-gray-100 text-gray-400'
+                              }`}
+                              title={log.matching?.hasFbp ? 'FBP Captured' : 'FBP Not Available'}
+                            >
+                              FBP{log.matching?.hasFbp ? ' ✓' : ''}
+                            </span>
+                            <span
+                              className={`text-[9px] font-mono px-1.5 py-0.5 rounded font-bold ${
+                                log.matching?.hasFbc ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-400'
+                              }`}
+                              title={log.matching?.hasFbc ? `FBC Captured (${log.matching?.fbcSource || 'found'})` : 'FBC Not Available'}
+                            >
+                              FBC{log.matching?.hasFbc ? ' ✓' : ''}
+                            </span>
+                          </div>
                         </td>
                         <td className="py-3.5 px-4 font-mono text-[11px] text-gray-600 truncate max-w-[140px]" title={log.eventId}>
                           {log.eventId}
@@ -803,6 +821,83 @@ export default function AdminMeta() {
                   )}
                 </div>
               )}
+
+              {/* Event Match Quality & Attribution Diagnostics */}
+              <div className="bg-gray-50 border border-gray-200 rounded-2xl p-4 space-y-3">
+                <div className="flex items-center justify-between">
+                  <span className="font-bold text-gray-700 uppercase tracking-wider text-[11px] flex items-center gap-1.5">
+                    <CheckCircle className="w-3.5 h-3.5 text-brand-dark" />
+                    Event Match Quality & Attribution Diagnostics
+                  </span>
+                  <span className="text-[10px] text-gray-500 font-mono">
+                    {selectedLog.matching?.presentParameters?.length || 0} parameter(s) matched
+                  </span>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                  {/* FBP Card */}
+                  <div className="p-3 bg-white border border-gray-200 rounded-xl space-y-1">
+                    <div className="flex items-center justify-between">
+                      <span className="font-bold text-gray-700">Meta Browser ID (_fbp)</span>
+                      <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                        selectedLog.matching?.hasFbp ? 'bg-emerald-100 text-emerald-800' : 'bg-gray-100 text-gray-500'
+                      }`}>
+                        {selectedLog.matching?.hasFbp ? '✓ Captured & Sent' : '— Not Available'}
+                      </span>
+                    </div>
+                    <p className="text-[11px] font-mono text-gray-500 truncate" title={selectedLog.request?.payload?.data?.[0]?.user_data?.fbp}>
+                      {selectedLog.request?.payload?.data?.[0]?.user_data?.fbp || 'None in cookie/session'}
+                    </p>
+                  </div>
+
+                  {/* FBC Card */}
+                  <div className="p-3 bg-white border border-gray-200 rounded-xl space-y-1">
+                    <div className="flex items-center justify-between">
+                      <span className="font-bold text-gray-700">Meta Click ID (_fbc)</span>
+                      <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                        selectedLog.matching?.hasFbc ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-500'
+                      }`}>
+                        {selectedLog.matching?.hasFbc
+                          ? `✓ Captured (${selectedLog.matching.fbcSource === 'fbclid_generated' ? 'fbclid generated' : selectedLog.matching.fbcSource === 'stored_session' ? 'stored session' : '_fbc cookie'})`
+                          : '— Not Available'}
+                      </span>
+                    </div>
+                    <p className="text-[11px] font-mono text-gray-500 truncate" title={selectedLog.request?.payload?.data?.[0]?.user_data?.fbc}>
+                      {selectedLog.request?.payload?.data?.[0]?.user_data?.fbc || 'No ad click in session'}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Additional Identifiers */}
+                <div className="flex flex-wrap items-center gap-1.5 pt-1">
+                  <span className="text-[10px] uppercase font-bold text-gray-400 mr-1">Other Identifiers:</span>
+                  <span className={`px-2 py-0.5 rounded text-[10px] font-mono font-medium ${
+                    selectedLog.matching?.hasIp ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-gray-100 text-gray-400'
+                  }`}>
+                    IP Address {selectedLog.matching?.hasIp ? '✓' : '✗'}
+                  </span>
+                  <span className={`px-2 py-0.5 rounded text-[10px] font-mono font-medium ${
+                    selectedLog.matching?.hasUserAgent ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-gray-100 text-gray-400'
+                  }`}>
+                    User-Agent {selectedLog.matching?.hasUserAgent ? '✓' : '✗'}
+                  </span>
+                  <span className={`px-2 py-0.5 rounded text-[10px] font-mono font-medium ${
+                    selectedLog.matching?.hasPhone ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-gray-100 text-gray-400'
+                  }`}>
+                    Phone (ph) {selectedLog.matching?.hasPhone ? '✓' : '—'}
+                  </span>
+                  <span className={`px-2 py-0.5 rounded text-[10px] font-mono font-medium ${
+                    selectedLog.matching?.hasCity ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-gray-100 text-gray-400'
+                  }`}>
+                    City (ct) {selectedLog.matching?.hasCity ? '✓' : '—'}
+                  </span>
+                  <span className={`px-2 py-0.5 rounded text-[10px] font-mono font-medium ${
+                    selectedLog.matching?.hasCountry ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-gray-100 text-gray-400'
+                  }`}>
+                    Country {selectedLog.matching?.hasCountry ? '✓' : '—'}
+                  </span>
+                </div>
+              </div>
 
               {/* Outgoing Sanitized Payload */}
               <div>

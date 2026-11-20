@@ -84,7 +84,11 @@ export default function CheckoutPage() {
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
     if (cartItems.length > 0) {
-      metaEvents.initiateCheckout(cartItems, subtotal);
+      metaEvents.initiateCheckout(cartItems, subtotal, {
+        phone: formData.phoneNumber || undefined,
+        firstName: formData.fullName ? formData.fullName.split(' ')[0] : undefined,
+        city: formData.deliveryArea === 'inside_dhaka' ? 'Dhaka' : 'Outside Dhaka'
+      });
     }
   }, []);
 

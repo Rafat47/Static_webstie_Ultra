@@ -31,6 +31,24 @@ const MetaEventLogSchema = new mongoose.Schema({
     default: 'pending',
     index: true
   },
+  matching: {
+    hasFbp: { type: Boolean, default: false },
+    hasFbc: { type: Boolean, default: false },
+    fbcSource: {
+      type: String,
+      enum: ['fbc_cookie', 'fbclid_generated', 'stored_session', 'none'],
+      default: 'none'
+    },
+    hasIp: { type: Boolean, default: false },
+    hasUserAgent: { type: Boolean, default: false },
+    hasPhone: { type: Boolean, default: false },
+    hasEmail: { type: Boolean, default: false },
+    hasCity: { type: Boolean, default: false },
+    hasCountry: { type: Boolean, default: false },
+    hasExternalId: { type: Boolean, default: false },
+    presentParameters: { type: [String], default: [] },
+    missingParameters: { type: [String], default: [] }
+  },
   request: {
     endpoint: { type: String, default: 'https://graph.facebook.com/v19.0/{pixelId}/events' },
     method: { type: String, default: 'POST' },

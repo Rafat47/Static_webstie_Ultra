@@ -19,7 +19,7 @@ import Category from './models/Category.js';
 import Order from './models/Order.js';
 import Admin from './models/Admin.js';
 import MetaEventLog from './models/MetaEventLog.js';
-import { sendMetaCapiEvent, retryMetaCapiEvent } from './utils/metaCapi.js';
+import { sendMetaCapiEvent, retryMetaCapiEvent, extractClientIp } from './utils/metaCapi.js';
 
 dotenv.config();
 
@@ -360,6 +360,9 @@ app.post('/api/orders', async (req, res) => {
         }
       ],
       attribution: {
+        fbp: (attribution?.fbp && typeof attribution.fbp === 'string' && attribution.fbp.startsWith('fb.')) ? attribution.fbp.trim() : '',
+        fbc: (attribution?.fbc && typeof attribution.fbc === 'string' && attribution.fbc.startsWith('fb.')) ? attribution.fbc.trim() : '',
+        fbcSource: attribution?.fbcSource || (attribution?.fbc ? 'fbc_cookie' : 'none'),
         fbclid: attribution?.fbclid || '',
         utmSource: attribution?.utmSource || '',
         utmMedium: attribution?.utmMedium || '',
@@ -369,7 +372,7 @@ app.post('/api/orders', async (req, res) => {
         landingPage: attribution?.landingPage || '',
         referrer: attribution?.referrer || '',
         userAgent: req.headers['user-agent'] || '',
-        ip: req.headers['x-forwarded-for'] ? req.headers['x-forwarded-for'].split(',')[0].trim() : req.socket?.remoteAddress
+        ip: extractClientIp(req)
       },
       metaEventId: metaEventId || `order_${orderId}`
     };
@@ -402,8 +405,9 @@ app.post('/api/orders', async (req, res) => {
           city: orderPayload.customer.district,
           clientIpAddress: orderPayload.attribution.ip,
           clientUserAgent: orderPayload.attribution.userAgent,
-          fbp: attribution?.fbp || '',
-          fbc: attribution?.fbc || ''
+          fbp: orderPayload.attribution.fbp || undefined,
+          fbc: orderPayload.attribution.fbc || undefined,
+          fbcSource: orderPayload.attribution.fbcSource
         },
         customData: {
           currency: 'BDT',

@@ -52,6 +52,9 @@ const OrderSchema = new mongoose.Schema({
   statusHistory: [StatusHistorySchema],
   internalNotes: { type: String, default: "" },
   attribution: {
+    fbp: { type: String, default: "" },
+    fbc: { type: String, default: "" },
+    fbcSource: { type: String, default: "" },
     fbclid: { type: String, default: "" },
     utmSource: { type: String, default: "" },
     utmMedium: { type: String, default: "" },
