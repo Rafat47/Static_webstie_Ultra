@@ -20,7 +20,7 @@ import SEOHead from '../components/common/SEOHead';
 import ProductCard from '../components/common/ProductCard';
 import api from '../services/api';
 import { useCart } from '../context/CartContext';
-import { useConfig } from '../context/ConfigContext';
+import { useWebsiteData } from '../context/WebsiteDataContext';
 import { formatCurrency, calculateDiscount } from '../utils/formatters';
 import { metaEvents } from '../utils/metaPixel';
 
@@ -28,7 +28,7 @@ export default function ProductDetailPage() {
   const { slug } = useParams();
   const navigate = useNavigate();
   const { addToCart, buyNow } = useCart();
-  const { config } = useConfig();
+  const { config, products, getProductBySlug, loading: websiteDataLoading } = useWebsiteData();
 
   const [product, setProduct] = useState(null);
   const [relatedProducts, setRelatedProducts] = useState([]);
@@ -42,40 +42,45 @@ export default function ProductDetailPage() {
   const currency = config?.siteSettings?.currency || '৳';
 
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo(0, 0);
     setQuantity(1);
     setSelectedImageIndex(0);
-    loadProductDetail();
-  }, [slug]);
 
-  const loadProductDetail = async () => {
-    try {
+    if (websiteDataLoading) {
       setLoading(true);
-      setError(null);
-      const res = await api.getProductBySlug(slug);
-      if (res && res.success && res.data) {
-        setProduct(res.data);
-        metaEvents.viewContent(res.data);
-
-        // Fetch related products from same category
-        try {
-          const relRes = await api.getProducts({ category: res.data.category });
-          if (relRes && relRes.success && relRes.data) {
-            setRelatedProducts(relRes.data.filter(p => p.slug !== slug).slice(0, 4));
-          }
-        } catch (e) {
-          // Non-blocking
-        }
-      } else {
-        setError('Product not found');
-      }
-    } catch (err) {
-      console.error('Failed to load product detail:', err);
-      setError('Unable to load product information.');
-    } finally {
-      setLoading(false);
+      return;
     }
-  };
+
+    const found = getProductBySlug(slug);
+    if (found) {
+      setProduct(found);
+      setError(null);
+      setLoading(false);
+      metaEvents.viewContent(found);
+
+      // Related products from same category
+      if (found.category) {
+        const related = products.filter(
+          p => p.category && p.category.toLowerCase() === found.category.toLowerCase() && p.slug !== slug
+        ).slice(0, 4);
+        setRelatedProducts(related);
+      }
+    } else {
+      // Fallback query if not yet loaded in local store
+      api.getProductBySlug(slug)
+        .then(res => {
+          if (res && res.success && res.data) {
+            setProduct(res.data);
+            metaEvents.viewContent(res.data);
+            setError(null);
+          } else {
+            setError('Product not found');
+          }
+        })
+        .catch(() => setError('Unable to load product information.'))
+        .finally(() => setLoading(false));
+    }
+  }, [slug, websiteDataLoading, getProductBySlug, products]);
 
   const handleShare = () => {
     if (navigator.share) {

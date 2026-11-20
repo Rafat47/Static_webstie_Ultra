@@ -183,8 +183,103 @@ async function runTests() {
     console.log('Order Deletion Result:', deleteOrderRes.message);
     if (!deleteOrderRes.success) throw new Error('Order deletion failed');
 
+    // 14. Testing Centralized Public GET /api/website-data
+    console.log('\n--- 14. Testing Centralized GET /api/website-data (One Request / One DB Read) ---');
+    const websiteDataRaw = await fetch(`${baseUrl}/website-data`);
+    const websiteDataEtag = websiteDataRaw.headers.get('etag');
+    const websiteDataRes = await websiteDataRaw.json();
+
+    console.log('Centralized Website Data success:', websiteDataRes.success);
+    console.log('Website Data Version:', websiteDataRes.version);
+    console.log('Categories count in main doc:', websiteDataRes.data?.categories?.length);
+    console.log('Products count in main doc:', websiteDataRes.data?.products?.length);
+    console.log('Site Name:', websiteDataRes.data?.siteSettings?.siteName);
+    console.log('Hero Title:', websiteDataRes.data?.hero?.title);
+
+    if (!websiteDataRes.success || !websiteDataRes.data?.categories || !websiteDataRes.data?.products) {
+      throw new Error('Centralized website-data fetch failed');
+    }
+
+    // Verify sensitive server secrets are NEVER exposed publicly
+    if (websiteDataRes.data?.metaSettings?.capiAccessToken) {
+      throw new Error('Security violation: capiAccessToken leaked in public website-data response!');
+    }
+    console.log('🔒 Security Check Passed: Server CAPI token is masked from public response.');
+
+    // 15. Testing Conditional HTTP 304 Not Modified
+    console.log('\n--- 15. Testing Conditional Request with ETag (HTTP 304) ---');
+    const notModifiedRes = await fetch(`${baseUrl}/website-data`, {
+      headers: { 'If-None-Match': websiteDataEtag }
+    });
+    console.log('Conditional Request Status:', notModifiedRes.status);
+    if (notModifiedRes.status !== 304) {
+      throw new Error(`Expected HTTP 304 Not Modified, got ${notModifiedRes.status}`);
+    }
+    console.log('✅ HTTP 304 Not Modified verified successfully!');
+
+    // 16. Admin Website Data & Optimistic Concurrency Control
+    console.log('\n--- 16. Testing Admin GET & PUT /api/admin/website-data (Optimistic Concurrency) ---');
+    // Unauthorized attempt
+    const unauthRes = await fetch(`${baseUrl}/admin/website-data`);
+    if (unauthRes.status !== 401) {
+      throw new Error(`Expected 401 Unauthorized for public access to /api/admin/website-data, got ${unauthRes.status}`);
+    }
+    console.log('🔒 Public visitor access to /api/admin/website-data correctly denied (401).');
+
+    // Authorized GET
+    const adminWDataRes = await fetch(`${baseUrl}/admin/website-data`, {
+      headers: { 'Authorization': `Bearer ${adminToken}` }
+    }).then(r => r.json());
+    console.log('Admin website-data current version:', adminWDataRes.version);
+    const currentVersion = adminWDataRes.version;
+
+    // Successful PUT with matching version
+    const updatedHeroTitle = 'Science-Backed Scalp Restoration BD';
+    const putRes = await fetch(`${baseUrl}/admin/website-data`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${adminToken}`
+      },
+      body: JSON.stringify({
+        version: currentVersion,
+        hero: {
+          ...adminWDataRes.data.hero,
+          title: updatedHeroTitle
+        }
+      })
+    }).then(r => r.json());
+    console.log('PUT /api/admin/website-data response version:', putRes.version);
+    if (!putRes.success || putRes.version !== currentVersion + 1) {
+      throw new Error('PUT /api/admin/website-data failed to update and increment version');
+    }
+    console.log('✅ Atomic update succeeded and incremented document version.');
+
+    // Conflicting PUT with outdated version (Optimistic Concurrency Test)
+    const conflictRes = await fetch(`${baseUrl}/admin/website-data`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${adminToken}`
+      },
+      body: JSON.stringify({
+        version: currentVersion, // deliberately outdated version!
+        hero: {
+          ...adminWDataRes.data.hero,
+          title: 'Conflict Title'
+        }
+      })
+    });
+    console.log('Conflict Attempt Status:', conflictRes.status);
+    const conflictJson = await conflictRes.json();
+    console.log('Conflict Response Message:', conflictJson.message);
+    if (conflictRes.status !== 409 || !conflictJson.conflict) {
+      throw new Error('Optimistic concurrency control failed to reject outdated version!');
+    }
+    console.log('✅ Optimistic Concurrency Control successfully blocked conflicting write (409 Conflict).');
+
     console.log('\n========================================');
-    console.log('✅ ALL 13 END-TO-END TESTS PASSED CLEANLY!');
+    console.log('✅ ALL 16 END-TO-END TESTS PASSED CLEANLY!');
     console.log('========================================\n');
 
   } catch (err) {

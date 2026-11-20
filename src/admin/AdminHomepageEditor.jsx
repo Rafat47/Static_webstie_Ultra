@@ -36,7 +36,7 @@ export default function AdminHomepageEditor() {
   const loadConfig = async () => {
     try {
       setLoading(true);
-      const res = await api.getAdminSiteConfig();
+      const res = await api.getAdminWebsiteData();
       if (res && res.success && res.data) {
         setConfigData(res.data);
       }
@@ -54,9 +54,10 @@ export default function AdminHomepageEditor() {
 
     try {
       setSaving(true);
-      const res = await api.updateAdminSiteConfig(configData);
+      const res = await api.updateAdminWebsiteData(configData, configData.version);
       if (res && res.success) {
         setSaveSuccess(true);
+        if (res.data) setConfigData(res.data);
         refreshConfig(); // Refresh public store context immediately!
         setTimeout(() => setSaveSuccess(false), 4000);
       } else {

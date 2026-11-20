@@ -1,74 +1,57 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { Search, SlidersHorizontal, Package, RefreshCw, X } from 'lucide-react';
 import ProductCard from '../components/common/ProductCard';
 import SEOHead from '../components/common/SEOHead';
-import api from '../services/api';
+import { useWebsiteData } from '../context/WebsiteDataContext';
 import { metaEvents } from '../utils/metaPixel';
 
 export default function ShopPage() {
+  const { categories, products: allProducts, loading } = useWebsiteData();
   const [searchParams, setSearchParams] = useSearchParams();
   const categoryParam = searchParams.get('category') || 'All';
 
-  const [products, setProducts] = useState([]);
-  const [categories, setCategories] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState(categoryParam);
   const [searchTerm, setSearchTerm] = useState('');
   const [sortBy, setSortBy] = useState('featured');
   const [featuredOnly, setFeaturedOnly] = useState(false);
 
   useEffect(() => {
-    loadCategories();
-  }, []);
-
-  useEffect(() => {
     setSelectedCategory(categoryParam);
   }, [categoryParam]);
 
-  useEffect(() => {
-    loadProducts();
-  }, [selectedCategory, searchTerm, sortBy, featuredOnly]);
+  const products = useMemo(() => {
+    let result = [...allProducts];
 
-  const loadCategories = async () => {
-    try {
-      const res = await api.getCategories();
-      if (res && res.success && res.data) {
-        setCategories(res.data);
-      }
-    } catch (err) {
-      console.warn('Failed to load categories:', err);
+    if (selectedCategory && selectedCategory !== 'All' && selectedCategory !== 'All Products') {
+      result = result.filter(p => p.category && p.category.toLowerCase() === selectedCategory.toLowerCase());
     }
-  };
 
-  const loadProducts = async () => {
-    try {
-      setLoading(true);
-      const params = {};
-      if (selectedCategory && selectedCategory !== 'All' && selectedCategory !== 'All Products') {
-        params.category = selectedCategory;
-      }
-      if (searchTerm.trim()) {
-        params.search = searchTerm.trim();
-        metaEvents.search(searchTerm.trim());
-      }
-      if (featuredOnly) {
-        params.featured = 'true';
-      }
-      if (sortBy === 'price-low') params.sort = 'price-low';
-      if (sortBy === 'price-high') params.sort = 'price-high';
-      if (sortBy === 'newest') params.sort = 'newest';
-
-      const res = await api.getProducts(params);
-      if (res && res.success && res.data) {
-        setProducts(res.data);
-      }
-    } catch (err) {
-      console.warn('Failed to load products:', err);
-    } finally {
-      setLoading(false);
+    if (searchTerm.trim()) {
+      const q = searchTerm.trim().toLowerCase();
+      result = result.filter(p =>
+        (p.name && p.name.toLowerCase().includes(q)) ||
+        (p.title && p.title.toLowerCase().includes(q)) ||
+        (p.shortDescription && p.shortDescription.toLowerCase().includes(q))
+      );
     }
-  };
+
+    if (featuredOnly) {
+      result = result.filter(p => p.isFeatured);
+    }
+
+    if (sortBy === 'price-low') {
+      result.sort((a, b) => a.salePrice - b.salePrice);
+    } else if (sortBy === 'price-high') {
+      result.sort((a, b) => b.salePrice - a.salePrice);
+    } else if (sortBy === 'newest') {
+      result.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+    } else {
+      result.sort((a, b) => (a.carouselOrder || 0) - (b.carouselOrder || 0));
+    }
+
+    return result;
+  }, [allProducts, selectedCategory, searchTerm, featuredOnly, sortBy]);
 
   const handleCategorySelect = (categoryName) => {
     setSelectedCategory(categoryName);

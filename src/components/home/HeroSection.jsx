@@ -1,6 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { ArrowRight } from 'lucide-react';
 import { useConfig } from '../../context/ConfigContext';
 
 export default function HeroSection() {
@@ -27,20 +25,6 @@ export default function HeroSection() {
               className="w-full h-full object-cover object-center"
             />
           </picture>
-
-          {/* Subtle Bottom Vignette so the Button Pops Cleanly */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/35 via-transparent to-transparent pointer-events-none" />
-
-          {/* Prominent Bottom-Left CTA Button (15-20% Larger, Pure Minimalist Clean Style) */}
-          <div className="absolute bottom-4 left-4 sm:bottom-8 sm:left-8 z-10">
-            <Link
-              to={hero.primaryBtnLink || '/shop'}
-              className="px-7 py-3.5 sm:px-9 sm:py-4 rounded-lg bg-brand-dark hover:bg-brand-navy text-white font-black text-xs sm:text-sm uppercase tracking-wider shadow-lg hover:shadow-xl transition-all flex items-center gap-2.5 border border-white/20"
-            >
-              <span>{hero.primaryBtnText || 'Shop Now'}</span>
-              <ArrowRight className="w-4 h-4 stroke-[2.5]" />
-            </Link>
-          </div>
         </div>
       </div>
     </section>

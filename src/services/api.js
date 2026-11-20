@@ -75,7 +75,15 @@ export const api = {
   // Public Cache Utilities
   clearCache: clearApiCache,
 
-  // Public APIs with Caching
+  // Centralized Public Website Data API (Consolidated ONE fetch & ONE DB read)
+  getWebsiteData: async (force = false) => {
+    return getCachedOrFetch('website-data', async () => {
+      const res = await apiClient.get('/website-data');
+      return res.data;
+    }, 5 * 60 * 1000, force);
+  },
+
+  // Public APIs with Caching (Backed by centralized cache)
   getSiteConfig: async (force = false) => {
     return getCachedOrFetch('site-config', async () => {
       const res = await apiClient.get('/site-config');
@@ -132,6 +140,25 @@ export const api = {
     return res.data;
   },
 
+  // Centralized Admin Website Data (Optimistic concurrency whole-document editing)
+  getAdminWebsiteData: async () => {
+    const res = await apiClient.get('/admin/website-data');
+    return res.data;
+  },
+
+  updateAdminWebsiteData: async (websiteDataPayload, version) => {
+    const res = await apiClient.put('/admin/website-data', {
+      ...websiteDataPayload,
+      version
+    });
+    clearApiCache('website-data');
+    clearApiCache('site-config');
+    clearApiCache('categories');
+    clearApiCache('products');
+    clearApiCache('product_');
+    return res.data;
+  },
+
   // Admin Products (auto-clears cache on mutations)
   getAdminProducts: async () => {
     const res = await apiClient.get('/admin/products');
@@ -140,6 +167,7 @@ export const api = {
 
   createAdminProduct: async (productData) => {
     const res = await apiClient.post('/admin/products', productData);
+    clearApiCache('website-data');
     clearApiCache('products');
     clearApiCache('product_');
     return res.data;
@@ -147,6 +175,7 @@ export const api = {
 
   updateAdminProduct: async (id, productData) => {
     const res = await apiClient.put(`/admin/products/${id}`, productData);
+    clearApiCache('website-data');
     clearApiCache('products');
     clearApiCache('product_');
     return res.data;
@@ -154,6 +183,7 @@ export const api = {
 
   deleteAdminProduct: async (id) => {
     const res = await apiClient.delete(`/admin/products/${id}`);
+    clearApiCache('website-data');
     clearApiCache('products');
     clearApiCache('product_');
     return res.data;
@@ -167,18 +197,21 @@ export const api = {
 
   createAdminCategory: async (categoryData) => {
     const res = await apiClient.post('/admin/categories', categoryData);
+    clearApiCache('website-data');
     clearApiCache('categories');
     return res.data;
   },
 
   updateAdminCategory: async (id, categoryData) => {
     const res = await apiClient.put(`/admin/categories/${id}`, categoryData);
+    clearApiCache('website-data');
     clearApiCache('categories');
     return res.data;
   },
 
   deleteAdminCategory: async (id) => {
     const res = await apiClient.delete(`/admin/categories/${id}`);
+    clearApiCache('website-data');
     clearApiCache('categories');
     return res.data;
   },
@@ -217,6 +250,7 @@ export const api = {
 
   updateAdminSiteConfig: async (configData) => {
     const res = await apiClient.put('/admin/site-config', configData);
+    clearApiCache('website-data');
     clearApiCache('site-config');
     return res.data;
   },

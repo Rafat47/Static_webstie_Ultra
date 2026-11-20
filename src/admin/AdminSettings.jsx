@@ -19,7 +19,7 @@ export default function AdminSettings() {
   const loadSettings = async () => {
     try {
       setLoading(true);
-      const res = await api.getAdminSiteConfig();
+      const res = await api.getAdminWebsiteData();
       if (res && res.success && res.data) {
         setConfigData(res.data);
       }
@@ -37,16 +37,17 @@ export default function AdminSettings() {
 
     try {
       setSaving(true);
-      const res = await api.updateAdminSiteConfig(configData);
+      const res = await api.updateAdminWebsiteData(configData, configData.version);
       if (res && res.success) {
         setSaveSuccess(true);
+        if (res.data) setConfigData(res.data);
         refreshConfig();
         setTimeout(() => setSaveSuccess(false), 4000);
       } else {
         setSaveError(res?.message || 'Failed to save settings');
       }
     } catch (err) {
-      setSaveError(err.message || 'Error updating settings');
+      setSaveError(err.response?.data?.message || err.message);
     } finally {
       setSaving(false);
     }

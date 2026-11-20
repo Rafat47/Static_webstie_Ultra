@@ -10,9 +10,11 @@ import {
   memoryStore,
   defaultWebsiteConfig,
   defaultCategories,
-  defaultProducts
+  defaultProducts,
+  defaultWebsiteData
 } from './db.js';
 
+import WebsiteData from './models/WebsiteData.js';
 import WebsiteConfig from './models/WebsiteConfig.js';
 import Product from './models/Product.js';
 import Category from './models/Category.js';
@@ -45,6 +47,16 @@ const JWT_SECRET = process.env.JWT_SECRET || 'super_secret_haircare_jwt_key_min_
 async function getDbStatus() {
   const status = await connectToDatabase();
   return status;
+}
+
+// Helper: Sanitize public website data - ensure sensitive server credentials/tokens are never exposed
+function sanitizePublicWebsiteData(doc) {
+  if (!doc) return null;
+  const obj = doc.toObject ? doc.toObject() : JSON.parse(JSON.stringify(doc));
+  if (obj.metaSettings) {
+    delete obj.metaSettings.capiAccessToken;
+  }
+  return obj;
 }
 
 // Admin Auth Middleware
@@ -86,151 +98,169 @@ app.get('/api/health', async (req, res) => {
   });
 });
 
-// GET /api/site-config - Retrieve full website configuration for public rendering
+// GET /api/website-data - Retrieve complete consolidated public website dataset in ONE request & ONE DB read
+app.get('/api/website-data', async (req, res) => {
+  try {
+    const dbStatus = await getDbStatus();
+    let websiteData = null;
+
+    if (dbStatus.isConnected) {
+      websiteData = await WebsiteData.findById('main').lean();
+      if (!websiteData) {
+        // Auto-seed if document not yet created
+        const created = await WebsiteData.create(defaultWebsiteData);
+        websiteData = created.toObject ? created.toObject() : created;
+      }
+    } else {
+      websiteData = await memoryStore.getWebsiteData();
+    }
+
+    const version = websiteData.version || 1;
+    const updatedAtTime = new Date(websiteData.updatedAt || Date.now()).getTime();
+    const etag = `W/"${version}-${updatedAtTime}"`;
+
+    res.set({
+      'Content-Type': 'application/json',
+      'Cache-Control': 'public, max-age=60, s-maxage=120, stale-while-revalidate=300',
+      'ETag': etag
+    });
+
+    if (req.headers['if-none-match'] === etag) {
+      return res.status(304).end();
+    }
+
+    const sanitized = sanitizePublicWebsiteData(websiteData);
+    return res.json({
+      success: true,
+      version,
+      updatedAt: websiteData.updatedAt,
+      data: sanitized
+    });
+  } catch (err) {
+    console.error('Error fetching centralized website data:', err);
+    return res.json({
+      success: true,
+      version: 1,
+      data: sanitizePublicWebsiteData(defaultWebsiteData)
+    });
+  }
+});
+
+// GET /api/site-config - Retrieve full website configuration for public rendering (backed by website_data)
 app.get('/api/site-config', async (req, res) => {
   try {
     res.set('Cache-Control', 'public, max-age=60, s-maxage=120, stale-while-revalidate=300');
     const dbStatus = await getDbStatus();
+    let websiteData = null;
     if (dbStatus.isConnected) {
-      let config = await WebsiteConfig.findById('main');
-      if (!config) {
-        config = await WebsiteConfig.create({ _id: 'main', ...defaultWebsiteConfig });
+      websiteData = await WebsiteData.findById('main').lean();
+      if (!websiteData) {
+        websiteData = await WebsiteData.create(defaultWebsiteData);
       }
-      // Mask any private server tokens from public output
-      const sanitized = config.toObject ? config.toObject() : { ...config };
-      if (sanitized.metaSettings) {
-        delete sanitized.metaSettings.capiAccessToken;
-      }
-      return res.json({ success: true, data: sanitized });
     } else {
-      const config = await memoryStore.getWebsiteConfig();
-      const sanitized = { ...config };
-      if (sanitized.metaSettings) {
-        delete sanitized.metaSettings.capiAccessToken;
-      }
-      return res.json({ success: true, data: sanitized });
+      websiteData = await memoryStore.getWebsiteData();
     }
+    const sanitized = sanitizePublicWebsiteData(websiteData);
+    return res.json({ success: true, data: sanitized });
   } catch (err) {
     console.error('Error fetching site config:', err);
-    // Return default fallback config
-    return res.json({ success: true, data: defaultWebsiteConfig });
+    return res.json({ success: true, data: sanitizePublicWebsiteData(defaultWebsiteData) });
   }
 });
 
-// GET /api/categories - Retrieve active product categories
+// GET /api/categories - Retrieve active product categories (backed by website_data)
 app.get('/api/categories', async (req, res) => {
   try {
     res.set('Cache-Control', 'public, max-age=60, s-maxage=120, stale-while-revalidate=300');
     const dbStatus = await getDbStatus();
+    let categories = [];
     if (dbStatus.isConnected) {
-      let count = await Category.countDocuments();
-      if (count === 0) {
-        await Category.insertMany(defaultCategories);
-      }
-      const categories = await Category.find({ isActive: true }).sort({ displayOrder: 1 });
-      return res.json({ success: true, data: categories });
+      const doc = await WebsiteData.findById('main', { categories: 1 }).lean();
+      categories = (doc && doc.categories) || defaultWebsiteData.categories;
     } else {
-      const categories = await memoryStore.getCategories();
-      return res.json({ success: true, data: categories.filter(c => c.isActive) });
+      categories = await memoryStore.getCategories();
     }
+    const active = categories.filter(c => c.isActive !== false).sort((a, b) => (a.displayOrder || 0) - (b.displayOrder || 0));
+    return res.json({ success: true, data: active });
   } catch (err) {
     console.error('Error fetching categories:', err);
     return res.json({ success: true, data: defaultCategories });
   }
 });
 
-// GET /api/products - Retrieve products with search, category filtering & sorting
+// GET /api/products - Retrieve products with search, category filtering & sorting (backed by website_data)
 app.get('/api/products', async (req, res) => {
   try {
     res.set('Cache-Control', 'public, max-age=60, s-maxage=120, stale-while-revalidate=300');
     const { category, search, featured, sort } = req.query;
     const dbStatus = await getDbStatus();
-
-    let products = [];
+    let allProducts = [];
 
     if (dbStatus.isConnected) {
-      let count = await Product.countDocuments();
-      if (count === 0) {
-        await Product.insertMany(defaultProducts);
-      }
-
-      const query = { isActive: true };
-      if (category && category !== 'All Products' && category !== 'All') {
-        query.category = { $regex: new RegExp(`^${category}$`, 'i') };
-      }
-      if (featured === 'true') {
-        query.isFeatured = true;
-      }
-      if (search) {
-        query.$or = [
-          { name: { $regex: search, $options: 'i' } },
-          { shortDescription: { $regex: search, $options: 'i' } }
-        ];
-      }
-
-      let sortOptions = { carouselOrder: 1, createdAt: -1 };
-      if (sort === 'price-low') sortOptions = { salePrice: 1 };
-      if (sort === 'price-high') sortOptions = { salePrice: -1 };
-      if (sort === 'newest') sortOptions = { createdAt: -1 };
-
-      const rawProducts = await Product.find(query).sort(sortOptions);
-      products = rawProducts.map(p => {
-        const obj = p.toObject ? p.toObject() : { ...p };
-        if (!obj.name && obj.title) obj.name = obj.title;
-        if (!obj.slug) obj.slug = (obj.name || 'product').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
-        return obj;
-      });
+      const doc = await WebsiteData.findById('main', { products: 1 }).lean();
+      allProducts = (doc && doc.products) || defaultWebsiteData.products;
     } else {
-      products = await memoryStore.getProducts({
-        category,
-        search,
-        isFeatured: featured === 'true' ? true : undefined,
-        isActive: true
-      });
-
-      if (sort === 'price-low') products.sort((a, b) => a.salePrice - b.salePrice);
-      if (sort === 'price-high') products.sort((a, b) => b.salePrice - a.salePrice);
-      if (sort === 'newest') products.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+      allProducts = (await memoryStore.getWebsiteData())?.products || [];
     }
 
-    return res.json({ success: true, data: products, count: products.length });
+    let filtered = allProducts.filter(p => p.isActive !== false);
+
+    if (category && category !== 'All Products' && category !== 'All') {
+      filtered = filtered.filter(p => p.category && p.category.toLowerCase() === category.toLowerCase());
+    }
+    if (featured === 'true') {
+      filtered = filtered.filter(p => p.isFeatured);
+    }
+    if (search) {
+      const q = search.toLowerCase();
+      filtered = filtered.filter(p =>
+        (p.name && p.name.toLowerCase().includes(q)) ||
+        (p.title && p.title.toLowerCase().includes(q)) ||
+        (p.shortDescription && p.shortDescription.toLowerCase().includes(q))
+      );
+    }
+
+    if (sort === 'price-low') filtered.sort((a, b) => a.salePrice - b.salePrice);
+    else if (sort === 'price-high') filtered.sort((a, b) => b.salePrice - a.salePrice);
+    else if (sort === 'newest') filtered.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+    else filtered.sort((a, b) => (a.carouselOrder || 0) - (b.carouselOrder || 0));
+
+    return res.json({ success: true, data: filtered, count: filtered.length });
   } catch (err) {
     console.error('Error fetching products:', err);
     return res.json({ success: true, data: defaultProducts, count: defaultProducts.length });
   }
 });
 
-// GET /api/products/:slug - Retrieve single product details (supports Facebook Ad direct linking)
+// GET /api/products/:slug - Retrieve single product details (backed by website_data)
 app.get('/api/products/:slug', async (req, res) => {
   try {
     res.set('Cache-Control', 'public, max-age=60, s-maxage=120, stale-while-revalidate=300');
     const { slug } = req.params;
     const dbStatus = await getDbStatus();
-
-    let product = null;
+    let allProducts = [];
 
     if (dbStatus.isConnected) {
-      product = await Product.findOne({ $or: [{ slug }, { _id: slug.match(/^[0-9a-fA-F]{24}$/) ? slug : null }] });
+      const doc = await WebsiteData.findById('main', { products: 1 }).lean();
+      allProducts = (doc && doc.products) || defaultWebsiteData.products;
     } else {
-      product = await memoryStore.getProductBySlug(slug);
+      allProducts = (await memoryStore.getWebsiteData())?.products || [];
     }
+
+    const product = allProducts.find(p => p.slug === slug || String(p._id) === slug);
 
     if (!product) {
       return res.status(404).json({ success: false, message: 'Product not found' });
     }
 
-    const obj = product.toObject ? product.toObject() : { ...product };
-    if (!obj.name && obj.title) obj.name = obj.title;
-    if (!obj.slug) obj.slug = (obj.name || 'product').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
-
-    return res.json({ success: true, data: obj });
+    return res.json({ success: true, data: product });
   } catch (err) {
     console.error('Error fetching product by slug:', err);
     return res.status(500).json({ success: false, message: 'Failed to fetch product' });
   }
 });
 
-// POST /api/orders - Public Order Creation with Server-Side Price & Stock Verification
+// POST /api/orders - Public Order Creation with Server-Side Price & Stock Verification against website_data
 app.post('/api/orders', async (req, res) => {
   try {
     const { customer, items, attribution, metaEventId } = req.body;
@@ -251,48 +281,34 @@ app.post('/api/orders', async (req, res) => {
 
     const dbStatus = await getDbStatus();
 
-    // 1. Fetch current delivery fee settings from site config
-    let deliverySettings = defaultWebsiteConfig.deliverySettings;
-    let siteMeta = defaultWebsiteConfig.metaSettings;
-
+    // 1. Fetch current delivery fee settings & product stock from centralized website_data
+    let websiteData = null;
     if (dbStatus.isConnected) {
-      const cfg = await WebsiteConfig.findById('main');
-      if (cfg && cfg.deliverySettings) {
-        deliverySettings = cfg.deliverySettings;
-      }
-      if (cfg && cfg.metaSettings) {
-        siteMeta = cfg.metaSettings;
+      websiteData = await WebsiteData.findById('main');
+      if (!websiteData) {
+        websiteData = await WebsiteData.create(defaultWebsiteData);
       }
     } else {
-      const cfg = await memoryStore.getWebsiteConfig();
-      if (cfg && cfg.deliverySettings) {
-        deliverySettings = cfg.deliverySettings;
-      }
-      if (cfg && cfg.metaSettings) {
-        siteMeta = cfg.metaSettings;
-      }
+      websiteData = await memoryStore.getWebsiteData();
     }
+
+    const deliverySettings = websiteData.deliverySettings || defaultWebsiteConfig.deliverySettings;
+    const siteMeta = websiteData.metaSettings || defaultWebsiteConfig.metaSettings;
+    const availableProducts = websiteData.products || [];
 
     const deliveryFee = customer.deliveryArea === 'inside_dhaka'
       ? (deliverySettings.insideDhakaFee ?? 70)
       : (deliverySettings.outsideDhakaFee ?? 130);
 
-    // 2. Fetch official product details from DB and calculate verified subtotal
+    // 2. Fetch official product details from website_data and calculate verified subtotal
     let verifiedItems = [];
     let calculatedSubtotal = 0;
 
     for (const item of items) {
-      let productDoc = null;
-      if (dbStatus.isConnected) {
-        productDoc = await Product.findOne({
-          $or: [
-            { slug: item.slug || item.productId },
-            { _id: item.productId?.match(/^[0-9a-fA-F]{24}$/) ? item.productId : null }
-          ]
-        });
-      } else {
-        productDoc = await memoryStore.getProductBySlug(item.slug || item.productId);
-      }
+      const productDoc = availableProducts.find(p =>
+        (item.slug && p.slug === item.slug) ||
+        (item.productId && (String(p._id) === String(item.productId) || p.slug === item.productId))
+      );
 
       if (!productDoc) {
         return res.status(400).json({
@@ -319,9 +335,20 @@ app.post('/api/orders', async (req, res) => {
         itemTotal: itemTotal
       });
 
-      // Safely decrement stock if MongoDB
+      // Safely decrement stock in website_data document
       if (dbStatus.isConnected && productDoc.stock > 0) {
-        await Product.findByIdAndUpdate(productDoc._id, { $inc: { stock: -requestedQty } });
+        await WebsiteData.updateOne(
+          { _id: 'main' },
+          {
+            $inc: { 'products.$[elem].stock': -requestedQty },
+            $set: { updatedAt: new Date() }
+          },
+          {
+            arrayFilters: [{ $or: [{ 'elem._id': productDoc._id }, { 'elem.slug': productDoc.slug }] }]
+          }
+        );
+      } else if (!dbStatus.isConnected && productDoc.stock > 0) {
+        productDoc.stock -= requestedQty;
       }
     }
 
@@ -608,10 +635,11 @@ app.get('/api/admin/dashboard', requireAdmin, async (req, res) => {
 
     if (dbStatus.isConnected) {
       orders = await Order.find().sort({ createdAt: -1 });
-      products = await Product.find();
+      const wDoc = await WebsiteData.findById('main', { products: 1 }).lean();
+      products = (wDoc && wDoc.products) || [];
     } else {
       orders = await memoryStore.getOrders();
-      products = await memoryStore.getProducts();
+      products = (await memoryStore.getWebsiteData())?.products || [];
     }
 
     const totalOrders = orders.length;
@@ -665,7 +693,7 @@ app.get('/api/admin/dashboard', requireAdmin, async (req, res) => {
 });
 
 // =========================================================================
-// 3. ADMIN PRODUCT MANAGEMENT
+// 3. ADMIN PRODUCT MANAGEMENT (Backed by website_data document)
 // =========================================================================
 
 app.get('/api/admin/products', requireAdmin, async (req, res) => {
@@ -673,9 +701,11 @@ app.get('/api/admin/products', requireAdmin, async (req, res) => {
     const dbStatus = await getDbStatus();
     let products = [];
     if (dbStatus.isConnected) {
-      products = await Product.find().sort({ createdAt: -1 });
+      const wDoc = await WebsiteData.findById('main', { products: 1 }).lean();
+      products = (wDoc && wDoc.products) || [];
+      products.sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
     } else {
-      products = await memoryStore.getProducts();
+      products = (await memoryStore.getWebsiteData())?.products || [];
     }
     return res.json({ success: true, data: products });
   } catch (err) {
@@ -695,8 +725,11 @@ app.post('/api/admin/products', requireAdmin, async (req, res) => {
       ? slug.trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
       : name.trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
 
+    const newProductId = `prod_${Date.now()}`;
     const productPayload = {
+      _id: newProductId,
       name: name.trim(),
+      title: name.trim(),
       slug: generatedSlug || `product-${Date.now()}`,
       shortDescription: shortDescription || '',
       description: description || '',
@@ -711,24 +744,34 @@ app.post('/api/admin/products', requireAdmin, async (req, res) => {
       comboItems: Array.isArray(comboItems) ? comboItems : [],
       badge: badge || '',
       keyBenefits: Array.isArray(keyBenefits) ? keyBenefits : [],
-      specifications: Array.isArray(specifications) ? specifications : []
+      specifications: Array.isArray(specifications) ? specifications : [],
+      carouselOrder: 0,
+      createdAt: new Date(),
+      updatedAt: new Date()
     };
 
     const dbStatus = await getDbStatus();
-    let newProduct = null;
 
     if (dbStatus.isConnected) {
-      // Check for duplicate slug
-      const existing = await Product.findOne({ slug: productPayload.slug });
-      if (existing) {
+      // Check for duplicate slug inside website_data
+      const current = await WebsiteData.findById('main');
+      if (current && current.products?.some(p => p.slug === productPayload.slug)) {
         productPayload.slug = `${productPayload.slug}-${Date.now().toString().slice(-4)}`;
       }
-      newProduct = await Product.create(productPayload);
+      await WebsiteData.updateOne(
+        { _id: 'main' },
+        {
+          $push: { products: productPayload },
+          $inc: { version: 1 },
+          $set: { updatedAt: new Date() }
+        },
+        { upsert: true }
+      );
     } else {
-      newProduct = await memoryStore.addProduct(productPayload);
+      await memoryStore.addProduct(productPayload);
     }
 
-    return res.status(201).json({ success: true, message: 'Product created successfully', data: newProduct });
+    return res.status(201).json({ success: true, message: 'Product created successfully', data: productPayload });
   } catch (err) {
     console.error('Error creating product:', err);
     return res.status(500).json({ success: false, message: err.message });
@@ -746,19 +789,40 @@ app.put('/api/admin/products/:id', requireAdmin, async (req, res) => {
     }
 
     const dbStatus = await getDbStatus();
-    let updated = null;
 
     if (dbStatus.isConnected) {
-      updated = await Product.findByIdAndUpdate(id, updateData, { new: true });
+      const updateSet = {};
+      for (const [key, val] of Object.entries(updateData)) {
+        updateSet[`products.$[elem].${key}`] = val;
+      }
+      updateSet['products.$[elem].updatedAt'] = new Date();
+      updateSet['updatedAt'] = new Date();
+
+      const updated = await WebsiteData.findOneAndUpdate(
+        { _id: 'main' },
+        {
+          $set: updateSet,
+          $inc: { version: 1 }
+        },
+        {
+          arrayFilters: [{ $or: [{ 'elem._id': id }, { 'elem.slug': id }] }],
+          returnDocument: 'after'
+        }
+      );
+
+      if (!updated) {
+        return res.status(404).json({ success: false, message: 'Product not found' });
+      }
+
+      const product = updated.products?.find(p => p._id === id || p.slug === id);
+      return res.json({ success: true, message: 'Product updated successfully', data: product });
     } else {
-      updated = await memoryStore.updateProduct(id, updateData);
+      const updated = await memoryStore.updateProduct(id, updateData);
+      if (!updated) {
+        return res.status(404).json({ success: false, message: 'Product not found' });
+      }
+      return res.json({ success: true, message: 'Product updated successfully', data: updated });
     }
-
-    if (!updated) {
-      return res.status(404).json({ success: false, message: 'Product not found' });
-    }
-
-    return res.json({ success: true, message: 'Product updated successfully', data: updated });
   } catch (err) {
     return res.status(500).json({ success: false, message: err.message });
   }
@@ -770,7 +834,14 @@ app.delete('/api/admin/products/:id', requireAdmin, async (req, res) => {
     const dbStatus = await getDbStatus();
 
     if (dbStatus.isConnected) {
-      await Product.findByIdAndDelete(id);
+      await WebsiteData.updateOne(
+        { _id: 'main' },
+        {
+          $pull: { products: { $or: [{ _id: id }, { slug: id }] } },
+          $inc: { version: 1 },
+          $set: { updatedAt: new Date() }
+        }
+      );
     } else {
       await memoryStore.deleteProduct(id);
     }
@@ -782,7 +853,7 @@ app.delete('/api/admin/products/:id', requireAdmin, async (req, res) => {
 });
 
 // =========================================================================
-// 4. ADMIN CATEGORY MANAGEMENT
+// 4. ADMIN CATEGORY MANAGEMENT (Backed by website_data document)
 // =========================================================================
 
 app.get('/api/admin/categories', requireAdmin, async (req, res) => {
@@ -790,7 +861,9 @@ app.get('/api/admin/categories', requireAdmin, async (req, res) => {
     const dbStatus = await getDbStatus();
     let categories = [];
     if (dbStatus.isConnected) {
-      categories = await Category.find().sort({ displayOrder: 1 });
+      const wDoc = await WebsiteData.findById('main', { categories: 1 }).lean();
+      categories = (wDoc && wDoc.categories) || [];
+      categories.sort((a, b) => (a.displayOrder || 0) - (b.displayOrder || 0));
     } else {
       categories = await memoryStore.getCategories();
     }
@@ -812,23 +885,34 @@ app.post('/api/admin/categories', requireAdmin, async (req, res) => {
       : name.trim().toLowerCase().replace(/[^a-z0-9]+/g, '-');
 
     const catPayload = {
+      _id: `cat_${Date.now()}`,
       name: name.trim(),
       slug: categorySlug,
       description: description || '',
       image: image || '',
       isActive: isActive !== false,
-      displayOrder: Number(displayOrder || 0)
+      displayOrder: Number(displayOrder || 0),
+      createdAt: new Date(),
+      updatedAt: new Date()
     };
 
     const dbStatus = await getDbStatus();
-    let newCat = null;
+
     if (dbStatus.isConnected) {
-      newCat = await Category.create(catPayload);
+      await WebsiteData.updateOne(
+        { _id: 'main' },
+        {
+          $push: { categories: catPayload },
+          $inc: { version: 1 },
+          $set: { updatedAt: new Date() }
+        },
+        { upsert: true }
+      );
     } else {
-      newCat = await memoryStore.addCategory(catPayload);
+      await memoryStore.addCategory(catPayload);
     }
 
-    return res.status(201).json({ success: true, message: 'Category created', data: newCat });
+    return res.status(201).json({ success: true, message: 'Category created', data: catPayload });
   } catch (err) {
     return res.status(500).json({ success: false, message: err.message });
   }
@@ -841,14 +925,37 @@ app.put('/api/admin/categories/:id', requireAdmin, async (req, res) => {
     delete updateData._id;
 
     const dbStatus = await getDbStatus();
-    let updated = null;
-    if (dbStatus.isConnected) {
-      updated = await Category.findByIdAndUpdate(id, updateData, { new: true });
-    } else {
-      updated = await memoryStore.updateCategory(id, updateData);
-    }
 
-    return res.json({ success: true, message: 'Category updated', data: updated });
+    if (dbStatus.isConnected) {
+      const updateSet = {};
+      for (const [key, val] of Object.entries(updateData)) {
+        updateSet[`categories.$[elem].${key}`] = val;
+      }
+      updateSet['categories.$[elem].updatedAt'] = new Date();
+      updateSet['updatedAt'] = new Date();
+
+      const updated = await WebsiteData.findOneAndUpdate(
+        { _id: 'main' },
+        {
+          $set: updateSet,
+          $inc: { version: 1 }
+        },
+        {
+          arrayFilters: [{ $or: [{ 'elem._id': id }, { 'elem.slug': id }] }],
+          returnDocument: 'after'
+        }
+      );
+
+      if (!updated) {
+        return res.status(404).json({ success: false, message: 'Category not found' });
+      }
+
+      const category = updated.categories?.find(c => c._id === id || c.slug === id);
+      return res.json({ success: true, message: 'Category updated', data: category });
+    } else {
+      const updated = await memoryStore.updateCategory(id, updateData);
+      return res.json({ success: true, message: 'Category updated', data: updated });
+    }
   } catch (err) {
     return res.status(500).json({ success: false, message: err.message });
   }
@@ -858,11 +965,20 @@ app.delete('/api/admin/categories/:id', requireAdmin, async (req, res) => {
   try {
     const { id } = req.params;
     const dbStatus = await getDbStatus();
+
     if (dbStatus.isConnected) {
-      await Category.findByIdAndDelete(id);
+      await WebsiteData.updateOne(
+        { _id: 'main' },
+        {
+          $pull: { categories: { $or: [{ _id: id }, { slug: id }] } },
+          $inc: { version: 1 },
+          $set: { updatedAt: new Date() }
+        }
+      );
     } else {
       await memoryStore.deleteCategory(id);
     }
+
     return res.json({ success: true, message: 'Category deleted' });
   } catch (err) {
     return res.status(500).json({ success: false, message: err.message });
@@ -1120,20 +1236,103 @@ app.post('/api/admin/orders', requireAdmin, async (req, res) => {
 });
 
 // =========================================================================
-// 6. ADMIN HOMEPAGE & WEBSITE CONFIGURATION (CMS)
+// 6. ADMIN CENTRALIZED WEBSITE DATA & CMS CONFIGURATION
 // =========================================================================
+
+// GET /api/admin/website-data - Full document read for Admin CMS / Content Management
+app.get('/api/admin/website-data', requireAdmin, async (req, res) => {
+  try {
+    const dbStatus = await getDbStatus();
+    let data = null;
+    if (dbStatus.isConnected) {
+      data = await WebsiteData.findById('main');
+      if (!data) {
+        data = await WebsiteData.create(defaultWebsiteData);
+      }
+    } else {
+      data = await memoryStore.getWebsiteData();
+    }
+    const obj = data.toObject ? data.toObject() : data;
+    return res.json({ success: true, version: obj.version || 1, data: obj });
+  } catch (err) {
+    return res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// PUT /api/admin/website-data - Whole-document save with optimistic concurrency control
+app.put('/api/admin/website-data', requireAdmin, async (req, res) => {
+  try {
+    const { version, expectedVersion, ...updateData } = req.body;
+    delete updateData._id;
+
+    const reqVersion = typeof version === 'number' ? version : (typeof expectedVersion === 'number' ? expectedVersion : null);
+    const dbStatus = await getDbStatus();
+
+    if (dbStatus.isConnected) {
+      const current = await WebsiteData.findById('main');
+      if (!current) {
+        return res.status(404).json({ success: false, message: 'Website data document not found' });
+      }
+
+      if (reqVersion !== null && current.version !== reqVersion) {
+        return res.status(409).json({
+          success: false,
+          conflict: true,
+          message: `Concurrency conflict: Document has been modified by another admin (expected version ${reqVersion}, current version ${current.version}). Please reload.`,
+          currentVersion: current.version
+        });
+      }
+
+      // Atomic update and version increment
+      const updated = await WebsiteData.findByIdAndUpdate(
+        'main',
+        {
+          $set: { ...updateData, updatedAt: new Date() },
+          $inc: { version: 1 }
+        },
+        { returnDocument: 'after', upsert: true }
+      );
+
+      return res.json({
+        success: true,
+        message: 'Website data updated successfully',
+        version: updated.version,
+        data: updated
+      });
+    } else {
+      const updated = await memoryStore.updateWebsiteData(updateData, reqVersion);
+      return res.json({
+        success: true,
+        message: 'Website data updated successfully (in memory)',
+        version: updated.version,
+        data: updated
+      });
+    }
+  } catch (err) {
+    if (err.conflict) {
+      return res.status(409).json({
+        success: false,
+        conflict: true,
+        message: err.message,
+        currentVersion: err.currentVersion
+      });
+    }
+    console.error('Error saving website data:', err);
+    return res.status(500).json({ success: false, message: err.message });
+  }
+});
 
 app.get('/api/admin/site-config', requireAdmin, async (req, res) => {
   try {
     const dbStatus = await getDbStatus();
     if (dbStatus.isConnected) {
-      let config = await WebsiteConfig.findById('main');
+      let config = await WebsiteData.findById('main');
       if (!config) {
-        config = await WebsiteConfig.create({ _id: 'main', ...defaultWebsiteConfig });
+        config = await WebsiteData.create(defaultWebsiteData);
       }
       return res.json({ success: true, data: config });
     } else {
-      const config = await memoryStore.getWebsiteConfig();
+      const config = await memoryStore.getWebsiteData();
       return res.json({ success: true, data: config });
     }
   } catch (err) {
@@ -1150,9 +1349,12 @@ app.put('/api/admin/site-config', requireAdmin, async (req, res) => {
     let savedConfig = null;
 
     if (dbStatus.isConnected) {
-      savedConfig = await WebsiteConfig.findByIdAndUpdate(
+      savedConfig = await WebsiteData.findByIdAndUpdate(
         'main',
-        { $set: updateData },
+        {
+          $set: { ...updateData, updatedAt: new Date() },
+          $inc: { version: 1 }
+        },
         { returnDocument: 'after', upsert: true }
       );
     } else {

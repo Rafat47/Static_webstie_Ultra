@@ -550,58 +550,112 @@ export const defaultProducts = [
   }
 ];
 
+// Consolidated Initial Default Website Data (Document _id: "main")
+export const defaultWebsiteData = {
+  ...defaultWebsiteConfig,
+  _id: "main",
+  version: 1,
+  updatedAt: new Date(),
+  categories: defaultCategories.map((c, i) => ({
+    _id: `cat_${c.slug || i + 1}`,
+    ...c,
+    createdAt: new Date(),
+    updatedAt: new Date()
+  })),
+  products: defaultProducts.map((p, i) => ({
+    _id: `prod_${p.slug || i + 1}`,
+    ...p,
+    createdAt: new Date(),
+    updatedAt: new Date()
+  }))
+};
+
 // In-Memory Storage for immediate resilience (used when MongoDB URI is absent or during offline testing)
 class InMemoryStore {
   constructor() {
-    this.websiteConfig = JSON.parse(JSON.stringify(defaultWebsiteConfig));
-    this.categories = JSON.parse(JSON.stringify(defaultCategories));
-    this.products = JSON.parse(JSON.stringify(defaultProducts)).map((p, i) => ({
-      _id: `prod_${i + 1}`,
-      ...p,
-      createdAt: new Date(),
-      updatedAt: new Date()
-    }));
+    this.websiteData = JSON.parse(JSON.stringify(defaultWebsiteData));
     this.orders = [];
     this.admins = [];
   }
 
+  async getWebsiteData() {
+    return this.websiteData;
+  }
+
+  async updateWebsiteData(data, expectedVersion) {
+    if (typeof expectedVersion === 'number' && this.websiteData.version !== expectedVersion) {
+      const err = new Error('Conflict: Document version mismatch in memory store');
+      err.conflict = true;
+      err.currentVersion = this.websiteData.version;
+      throw err;
+    }
+    this.websiteData = {
+      ...this.websiteData,
+      ...data,
+      _id: "main",
+      version: (this.websiteData.version || 1) + 1,
+      updatedAt: new Date()
+    };
+    return this.websiteData;
+  }
+
   async getWebsiteConfig() {
-    return this.websiteConfig;
+    return this.websiteData;
   }
 
   async updateWebsiteConfig(data) {
-    this.websiteConfig = { ...this.websiteConfig, ...data, _id: "main" };
-    return this.websiteConfig;
+    this.websiteData = {
+      ...this.websiteData,
+      ...data,
+      _id: "main",
+      version: (this.websiteData.version || 1) + 1,
+      updatedAt: new Date()
+    };
+    return this.websiteData;
   }
 
   async getCategories() {
-    return this.categories;
+    return this.websiteData.categories || [];
   }
 
   async addCategory(cat) {
-    const newCat = { ...cat, _id: `cat_${Date.now()}` };
-    this.categories.push(newCat);
+    const newCat = {
+      _id: `cat_${Date.now()}`,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      ...cat
+    };
+    this.websiteData.categories = this.websiteData.categories || [];
+    this.websiteData.categories.push(newCat);
+    this.websiteData.version = (this.websiteData.version || 1) + 1;
+    this.websiteData.updatedAt = new Date();
     return newCat;
   }
 
   async updateCategory(idOrName, data) {
-    const idx = this.categories.findIndex(c => c._id === idOrName || c.name === idOrName || c.slug === idOrName);
+    const categories = this.websiteData.categories || [];
+    const idx = categories.findIndex(c => c._id === idOrName || c.name === idOrName || c.slug === idOrName);
     if (idx !== -1) {
-      this.categories[idx] = { ...this.categories[idx], ...data };
-      return this.categories[idx];
+      categories[idx] = { ...categories[idx], ...data, updatedAt: new Date() };
+      this.websiteData.version = (this.websiteData.version || 1) + 1;
+      this.websiteData.updatedAt = new Date();
+      return categories[idx];
     }
     return null;
   }
 
   async deleteCategory(idOrName) {
-    this.categories = this.categories.filter(c => c._id !== idOrName && c.name !== idOrName && c.slug !== idOrName);
+    const categories = this.websiteData.categories || [];
+    this.websiteData.categories = categories.filter(c => c._id !== idOrName && c.name !== idOrName && c.slug !== idOrName);
+    this.websiteData.version = (this.websiteData.version || 1) + 1;
+    this.websiteData.updatedAt = new Date();
     return true;
   }
 
   async getProducts(filter = {}) {
-    let list = [...this.products];
+    let list = [...(this.websiteData.products || [])];
     if (filter.category && filter.category !== 'All Products') {
-      list = list.filter(p => p.category.toLowerCase() === filter.category.toLowerCase());
+      list = list.filter(p => p.category && p.category.toLowerCase() === filter.category.toLowerCase());
     }
     if (filter.isFeatured !== undefined) {
       list = list.filter(p => p.isFeatured === filter.isFeatured);
@@ -611,13 +665,14 @@ class InMemoryStore {
     }
     if (filter.search) {
       const q = filter.search.toLowerCase();
-      list = list.filter(p => p.name.toLowerCase().includes(q) || p.shortDescription?.toLowerCase().includes(q));
+      list = list.filter(p => (p.name && p.name.toLowerCase().includes(q)) || (p.shortDescription && p.shortDescription.toLowerCase().includes(q)));
     }
     return list;
   }
 
   async getProductBySlug(slug) {
-    return this.products.find(p => p.slug === slug || p._id === slug) || null;
+    const products = this.websiteData.products || [];
+    return products.find(p => p.slug === slug || p._id === slug) || null;
   }
 
   async addProduct(prod) {
@@ -627,21 +682,30 @@ class InMemoryStore {
       createdAt: new Date(),
       updatedAt: new Date()
     };
-    this.products.unshift(newProd);
+    this.websiteData.products = this.websiteData.products || [];
+    this.websiteData.products.unshift(newProd);
+    this.websiteData.version = (this.websiteData.version || 1) + 1;
+    this.websiteData.updatedAt = new Date();
     return newProd;
   }
 
   async updateProduct(id, data) {
-    const idx = this.products.findIndex(p => p._id === id || p.slug === id);
+    const products = this.websiteData.products || [];
+    const idx = products.findIndex(p => p._id === id || p.slug === id);
     if (idx !== -1) {
-      this.products[idx] = { ...this.products[idx], ...data, updatedAt: new Date() };
-      return this.products[idx];
+      products[idx] = { ...products[idx], ...data, updatedAt: new Date() };
+      this.websiteData.version = (this.websiteData.version || 1) + 1;
+      this.websiteData.updatedAt = new Date();
+      return products[idx];
     }
     return null;
   }
 
   async deleteProduct(id) {
-    this.products = this.products.filter(p => p._id !== id && p.slug !== id);
+    const products = this.websiteData.products || [];
+    this.websiteData.products = products.filter(p => p._id !== id && p.slug !== id);
+    this.websiteData.version = (this.websiteData.version || 1) + 1;
+    this.websiteData.updatedAt = new Date();
     return true;
   }
 

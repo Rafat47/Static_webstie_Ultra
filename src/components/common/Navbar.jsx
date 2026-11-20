@@ -1,15 +1,13 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { ShoppingBag, Search, Heart, ChevronDown, Sparkles, X, Globe } from 'lucide-react';
 import { useCart } from '../../context/CartContext';
-import { useConfig } from '../../context/ConfigContext';
-import api from '../../services/api';
+import { useWebsiteData } from '../../context/WebsiteDataContext';
 import { metaEvents } from '../../utils/metaPixel';
 
 export default function Navbar() {
   const { totalItemsCount, setIsCartOpen } = useCart();
-  const { config } = useConfig();
-  const [categories, setCategories] = useState([]);
+  const { config, categories } = useWebsiteData();
   const [searchQuery, setSearchQuery] = useState('');
   const [hoveredCategory, setHoveredCategory] = useState(null);
   const [hoverPosition, setHoverPosition] = useState({ left: 0 });
@@ -23,26 +21,23 @@ export default function Navbar() {
   const logoText = siteSettings.logoText || 'Hair Shurokkha';
   const logoUrl = siteSettings.logoUrl || '/images/hair-shurokkha-logo-transparent.png';
 
-  useEffect(() => {
-    loadCategories();
-  }, []);
-
-  const loadCategories = async () => {
-    try {
-      const res = await api.getCategories();
-      if (res && res.success && res.data) {
-        setCategories(res.data.filter(c => c.isActive !== false));
-      }
-    } catch (e) {
-      console.warn('Failed to load categories in navbar:', e);
-    }
-  };
-
   const handleSearchSubmit = (e) => {
     e.preventDefault();
     if (searchQuery.trim()) {
       metaEvents.search(searchQuery.trim());
       navigate(`/shop?search=${encodeURIComponent(searchQuery.trim())}`);
+    }
+  };
+
+  const handleLogoClick = (e) => {
+    if (location.pathname === '/') {
+      e.preventDefault();
+      if (window.location.hash) {
+        navigate('/', { replace: true });
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      window.scrollTo({ top: 0, behavior: 'instant' });
     }
   };
 
@@ -104,7 +99,7 @@ export default function Navbar() {
         <div className="flex items-center justify-between h-16 sm:h-20 gap-3 sm:gap-6">
 
           {/* 1. Brand Logo */}
-          <Link to="/" className="flex items-center flex-shrink-0 group">
+          <Link to="/" onClick={handleLogoClick} className="flex items-center flex-shrink-0 group">
             {logoUrl ? (
               <img
                 src={logoUrl}

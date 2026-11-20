@@ -60,12 +60,26 @@ function RouteTracker() {
   return null;
 }
 
+// Ensure instant scroll to top on page navigation (unless an anchor hash is present)
+function ScrollToTop() {
+  const { pathname, hash } = useLocation();
+
+  useEffect(() => {
+    if (!hash) {
+      window.scrollTo(0, 0);
+    }
+  }, [pathname, hash]);
+
+  return null;
+}
+
 export default function App() {
   const location = useLocation();
   const isAdminRoute = location.pathname.startsWith('/admin');
 
   return (
     <div className="min-h-screen flex flex-col bg-brand-light text-brand-text">
+      <ScrollToTop />
       <RouteTracker />
       {/* Show storefront chrome only on public routes */}
       {!isAdminRoute && <Navbar />}

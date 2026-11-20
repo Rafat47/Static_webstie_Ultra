@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import HeroSection from '../components/home/HeroSection';
 import CategoryCarousel from '../components/home/CategoryCarousel';
 import CategoryProductSection from '../components/home/CategoryProductSection';
@@ -8,44 +8,11 @@ import HowMinoxidilWorksSection from '../components/home/HowMinoxidilWorksSectio
 import ProgressTimelineSection from '../components/home/ProgressTimelineSection';
 import UsageGuideSection from '../components/home/UsageGuideSection';
 import SEOHead from '../components/common/SEOHead';
-import api from '../services/api';
-import { useConfig } from '../context/ConfigContext';
-import { metaEvents } from '../utils/metaPixel';
+import { useWebsiteData } from '../context/WebsiteDataContext';
 import { RefreshCw } from 'lucide-react';
 
 export default function HomePage() {
-  const { config } = useConfig();
-  const [categories, setCategories] = useState([]);
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const loadData = async () => {
-      try {
-        setLoading(true);
-        const [catRes, prodRes] = await Promise.all([
-          api.getCategories(),
-          api.getProducts()
-        ]);
-
-        if (catRes && catRes.success && catRes.data) {
-          // Sort categories by displayOrder
-          const sortedCats = [...catRes.data].sort((a, b) => (a.displayOrder || 0) - (b.displayOrder || 0));
-          setCategories(sortedCats.filter(c => c.isActive !== false));
-        }
-
-        if (prodRes && prodRes.success && prodRes.data) {
-          setProducts(prodRes.data);
-        }
-      } catch (err) {
-        console.warn('Failed to load homepage data:', err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadData();
-  }, []);
+  const { config, categories, products, loading } = useWebsiteData();
 
   const seo = config?.seo || {};
 
