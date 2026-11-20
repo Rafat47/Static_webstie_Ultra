@@ -66,84 +66,74 @@ export default function CategoryCarousel({ categories = [] }) {
   };
 
   return (
-    <section className="bg-white py-5 sm:py-8 border-b border-gray-100" id="categories-carousel">
+    <section className="bg-white py-3 sm:py-5 border-b border-gray-100" id="categories-carousel">
       <div className="max-w-[1536px] mx-auto px-3 sm:px-6">
-        
-        {/* Section Header */}
-        <div className="flex items-center justify-between mb-4 sm:mb-6">
-          <div>
-            <h2 className="text-xl sm:text-2xl font-black tracking-tight text-gray-900 uppercase">
-              Shop by Category
-            </h2>
-            <p className="text-xs sm:text-sm text-gray-500 mt-0.5">
-              Select a category to jump directly to specialized solutions & value bundles
-            </p>
-          </div>
-
-          {/* Desktop Arrow Controls (Visible only if more than 4 categories) */}
-          {!isFewCategories && (
-            <div className="hidden sm:flex items-center space-x-1.5">
-              <button
-                onClick={() => scroll('left')}
-                aria-label="Scroll left"
-                className="p-2 rounded-full border border-gray-200 hover:border-black hover:bg-gray-50 text-gray-700 transition-colors"
-              >
-                <ChevronLeft className="w-4 h-4" />
-              </button>
-              <button
-                onClick={() => scroll('right')}
-                aria-label="Scroll right"
-                className="p-2 rounded-full border border-gray-200 hover:border-black hover:bg-gray-50 text-gray-700 transition-colors"
-              >
-                <ChevronRight className="w-4 h-4" />
-              </button>
-            </div>
-          )}
-        </div>
 
         {/* =========================================================================
-            DESKTOP LAYOUT:
+            DESKTOP LAYOUT WITH FLOATING OVERLAY ARROWS:
             - Wider rectangular cards (~20% wider: w-72 lg:w-80)
             - Box is 100% filled by image (No text inside the box)
             - Category name cleanly placed underneath the box
-            - Centered when <= 4 categories
+            - Floating Left and Right arrow buttons directly on top/sides of carousel
            ========================================================================= */}
-        <div
-          ref={scrollRef}
-          onMouseDown={handleMouseDown}
-          onMouseMove={handleMouseMove}
-          onMouseUp={handleMouseUp}
-          onMouseLeave={handleMouseUp}
-          className={`hidden sm:flex items-center ${
-            isFewCategories ? 'justify-center' : 'justify-start'
-          } space-x-5 lg:space-x-7 overflow-x-auto no-scrollbar scroll-smooth py-1 select-none ${
-            isDragging ? 'cursor-grabbing' : isFewCategories ? 'cursor-default' : 'cursor-grab'
-          }`}
-          style={{ WebkitOverflowScrolling: 'touch' }}
-        >
-          {activeCategories.map((cat) => (
-            <div
-              key={cat._id || cat.slug}
-              onClick={() => handleCategoryClick(cat.slug)}
-              className="w-72 lg:w-80 flex-shrink-0 group cursor-pointer transition-all duration-200"
+        <div className="relative group hidden sm:block">
+          {/* Floating Left Arrow */}
+          {!isFewCategories && (
+            <button
+              onClick={() => scroll('left')}
+              aria-label="Scroll left"
+              className="absolute -left-2 lg:-left-3 top-1/2 -translate-y-1/2 z-20 w-9 h-9 lg:w-10 lg:h-10 rounded-full bg-white/95 hover:bg-black text-gray-800 hover:text-white border border-gray-200 shadow-md flex items-center justify-center transition-all hover:scale-105"
             >
-              {/* Pure Rectangular Image Box - 100% Image Filled, Zero Text Inside */}
-              <div className="w-full h-44 lg:h-48 rounded-xl overflow-hidden border border-gray-200 group-hover:border-black transition-all shadow-2xs group-hover:shadow-subtle bg-gray-50">
-                <img
-                  src={cat.image || 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=500&auto=format&fit=crop&q=80'}
-                  alt={cat.name}
-                  draggable="false"
-                  className="w-full h-full object-cover object-center group-hover:scale-104 transition-transform duration-300 pointer-events-none"
-                />
+              <ChevronLeft className="w-5 h-5" />
+            </button>
+          )}
+
+          <div
+            ref={scrollRef}
+            onMouseDown={handleMouseDown}
+            onMouseMove={handleMouseMove}
+            onMouseUp={handleMouseUp}
+            onMouseLeave={handleMouseUp}
+            className={`flex items-center ${isFewCategories ? 'justify-center' : 'justify-start'
+              } space-x-5 lg:space-x-7 overflow-x-auto no-scrollbar scroll-smooth py-1 select-none ${isDragging ? 'cursor-grabbing' : isFewCategories ? 'cursor-default' : 'cursor-grab'
+              }`}
+            style={{ WebkitOverflowScrolling: 'touch' }}
+          >
+            {activeCategories.map((cat) => (
+              <div
+                key={cat._id || cat.slug}
+                onClick={() => handleCategoryClick(cat.slug)}
+                className="w-72 lg:w-80 flex-shrink-0 group/card cursor-pointer transition-all duration-200"
+              >
+                {/* Pure Rectangular Image Box - 100% Image Filled, Zero Text Inside */}
+                <div className="w-full h-44 lg:h-48 rounded-xl overflow-hidden border border-gray-200 group-hover/card:border-black transition-all shadow-2xs group-hover/card:shadow-subtle bg-gray-50">
+                  <img
+                    src={cat.image || 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=500&auto=format&fit=crop&q=80'}
+                    alt={cat.name}
+                    draggable="false"
+                    className="w-full h-full object-cover object-center group-hover/card:scale-104 transition-transform duration-300 pointer-events-none"
+                  />
+                </div>
+                {/* Category Name Cleanly Below the Box */}
+                <div className="mt-2.5 text-center">
+                  <h3 className="text-xs sm:text-sm font-bold text-gray-800 group-hover/card:text-black line-clamp-1 uppercase tracking-wide">
+                    {cat.name}
+                  </h3>
+                </div>
               </div>
-              {/* Category Name Cleanly Below the Box */}
-              <div className="mt-2.5 text-center">
-                <h3 className="text-xs sm:text-sm font-bold text-gray-800 group-hover:text-black line-clamp-1 uppercase tracking-wide">
-                  {cat.name}
-                </h3>
-              </div>
-            </div>
-          ))}
+            ))}
+          </div>
+
+          {/* Floating Right Arrow */}
+          {!isFewCategories && (
+            <button
+              onClick={() => scroll('right')}
+              aria-label="Scroll right"
+              className="absolute -right-2 lg:-right-3 top-1/2 -translate-y-1/2 z-20 w-9 h-9 lg:w-10 lg:h-10 rounded-full bg-white/95 hover:bg-black text-gray-800 hover:text-white border border-gray-200 shadow-md flex items-center justify-center transition-all hover:scale-105"
+            >
+              <ChevronRight className="w-5 h-5" />
+            </button>
+          )}
         </div>
 
         {/* =========================================================================

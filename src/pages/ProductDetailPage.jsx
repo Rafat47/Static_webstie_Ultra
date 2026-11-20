@@ -141,7 +141,7 @@ export default function ProductDetailPage() {
   };
 
   return (
-    <div className="min-h-screen bg-white py-6 sm:py-10">
+    <div className="min-h-screen bg-white py-3 sm:py-8">
       <SEOHead
         title={`${product.name} | Buy Online Bangladesh`}
         description={product.shortDescription || product.description}
@@ -151,7 +151,7 @@ export default function ProductDetailPage() {
       <div className="max-w-[1536px] mx-auto px-3 sm:px-6">
         
         {/* Breadcrumb Navigation */}
-        <nav className="flex items-center space-x-2 text-xs text-gray-500 mb-6 sm:mb-8">
+        <nav className="flex items-center space-x-2 text-xs text-gray-500 mb-3 sm:mb-6">
           <Link to="/" className="hover:text-black transition-colors">Home</Link>
           <span>/</span>
           <Link to="/shop" className="hover:text-black transition-colors">Shop</Link>
@@ -166,12 +166,12 @@ export default function ProductDetailPage() {
         {/* =========================================================================
             MAIN PRODUCT PRESENTATION — BuyAzz Reference Design (Page 3 of PDF)
            ========================================================================= */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 pb-12 border-b border-gray-200">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-14 pb-12 border-b border-gray-200">
           
-          {/* Left Column: Image Stage & Thumbnails (Restrained viewport height on desktop, max 450px on mobile) */}
-          <div className="lg:col-span-6 space-y-4 max-w-[450px] lg:max-w-[500px] mx-auto w-full lg:sticky lg:top-32 self-start">
-            {/* Primary Main Image Card - 100% visible on screen without scrolling */}
-            <div className="relative aspect-square w-full max-h-[450px] lg:max-h-[calc(100vh-190px)] rounded-xl overflow-hidden border border-gray-200 bg-white flex items-center justify-center group shadow-xs">
+          {/* Left Column: Image Stage & Thumbnails (Restrained to fit fully on mobile viewport without vertical scrolling) */}
+          <div className="lg:col-span-6 space-y-3 sm:space-y-4 max-w-[280px] xs:max-w-[320px] sm:max-w-[420px] lg:max-w-[500px] mx-auto w-full lg:sticky lg:top-32 self-start">
+            {/* Primary Main Image Card - 100% visible on mobile screen without scrolling */}
+            <div className="relative aspect-square w-full max-h-[35vh] xs:max-h-[38vh] sm:max-h-[46vh] lg:max-h-[calc(100vh-190px)] rounded-xl overflow-hidden border border-gray-200 bg-white flex items-center justify-center group shadow-xs">
               <img
                 src={images[selectedImageIndex] || images[0]}
                 alt={product.name}
@@ -188,12 +188,12 @@ export default function ProductDetailPage() {
 
             {/* Thumbnail Strip */}
             {images.length > 1 && (
-              <div className="flex items-center gap-2.5 overflow-x-auto no-scrollbar py-1">
+              <div className="flex items-center justify-center sm:justify-start gap-2 sm:gap-2.5 overflow-x-auto no-scrollbar py-1">
                 {images.map((img, idx) => (
                   <button
                     key={idx}
                     onClick={() => setSelectedImageIndex(idx)}
-                    className={`relative w-16 h-16 sm:w-20 sm:h-20 rounded-lg overflow-hidden border-2 flex-shrink-0 transition-all ${
+                    className={`relative w-12 h-12 sm:w-18 sm:h-18 rounded-lg overflow-hidden border-2 flex-shrink-0 transition-all ${
                       selectedImageIndex === idx
                         ? 'border-black shadow-xs'
                         : 'border-gray-200 hover:border-gray-400 opacity-70 hover:opacity-100'

@@ -239,7 +239,7 @@ export default function Navbar() {
         >
           <div
             onClick={() => handleCategoryClick(hoveredCategory.slug)}
-            className="w-48 h-36 bg-white border-2 border-black rounded-lg overflow-hidden shadow-preview cursor-pointer hover:scale-102 transition-transform duration-200"
+            className="w-48 h-36 bg-white border border-black rounded-lg overflow-hidden shadow-preview cursor-pointer hover:scale-102 transition-transform duration-200"
           >
             <img
               src={hoveredCategory.image}
