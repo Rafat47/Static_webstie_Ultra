@@ -5,16 +5,19 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+// Netlify bundles this function as CommonJS, where import.meta.url is absent.
+// Native ESM (local development) instead resolves the directory from the URL.
+const dataModuleDir = typeof __dirname === 'string'
+  ? __dirname
+  : path.dirname(fileURLToPath(import.meta.url));
 
 // Helper to resolve the storage file paths across local dev, Netlify functions, and production build
 function resolveDataFilePaths() {
   const candidates = [
-    path.resolve(__dirname, 'data', 'website-data.json'),
-    path.resolve(__dirname, '..', 'data', 'website-data.json'),
-    path.resolve(__dirname, '..', '..', 'public', 'data', 'website-data.json'),
-    path.resolve(__dirname, '..', 'public', 'data', 'website-data.json'),
+    path.resolve(dataModuleDir, 'data', 'website-data.json'),
+    path.resolve(dataModuleDir, '..', 'data', 'website-data.json'),
+    path.resolve(dataModuleDir, '..', '..', 'public', 'data', 'website-data.json'),
+    path.resolve(dataModuleDir, '..', 'public', 'data', 'website-data.json'),
     path.resolve(process.cwd(), 'public', 'data', 'website-data.json'),
     path.resolve(process.cwd(), 'netlify', 'functions', 'data', 'website-data.json'),
     path.resolve(process.cwd(), 'dist', 'data', 'website-data.json')
@@ -33,7 +36,7 @@ function resolveDataFilePaths() {
   // Also support dist directory in production if it exists
   const distCandidates = [
     path.resolve(process.cwd(), 'dist', 'data', 'website-data.json'),
-    path.resolve(__dirname, '..', '..', 'dist', 'data', 'website-data.json')
+    path.resolve(dataModuleDir, '..', '..', 'dist', 'data', 'website-data.json')
   ];
   let distPath = null;
   for (const dc of distCandidates) {
