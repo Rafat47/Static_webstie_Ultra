@@ -38,7 +38,10 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 // URL Rewriter: Ensures routes work seamlessly both locally and under Netlify Functions redirect
 app.use((req, res, next) => {
   if (req.url.startsWith('/.netlify/functions/api')) {
-    req.url = req.url.replace('/.netlify/functions/api', '/api');
+    req.url = req.url.slice('/.netlify/functions/api'.length) || '/';
+  }
+  if (!req.url.startsWith('/api')) {
+    req.url = '/api' + (req.url.startsWith('/') ? req.url : '/' + req.url);
   }
   next();
 });

@@ -32,7 +32,8 @@ export default function AdminLoginPage() {
         setError(res?.message || 'Invalid username or password');
       }
     } catch (err) {
-      setError('Server connection error. Please try again.');
+      const msg = err.response?.data?.message || err.message || 'Server connection error. Please try again.';
+      setError(msg);
     } finally {
       setLoading(false);
     }

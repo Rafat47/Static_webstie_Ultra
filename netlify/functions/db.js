@@ -11,9 +11,13 @@ const __dirname = path.dirname(__filename);
 // Helper to resolve the storage file paths across local dev, Netlify functions, and production build
 function resolveDataFilePaths() {
   const candidates = [
-    path.resolve(process.cwd(), 'public', 'data', 'website-data.json'),
+    path.resolve(__dirname, 'data', 'website-data.json'),
+    path.resolve(__dirname, '..', 'data', 'website-data.json'),
     path.resolve(__dirname, '..', '..', 'public', 'data', 'website-data.json'),
-    path.resolve(__dirname, '..', 'public', 'data', 'website-data.json')
+    path.resolve(__dirname, '..', 'public', 'data', 'website-data.json'),
+    path.resolve(process.cwd(), 'public', 'data', 'website-data.json'),
+    path.resolve(process.cwd(), 'netlify', 'functions', 'data', 'website-data.json'),
+    path.resolve(process.cwd(), 'dist', 'data', 'website-data.json')
   ];
 
   let primaryPath = candidates[0];
@@ -115,7 +119,15 @@ export const defaultWebsiteData = {
   categories: [],
   products: [],
   orders: [],
-  admins: [],
+  admins: [
+    {
+      _id: "6b0072b9ca8f2dea4a890e9e",
+      username: "admin",
+      password: "$2b$10$xWNdzRLx0KXEz.WRW2FWeurqcgrp73izWEBtS9L9ddIntw1nrMDxC",
+      name: "Store Administrator",
+      role: "superadmin"
+    }
+  ],
   metaEventLogs: [],
   version: 1,
   updatedAt: new Date().toISOString()

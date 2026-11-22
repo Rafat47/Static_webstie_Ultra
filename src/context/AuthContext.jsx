@@ -40,15 +40,20 @@ export function AuthProvider({ children }) {
   }, [adminToken]);
 
   const login = async (username, password) => {
-    const res = await api.adminLogin({ username, password });
-    if (res && res.success && res.token) {
-      localStorage.setItem('regrow_admin_token', res.token);
-      localStorage.setItem('regrow_admin_user', JSON.stringify(res.admin));
-      setAdminToken(res.token);
-      setAdminUser(res.admin);
-      return { success: true };
+    try {
+      const res = await api.adminLogin({ username, password });
+      if (res && res.success && res.token) {
+        localStorage.setItem('regrow_admin_token', res.token);
+        localStorage.setItem('regrow_admin_user', JSON.stringify(res.admin));
+        setAdminToken(res.token);
+        setAdminUser(res.admin);
+        return { success: true };
+      }
+      return { success: false, message: res?.message || 'Login failed' };
+    } catch (err) {
+      const msg = err.response?.data?.message || err.message || 'Login request failed';
+      return { success: false, message: msg };
     }
-    return { success: false, message: res?.message || 'Login failed' };
   };
 
   const logout = () => {

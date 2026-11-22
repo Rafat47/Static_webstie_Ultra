@@ -8,7 +8,7 @@
 
 [functions]
   node_bundler = "esbuild"
-  included_files = ["netlify/functions/**"]
+  included_files = ["netlify/functions/**", "public/data/**"]
 
 [[redirects]]
   from = "/api/*"
