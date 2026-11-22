@@ -160,6 +160,17 @@ export const defaultWebsiteData = {
   updatedAt: new Date().toISOString()
 };
 
+// Helper: Extract only common public storefront data (segregates private admin collections)
+export function sanitizePublicWebsiteData(fullData) {
+  if (!fullData) return null;
+  const { orders, admins, metaEventLogs, ...publicSlice } = fullData;
+  const clean = JSON.parse(JSON.stringify(publicSlice));
+  if (clean.metaSettings) {
+    delete clean.metaSettings.capiAccessToken;
+  }
+  return clean;
+}
+
 /**
  * Local File-Backed JSON Store
  * - Reads from public/data/website-data.json
@@ -176,10 +187,14 @@ class LocalJsonStore {
 
   loadFromDisk() {
     const candidatePaths = getAllDataFilePaths();
-    let bestData = null;
-    let highestVersion = -1;
-    let latestTime = 0;
-    let bestPath = null;
+    let bestMasterData = null;
+    let highestMasterVersion = -1;
+    let latestMasterTime = 0;
+    let masterPath = null;
+
+    let bestPublicData = null;
+    let highestPublicVersion = -1;
+    let latestPublicTime = 0;
 
     for (const p of candidatePaths) {
       try {
@@ -188,12 +203,21 @@ class LocalJsonStore {
           const parsed = JSON.parse(raw);
           const ver = typeof parsed.version === 'number' ? parsed.version : 0;
           const time = parsed.updatedAt ? new Date(parsed.updatedAt).getTime() : 0;
+          const isMasterStore = p.includes('netlify') || p.includes('functions');
 
-          if (bestData === null || ver > highestVersion || (ver === highestVersion && time > latestTime)) {
-            bestData = parsed;
-            highestVersion = ver;
-            latestTime = time;
-            bestPath = p;
+          if (isMasterStore) {
+            if (bestMasterData === null || ver > highestMasterVersion || (ver === highestMasterVersion && time > latestMasterTime)) {
+              bestMasterData = parsed;
+              highestMasterVersion = ver;
+              latestMasterTime = time;
+              masterPath = p;
+            }
+          } else {
+            if (bestPublicData === null || ver > highestPublicVersion || (ver === highestPublicVersion && time > latestPublicTime)) {
+              bestPublicData = parsed;
+              highestPublicVersion = ver;
+              latestPublicTime = time;
+            }
           }
         }
       } catch (e) {
@@ -201,28 +225,44 @@ class LocalJsonStore {
       }
     }
 
-    if (bestData) {
-      if (!Array.isArray(bestData.categories)) bestData.categories = [];
-      if (!Array.isArray(bestData.products)) bestData.products = [];
-      if (!Array.isArray(bestData.orders)) bestData.orders = [];
-      if (!Array.isArray(bestData.admins)) bestData.admins = [];
-      if (!Array.isArray(bestData.metaEventLogs)) bestData.metaEventLogs = [];
-      if (bestPath) this.filePath = bestPath;
-      return bestData;
+    // Merge: Master data retains orders, admins, and metaEventLogs.
+    // If public data has a higher version for common storefront fields, adopt them while keeping private collections.
+    let merged = bestMasterData || bestPublicData || JSON.parse(JSON.stringify(defaultWebsiteData));
+
+    if (bestMasterData && bestPublicData && highestPublicVersion > highestMasterVersion) {
+      const { orders, admins, metaEventLogs } = bestMasterData;
+      merged = {
+        ...bestPublicData,
+        orders: orders || [],
+        admins: admins || [],
+        metaEventLogs: metaEventLogs || []
+      };
     }
 
-    return JSON.parse(JSON.stringify(defaultWebsiteData));
+    if (!Array.isArray(merged.categories)) merged.categories = [];
+    if (!Array.isArray(merged.products)) merged.products = [];
+    if (!Array.isArray(merged.orders)) merged.orders = [];
+    if (!Array.isArray(merged.admins) || merged.admins.length === 0) {
+      merged.admins = JSON.parse(JSON.stringify(defaultWebsiteData.admins));
+    }
+    if (!Array.isArray(merged.metaEventLogs)) merged.metaEventLogs = [];
+
+    if (masterPath) this.filePath = masterPath;
+    return merged;
   }
 
   saveToDisk() {
     try {
       this.data.updatedAt = new Date().toISOString();
-      const content = JSON.stringify(this.data, null, 2);
+      const masterContent = JSON.stringify(this.data, null, 2);
+      const publicContent = JSON.stringify(sanitizePublicWebsiteData(this.data), null, 2);
       const targetPaths = getAllDataFilePaths();
 
       for (const targetPath of targetPaths) {
         try {
-          const isDist = targetPath.toLowerCase().includes('dist');
+          const norm = targetPath.toLowerCase();
+          const isDist = norm.includes('dist');
+          const isPublic = norm.includes('public') || isDist;
           const targetDir = path.dirname(targetPath);
           const parentDir = path.dirname(targetDir);
 
@@ -235,6 +275,9 @@ class LocalJsonStore {
             fs.mkdirSync(targetDir, { recursive: true });
           }
 
+          // Segregate: public/dist targets get sanitized public-only data,
+          // while netlify/functions targets get the complete master database.
+          const content = isPublic ? publicContent : masterContent;
           fs.writeFileSync(targetPath, content, 'utf8');
         } catch (writeErr) {
           // Gracefully continue on read-only environments

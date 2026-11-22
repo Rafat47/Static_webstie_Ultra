@@ -226,7 +226,7 @@
     {
       "_id": "prod_1795334930943",
       "createdAt": "2026-11-22T08:08:50.943Z",
-      "updatedAt": "2026-11-22T09:01:40.211Z",
+      "updatedAt": "2026-11-22T09:17:41.448Z",
       "name": "demo",
       "title": "demo",
       "slug": "demo",
@@ -236,7 +236,7 @@
       "category": "Minoxidil",
       "regularPrice": 100,
       "salePrice": 90,
-      "stock": 46,
+      "stock": 42,
       "isFeatured": true,
       "isActive": true,
       "productType": "minoxidil",
@@ -569,7 +569,7 @@
       "category": "Minoxidil",
       "regularPrice": 1250,
       "salePrice": 830,
-      "stock": 31,
+      "stock": 27,
       "isFeatured": true,
       "isActive": true,
       "productType": "minoxidil",
@@ -579,7 +579,7 @@
       "specifications": [],
       "carouselOrder": 0,
       "createdAt": "2026-11-20T18:37:07.958Z",
-      "updatedAt": "2026-11-22T09:01:38.209Z",
+      "updatedAt": "2026-11-22T09:17:40.196Z",
       "displayOrder": 0
     },
     {
@@ -861,23 +861,23 @@
     "whatsappNumber": "+8801356813069",
     "address": "Sonirakra, Dhonia, Dhaka 1236"
   },
-  "updatedAt": "2026-11-22T09:01:40.234Z",
-  "version": 198,
+  "updatedAt": "2026-11-22T09:17:41.465Z",
+  "version": 204,
   "orders": [
     {
-      "_id": "ord_1795338100222",
-      "createdAt": "2026-11-22T09:01:40.222Z",
-      "updatedAt": "2026-11-22T09:01:40.222Z",
+      "_id": "ord_1795339061456",
+      "createdAt": "2026-11-22T09:17:41.456Z",
+      "updatedAt": "2026-11-22T09:17:41.456Z",
       "statusHistory": [
         {
           "status": "Pending",
-          "timestamp": "2026-11-22T09:01:40.222Z",
+          "timestamp": "2026-11-22T09:17:41.455Z",
           "note": "Order placed by customer via Cash on Delivery",
           "updatedBy": "System"
         }
       ],
-      "orderId": "HAIR-2611-OPMR",
-      "orderNumber": "HAIR-2611-OPMR",
+      "orderId": "HAIR-2611-M7BP",
+      "orderNumber": "HAIR-2611-M7BP",
       "customer": {
         "fullName": "Mahmudullah Riyad",
         "phoneNumber": "01912345678",
@@ -919,28 +919,28 @@
         "userAgent": "node",
         "ip": ""
       },
-      "metaEventId": "order_HAIR-2611-OPMR"
+      "metaEventId": "order_HAIR-2611-M7BP"
     },
     {
-      "_id": "ord_1795338098221",
-      "createdAt": "2026-11-22T09:01:38.221Z",
-      "updatedAt": "2026-11-22T09:01:38.587Z",
+      "_id": "ord_1795339060205",
+      "createdAt": "2026-11-22T09:17:40.205Z",
+      "updatedAt": "2026-11-22T09:17:40.387Z",
       "statusHistory": [
         {
           "status": "Pending",
-          "timestamp": "2026-11-22T09:01:38.220Z",
+          "timestamp": "2026-11-22T09:17:40.205Z",
           "note": "Order placed by customer via Cash on Delivery",
           "updatedBy": "System"
         },
         {
           "status": "Confirmed",
-          "timestamp": "2026-11-22T09:01:38.587Z",
+          "timestamp": "2026-11-22T09:17:40.387Z",
           "note": "Customer confirmed via phone call",
           "updatedBy": "admin"
         }
       ],
-      "orderId": "HAIR-2611-3VBR",
-      "orderNumber": "HAIR-2611-3VBR",
+      "orderId": "HAIR-2611-URYD",
+      "orderNumber": "HAIR-2611-URYD",
       "customer": {
         "fullName": "Shakib Al Hasan",
         "phoneNumber": "01712345678",
@@ -982,192 +982,7 @@
         "userAgent": "node",
         "ip": ""
       },
-      "metaEventId": "order_HAIR-2611-3VBR",
-      "internalNotes": "Steadfast Courier Booking #987654"
-    },
-    {
-      "_id": "ord_1795337955101",
-      "createdAt": "2026-11-22T08:59:15.101Z",
-      "updatedAt": "2026-11-22T08:59:15.326Z",
-      "statusHistory": [
-        {
-          "status": "Pending",
-          "timestamp": "2026-11-22T08:59:15.100Z",
-          "note": "Order placed by customer via Cash on Delivery",
-          "updatedBy": "System"
-        },
-        {
-          "status": "Confirmed",
-          "timestamp": "2026-11-22T08:59:15.326Z",
-          "note": "Customer confirmed via phone call",
-          "updatedBy": "admin"
-        }
-      ],
-      "orderId": "HAIR-2611-Y0ED",
-      "orderNumber": "HAIR-2611-Y0ED",
-      "customer": {
-        "fullName": "Shakib Al Hasan",
-        "phoneNumber": "01712345678",
-        "district": "Dhaka",
-        "deliveryArea": "inside_dhaka",
-        "address": "House 12, Road 4, Banani, Dhaka",
-        "notes": ""
-      },
-      "items": [
-        {
-          "productId": "prod_1795199827958",
-          "productName": "Kirkland Minoxidil 5% Extra Strength – Topical Hair Regrowth Solution (60ml)",
-          "slug": "original-kirkland-5-60ml",
-          "category": "Minoxidil",
-          "image": "https://res.cloudinary.com/wvd1wcrw/image/upload/v1795255189/imresizer-resize-image-Picsart-AiImageEnhancer.webp",
-          "unitPrice": 830,
-          "quantity": 2,
-          "itemTotal": 1660
-        }
-      ],
-      "subtotal": 1660,
-      "discount": 0,
-      "deliveryCharge": 70,
-      "finalTotal": 1730,
-      "paymentMethod": "COD",
-      "orderStatus": "Confirmed",
-      "attribution": {
-        "fbp": "",
-        "fbc": "",
-        "fbcSource": "none",
-        "fbclid": "test_fbclid_12345",
-        "utmSource": "facebook",
-        "utmMedium": "",
-        "utmCampaign": "winter_minoxidil_sale",
-        "utmContent": "",
-        "utmTerm": "",
-        "landingPage": "",
-        "referrer": "",
-        "userAgent": "node",
-        "ip": ""
-      },
-      "metaEventId": "order_HAIR-2611-Y0ED",
-      "internalNotes": "Steadfast Courier Booking #987654"
-    },
-    {
-      "_id": "ord_1795337918412",
-      "createdAt": "2026-11-22T08:58:38.412Z",
-      "updatedAt": "2026-11-22T08:58:38.412Z",
-      "statusHistory": [
-        {
-          "status": "Pending",
-          "timestamp": "2026-11-22T08:58:38.412Z",
-          "note": "Order placed by customer via Cash on Delivery",
-          "updatedBy": "System"
-        }
-      ],
-      "orderId": "HAIR-2611-O78J",
-      "orderNumber": "HAIR-2611-O78J",
-      "customer": {
-        "fullName": "Mahmudullah Riyad",
-        "phoneNumber": "01912345678",
-        "district": "Dhaka",
-        "deliveryArea": "inside_dhaka",
-        "address": "Uttara Sector 7, Dhaka",
-        "notes": ""
-      },
-      "items": [
-        {
-          "productId": "prod_1795334930943",
-          "productName": "demo",
-          "slug": "demo",
-          "category": "Minoxidil",
-          "image": "",
-          "unitPrice": 90,
-          "quantity": 2,
-          "itemTotal": 180
-        }
-      ],
-      "subtotal": 180,
-      "discount": 0,
-      "deliveryCharge": 70,
-      "finalTotal": 250,
-      "paymentMethod": "COD",
-      "orderStatus": "Pending",
-      "attribution": {
-        "fbp": "",
-        "fbc": "",
-        "fbcSource": "none",
-        "fbclid": "",
-        "utmSource": "",
-        "utmMedium": "",
-        "utmCampaign": "",
-        "utmContent": "",
-        "utmTerm": "",
-        "landingPage": "",
-        "referrer": "",
-        "userAgent": "node",
-        "ip": ""
-      },
-      "metaEventId": "order_HAIR-2611-O78J"
-    },
-    {
-      "_id": "ord_1795337905625",
-      "createdAt": "2026-11-22T08:58:25.625Z",
-      "updatedAt": "2026-11-22T08:58:25.858Z",
-      "statusHistory": [
-        {
-          "status": "Pending",
-          "timestamp": "2026-11-22T08:58:25.624Z",
-          "note": "Order placed by customer via Cash on Delivery",
-          "updatedBy": "System"
-        },
-        {
-          "status": "Confirmed",
-          "timestamp": "2026-11-22T08:58:25.858Z",
-          "note": "Customer confirmed via phone call",
-          "updatedBy": "admin"
-        }
-      ],
-      "orderId": "HAIR-2611-1L87",
-      "orderNumber": "HAIR-2611-1L87",
-      "customer": {
-        "fullName": "Shakib Al Hasan",
-        "phoneNumber": "01712345678",
-        "district": "Dhaka",
-        "deliveryArea": "inside_dhaka",
-        "address": "House 12, Road 4, Banani, Dhaka",
-        "notes": ""
-      },
-      "items": [
-        {
-          "productId": "prod_1795199827958",
-          "productName": "Kirkland Minoxidil 5% Extra Strength – Topical Hair Regrowth Solution (60ml)",
-          "slug": "original-kirkland-5-60ml",
-          "category": "Minoxidil",
-          "image": "https://res.cloudinary.com/wvd1wcrw/image/upload/v1795255189/imresizer-resize-image-Picsart-AiImageEnhancer.webp",
-          "unitPrice": 830,
-          "quantity": 2,
-          "itemTotal": 1660
-        }
-      ],
-      "subtotal": 1660,
-      "discount": 0,
-      "deliveryCharge": 70,
-      "finalTotal": 1730,
-      "paymentMethod": "COD",
-      "orderStatus": "Confirmed",
-      "attribution": {
-        "fbp": "",
-        "fbc": "",
-        "fbcSource": "none",
-        "fbclid": "test_fbclid_12345",
-        "utmSource": "facebook",
-        "utmMedium": "",
-        "utmCampaign": "winter_minoxidil_sale",
-        "utmContent": "",
-        "utmTerm": "",
-        "landingPage": "",
-        "referrer": "",
-        "userAgent": "node",
-        "ip": ""
-      },
-      "metaEventId": "order_HAIR-2611-1L87",
+      "metaEventId": "order_HAIR-2611-URYD",
       "internalNotes": "Steadfast Courier Booking #987654"
     },
     {
@@ -2554,12 +2369,12 @@
   ],
   "metaEventLogs": [
     {
-      "_id": "log_1795338100234_4m0z1",
-      "createdAt": "2026-11-22T09:01:40.234Z",
-      "updatedAt": "2026-11-22T09:01:40.234Z",
-      "eventId": "order_HAIR-2611-OPMR",
+      "_id": "log_1795339061465_q8jo1",
+      "createdAt": "2026-11-22T09:17:41.465Z",
+      "updatedAt": "2026-11-22T09:17:41.465Z",
+      "eventId": "order_HAIR-2611-M7BP",
       "eventName": "Purchase",
-      "orderId": "HAIR-2611-OPMR",
+      "orderId": "HAIR-2611-M7BP",
       "eventSource": "server_order",
       "eventSourceUrl": "",
       "status": "pending",
@@ -2595,8 +2410,8 @@
           "data": [
             {
               "event_name": "Purchase",
-              "event_time": 1795338100,
-              "event_id": "order_HAIR-2611-OPMR",
+              "event_time": 1795339061,
+              "event_id": "order_HAIR-2611-M7BP",
               "event_source_url": "",
               "action_source": "website",
               "user_data": {
@@ -2620,7 +2435,7 @@
               "custom_data": {
                 "currency": "BDT",
                 "value": 250,
-                "order_id": "HAIR-2611-OPMR",
+                "order_id": "HAIR-2611-M7BP",
                 "content_name": "Order Purchase",
                 "content_type": "product",
                 "content_category": "Minoxidil",
@@ -2642,15 +2457,15 @@
         }
       },
       "attempts": 1,
-      "expiresAt": "2026-11-29T09:01:40.234Z"
+      "expiresAt": "2026-11-29T09:17:41.465Z"
     },
     {
-      "_id": "log_1795338098234_zyh7e",
-      "createdAt": "2026-11-22T09:01:38.234Z",
-      "updatedAt": "2026-11-22T09:01:38.234Z",
-      "eventId": "order_HAIR-2611-3VBR",
+      "_id": "log_1795339060215_32tfs",
+      "createdAt": "2026-11-22T09:17:40.215Z",
+      "updatedAt": "2026-11-22T09:17:40.215Z",
+      "eventId": "order_HAIR-2611-URYD",
       "eventName": "Purchase",
-      "orderId": "HAIR-2611-3VBR",
+      "orderId": "HAIR-2611-URYD",
       "eventSource": "server_order",
       "eventSourceUrl": "",
       "status": "pending",
@@ -2686,8 +2501,8 @@
           "data": [
             {
               "event_name": "Purchase",
-              "event_time": 1795338098,
-              "event_id": "order_HAIR-2611-3VBR",
+              "event_time": 1795339060,
+              "event_id": "order_HAIR-2611-URYD",
               "event_source_url": "",
               "action_source": "website",
               "user_data": {
@@ -2711,7 +2526,7 @@
               "custom_data": {
                 "currency": "BDT",
                 "value": 1730,
-                "order_id": "HAIR-2611-3VBR",
+                "order_id": "HAIR-2611-URYD",
                 "content_name": "Order Purchase",
                 "content_type": "product",
                 "content_category": "Minoxidil",
@@ -2733,40 +2548,40 @@
         }
       },
       "attempts": 1,
-      "expiresAt": "2026-11-29T09:01:38.233Z"
+      "expiresAt": "2026-11-29T09:17:40.215Z"
     },
     {
-      "_id": "log_1795337955112_nim51",
-      "createdAt": "2026-11-22T08:59:15.112Z",
-      "updatedAt": "2026-11-22T08:59:15.112Z",
-      "eventId": "order_HAIR-2611-Y0ED",
-      "eventName": "Purchase",
-      "orderId": "HAIR-2611-Y0ED",
-      "eventSource": "server_order",
-      "eventSourceUrl": "",
-      "status": "pending",
+      "_id": "log_1795339016762_je6cz",
+      "createdAt": "2026-11-22T09:16:56.762Z",
+      "updatedAt": "2026-11-22T09:16:57.225Z",
+      "eventId": "pageview_1795339016756_cdxkuh2",
+      "eventName": "PageView",
+      "orderId": "",
+      "eventSource": "browser_forwarded",
+      "eventSourceUrl": "http://localhost:3000/",
+      "status": "failed",
       "matching": {
         "hasFbp": false,
         "hasFbc": false,
         "fbcSource": "none",
         "hasIp": false,
         "hasUserAgent": true,
-        "hasPhone": true,
+        "hasPhone": false,
         "hasEmail": false,
-        "hasCity": true,
-        "hasCountry": true,
+        "hasCity": false,
+        "hasCountry": false,
         "hasExternalId": false,
         "presentParameters": [
-          "client_user_agent",
-          "ph",
-          "ct",
-          "country"
+          "client_user_agent"
         ],
         "missingParameters": [
           "fbp",
           "fbc",
           "client_ip_address",
-          "em"
+          "ph",
+          "em",
+          "ct",
+          "country"
         ]
       },
       "request": {
@@ -2776,88 +2591,75 @@
         "payload": {
           "data": [
             {
-              "event_name": "Purchase",
-              "event_time": 1795337955,
-              "event_id": "order_HAIR-2611-Y0ED",
-              "event_source_url": "",
+              "event_name": "PageView",
+              "event_time": 1795339016,
+              "event_id": "pageview_1795339016756_cdxkuh2",
+              "event_source_url": "http://localhost:3000/",
               "action_source": "website",
               "user_data": {
-                "ph": [
-                  "c327520f85b0c6058fed05dfc0a63d8755f325b6ea1b550824f4a8e380d75de1"
-                ],
-                "fn": [
-                  "cbab2c1879445f5aecacda9dbad7fe2854010052f42aa4f5130e4749081e399f"
-                ],
-                "ln": [
-                  "a08ba4513b24fbf2aae9aeb9902e49c4f8c85d5833d9040ad9b67336b4fece43"
-                ],
-                "ct": [
-                  "de90643718108ec9a93cc6905f2b976297505a8abeac37b747132877fb32fb8d"
-                ],
-                "country": [
-                  "5e657ff6158d3e2a6d23e2a523917a2305acee9423365e268695c4b7b8919f4c"
-                ],
-                "client_user_agent": "node"
-              },
-              "custom_data": {
-                "currency": "BDT",
-                "value": 1730,
-                "order_id": "HAIR-2611-Y0ED",
-                "content_name": "Order Purchase",
-                "content_type": "product",
-                "content_category": "Minoxidil",
-                "content_categories": [
-                  "Minoxidil"
-                ],
-                "contents": [
-                  {
-                    "id": "prod_1795199827958",
-                    "quantity": 2,
-                    "item_price": 830,
-                    "category": "Minoxidil"
-                  }
-                ],
-                "num_items": 2
+                "client_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
               }
             }
           ]
         }
       },
       "attempts": 1,
-      "expiresAt": "2026-11-29T08:59:15.112Z"
+      "expiresAt": "2026-11-29T09:16:56.762Z",
+      "response": {
+        "httpStatus": 401,
+        "httpStatusText": "Unauthorized",
+        "eventsReceived": 0,
+        "messages": [],
+        "fbtraceId": "AyM-V71zTbNMfk7hob9voTi",
+        "errorCode": 190,
+        "errorMessage": "Invalid OAuth access token - Cannot parse access token",
+        "rawBody": "{\"error\":{\"message\":\"Invalid OAuth access token - Cannot parse access token\",\"type\":\"OAuthException\",\"code\":190,\"fbtrace_id\":\"AyM-V71zTbNMfk7hob9voTi\"}}",
+        "metaResponseBody": {
+          "error": {
+            "message": "Invalid OAuth access token - Cannot parse access token",
+            "type": "OAuthException",
+            "code": 190,
+            "fbtrace_id": "AyM-V71zTbNMfk7hob9voTi"
+          }
+        },
+        "responseParseStatus": "success",
+        "parseError": null
+      },
+      "durationMs": 462,
+      "completedAt": "2026-11-22T09:16:57.225Z"
     },
     {
-      "_id": "log_1795337918426_30lzm",
-      "createdAt": "2026-11-22T08:58:38.426Z",
-      "updatedAt": "2026-11-22T08:58:38.426Z",
-      "eventId": "order_HAIR-2611-O78J",
-      "eventName": "Purchase",
-      "orderId": "HAIR-2611-O78J",
-      "eventSource": "server_order",
-      "eventSourceUrl": "",
-      "status": "pending",
+      "_id": "log_1795338672655_pbu4k",
+      "createdAt": "2026-11-22T09:11:12.655Z",
+      "updatedAt": "2026-11-22T09:11:14.998Z",
+      "eventId": "pageview_1795338672648_i0al5po",
+      "eventName": "PageView",
+      "orderId": "",
+      "eventSource": "browser_forwarded",
+      "eventSourceUrl": "http://localhost:3000/",
+      "status": "failed",
       "matching": {
         "hasFbp": false,
         "hasFbc": false,
         "fbcSource": "none",
         "hasIp": false,
         "hasUserAgent": true,
-        "hasPhone": true,
+        "hasPhone": false,
         "hasEmail": false,
-        "hasCity": true,
-        "hasCountry": true,
+        "hasCity": false,
+        "hasCountry": false,
         "hasExternalId": false,
         "presentParameters": [
-          "client_user_agent",
-          "ph",
-          "ct",
-          "country"
+          "client_user_agent"
         ],
         "missingParameters": [
           "fbp",
           "fbc",
           "client_ip_address",
-          "em"
+          "ph",
+          "em",
+          "ct",
+          "country"
         ]
       },
       "request": {
@@ -2867,88 +2669,75 @@
         "payload": {
           "data": [
             {
-              "event_name": "Purchase",
-              "event_time": 1795337918,
-              "event_id": "order_HAIR-2611-O78J",
-              "event_source_url": "",
+              "event_name": "PageView",
+              "event_time": 1795338672,
+              "event_id": "pageview_1795338672648_i0al5po",
+              "event_source_url": "http://localhost:3000/",
               "action_source": "website",
               "user_data": {
-                "ph": [
-                  "c691a4f4c402c6e7bed334ae7229352cd05305726eafb1dcad79dc11116934df"
-                ],
-                "fn": [
-                  "f2496823a2085fadab36f1ea49768a02dbafa543d653a5a3bd418cb4d8337425"
-                ],
-                "ln": [
-                  "0fe257c0bbde2ee686f7a06ec88c5ba0720ff723c56cded2ae25e1f55a12cd43"
-                ],
-                "ct": [
-                  "de90643718108ec9a93cc6905f2b976297505a8abeac37b747132877fb32fb8d"
-                ],
-                "country": [
-                  "5e657ff6158d3e2a6d23e2a523917a2305acee9423365e268695c4b7b8919f4c"
-                ],
-                "client_user_agent": "node"
-              },
-              "custom_data": {
-                "currency": "BDT",
-                "value": 250,
-                "order_id": "HAIR-2611-O78J",
-                "content_name": "Order Purchase",
-                "content_type": "product",
-                "content_category": "Minoxidil",
-                "content_categories": [
-                  "Minoxidil"
-                ],
-                "contents": [
-                  {
-                    "id": "prod_1795334930943",
-                    "quantity": 2,
-                    "item_price": 90,
-                    "category": "Minoxidil"
-                  }
-                ],
-                "num_items": 2
+                "client_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
               }
             }
           ]
         }
       },
       "attempts": 1,
-      "expiresAt": "2026-11-29T08:58:38.425Z"
+      "expiresAt": "2026-11-29T09:11:12.655Z",
+      "response": {
+        "httpStatus": 401,
+        "httpStatusText": "Unauthorized",
+        "eventsReceived": 0,
+        "messages": [],
+        "fbtraceId": "AfdNRAhBVCkMd7Dj9vkzgav",
+        "errorCode": 190,
+        "errorMessage": "Invalid OAuth access token - Cannot parse access token",
+        "rawBody": "{\"error\":{\"message\":\"Invalid OAuth access token - Cannot parse access token\",\"type\":\"OAuthException\",\"code\":190,\"fbtrace_id\":\"AfdNRAhBVCkMd7Dj9vkzgav\"}}",
+        "metaResponseBody": {
+          "error": {
+            "message": "Invalid OAuth access token - Cannot parse access token",
+            "type": "OAuthException",
+            "code": 190,
+            "fbtrace_id": "AfdNRAhBVCkMd7Dj9vkzgav"
+          }
+        },
+        "responseParseStatus": "success",
+        "parseError": null
+      },
+      "durationMs": 2343,
+      "completedAt": "2026-11-22T09:11:14.998Z"
     },
     {
-      "_id": "log_1795337905639_1gal0",
-      "createdAt": "2026-11-22T08:58:25.639Z",
-      "updatedAt": "2026-11-22T08:58:25.639Z",
-      "eventId": "order_HAIR-2611-1L87",
-      "eventName": "Purchase",
-      "orderId": "HAIR-2611-1L87",
-      "eventSource": "server_order",
-      "eventSourceUrl": "",
-      "status": "pending",
+      "_id": "log_1795338485508_as64m",
+      "createdAt": "2026-11-22T09:08:05.508Z",
+      "updatedAt": "2026-11-22T09:08:05.766Z",
+      "eventId": "pageview_1795338485501_5w1ry7t",
+      "eventName": "PageView",
+      "orderId": "",
+      "eventSource": "browser_forwarded",
+      "eventSourceUrl": "http://localhost:3000/",
+      "status": "failed",
       "matching": {
         "hasFbp": false,
         "hasFbc": false,
         "fbcSource": "none",
         "hasIp": false,
         "hasUserAgent": true,
-        "hasPhone": true,
+        "hasPhone": false,
         "hasEmail": false,
-        "hasCity": true,
-        "hasCountry": true,
+        "hasCity": false,
+        "hasCountry": false,
         "hasExternalId": false,
         "presentParameters": [
-          "client_user_agent",
-          "ph",
-          "ct",
-          "country"
+          "client_user_agent"
         ],
         "missingParameters": [
           "fbp",
           "fbc",
           "client_ip_address",
-          "em"
+          "ph",
+          "em",
+          "ct",
+          "country"
         ]
       },
       "request": {
@@ -2958,55 +2747,357 @@
         "payload": {
           "data": [
             {
-              "event_name": "Purchase",
-              "event_time": 1795337905,
-              "event_id": "order_HAIR-2611-1L87",
-              "event_source_url": "",
+              "event_name": "PageView",
+              "event_time": 1795338485,
+              "event_id": "pageview_1795338485501_5w1ry7t",
+              "event_source_url": "http://localhost:3000/",
               "action_source": "website",
               "user_data": {
-                "ph": [
-                  "c327520f85b0c6058fed05dfc0a63d8755f325b6ea1b550824f4a8e380d75de1"
-                ],
-                "fn": [
-                  "cbab2c1879445f5aecacda9dbad7fe2854010052f42aa4f5130e4749081e399f"
-                ],
-                "ln": [
-                  "a08ba4513b24fbf2aae9aeb9902e49c4f8c85d5833d9040ad9b67336b4fece43"
-                ],
-                "ct": [
-                  "de90643718108ec9a93cc6905f2b976297505a8abeac37b747132877fb32fb8d"
-                ],
-                "country": [
-                  "5e657ff6158d3e2a6d23e2a523917a2305acee9423365e268695c4b7b8919f4c"
-                ],
-                "client_user_agent": "node"
-              },
-              "custom_data": {
-                "currency": "BDT",
-                "value": 1730,
-                "order_id": "HAIR-2611-1L87",
-                "content_name": "Order Purchase",
-                "content_type": "product",
-                "content_category": "Minoxidil",
-                "content_categories": [
-                  "Minoxidil"
-                ],
-                "contents": [
-                  {
-                    "id": "prod_1795199827958",
-                    "quantity": 2,
-                    "item_price": 830,
-                    "category": "Minoxidil"
-                  }
-                ],
-                "num_items": 2
+                "client_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
               }
             }
           ]
         }
       },
       "attempts": 1,
-      "expiresAt": "2026-11-29T08:58:25.639Z"
+      "expiresAt": "2026-11-29T09:08:05.508Z",
+      "response": {
+        "httpStatus": 401,
+        "httpStatusText": "Unauthorized",
+        "eventsReceived": 0,
+        "messages": [],
+        "fbtraceId": "AO3JrNBONFMpiQ5C0EhdRUN",
+        "errorCode": 190,
+        "errorMessage": "Invalid OAuth access token - Cannot parse access token",
+        "rawBody": "{\"error\":{\"message\":\"Invalid OAuth access token - Cannot parse access token\",\"type\":\"OAuthException\",\"code\":190,\"fbtrace_id\":\"AO3JrNBONFMpiQ5C0EhdRUN\"}}",
+        "metaResponseBody": {
+          "error": {
+            "message": "Invalid OAuth access token - Cannot parse access token",
+            "type": "OAuthException",
+            "code": 190,
+            "fbtrace_id": "AO3JrNBONFMpiQ5C0EhdRUN"
+          }
+        },
+        "responseParseStatus": "success",
+        "parseError": null
+      },
+      "durationMs": 258,
+      "completedAt": "2026-11-22T09:08:05.766Z"
+    },
+    {
+      "_id": "log_1795338484586_j7sin",
+      "createdAt": "2026-11-22T09:08:04.586Z",
+      "updatedAt": "2026-11-22T09:08:05.003Z",
+      "eventId": "pageview_1795338484582_2nwxjsp",
+      "eventName": "PageView",
+      "orderId": "",
+      "eventSource": "browser_forwarded",
+      "eventSourceUrl": "http://localhost:3000/",
+      "status": "failed",
+      "matching": {
+        "hasFbp": true,
+        "hasFbc": false,
+        "fbcSource": "none",
+        "hasIp": false,
+        "hasUserAgent": true,
+        "hasPhone": false,
+        "hasEmail": false,
+        "hasCity": false,
+        "hasCountry": false,
+        "hasExternalId": false,
+        "presentParameters": [
+          "fbp",
+          "client_user_agent"
+        ],
+        "missingParameters": [
+          "fbc",
+          "client_ip_address",
+          "ph",
+          "em",
+          "ct",
+          "country"
+        ]
+      },
+      "request": {
+        "endpoint": "https://graph.facebook.com/v19.0/META_PIXEL_ID/events",
+        "method": "POST",
+        "eventCount": 1,
+        "payload": {
+          "data": [
+            {
+              "event_name": "PageView",
+              "event_time": 1795338484,
+              "event_id": "pageview_1795338484582_2nwxjsp",
+              "event_source_url": "http://localhost:3000/",
+              "action_source": "website",
+              "user_data": {
+                "fbp": "fb.0.1795267164730.146773037210383808",
+                "client_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/158.0.0.0 Safari/537.36 Edg/158.0.0.0"
+              }
+            }
+          ]
+        }
+      },
+      "attempts": 1,
+      "expiresAt": "2026-11-29T09:08:04.586Z",
+      "response": {
+        "httpStatus": 401,
+        "httpStatusText": "Unauthorized",
+        "eventsReceived": 0,
+        "messages": [],
+        "fbtraceId": "A1lDRUaOSF6uVsqcxvmc45C",
+        "errorCode": 190,
+        "errorMessage": "Invalid OAuth access token - Cannot parse access token",
+        "rawBody": "{\"error\":{\"message\":\"Invalid OAuth access token - Cannot parse access token\",\"type\":\"OAuthException\",\"code\":190,\"fbtrace_id\":\"A1lDRUaOSF6uVsqcxvmc45C\"}}",
+        "metaResponseBody": {
+          "error": {
+            "message": "Invalid OAuth access token - Cannot parse access token",
+            "type": "OAuthException",
+            "code": 190,
+            "fbtrace_id": "A1lDRUaOSF6uVsqcxvmc45C"
+          }
+        },
+        "responseParseStatus": "success",
+        "parseError": null
+      },
+      "durationMs": 416,
+      "completedAt": "2026-11-22T09:08:05.003Z"
+    },
+    {
+      "_id": "log_1795338479017_r9u7t",
+      "createdAt": "2026-11-22T09:07:59.017Z",
+      "updatedAt": "2026-11-22T09:07:59.372Z",
+      "eventId": "pageview_1795338479014_v2q5ugf",
+      "eventName": "PageView",
+      "orderId": "",
+      "eventSource": "browser_forwarded",
+      "eventSourceUrl": "http://localhost:3000/",
+      "status": "failed",
+      "matching": {
+        "hasFbp": true,
+        "hasFbc": false,
+        "fbcSource": "none",
+        "hasIp": false,
+        "hasUserAgent": true,
+        "hasPhone": false,
+        "hasEmail": false,
+        "hasCity": false,
+        "hasCountry": false,
+        "hasExternalId": false,
+        "presentParameters": [
+          "fbp",
+          "client_user_agent"
+        ],
+        "missingParameters": [
+          "fbc",
+          "client_ip_address",
+          "ph",
+          "em",
+          "ct",
+          "country"
+        ]
+      },
+      "request": {
+        "endpoint": "https://graph.facebook.com/v19.0/META_PIXEL_ID/events",
+        "method": "POST",
+        "eventCount": 1,
+        "payload": {
+          "data": [
+            {
+              "event_name": "PageView",
+              "event_time": 1795338479,
+              "event_id": "pageview_1795338479014_v2q5ugf",
+              "event_source_url": "http://localhost:3000/",
+              "action_source": "website",
+              "user_data": {
+                "fbp": "fb.0.1795267164730.146773037210383808",
+                "client_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/158.0.0.0 Safari/537.36 Edg/158.0.0.0"
+              }
+            }
+          ]
+        }
+      },
+      "attempts": 1,
+      "expiresAt": "2026-11-29T09:07:59.017Z",
+      "response": {
+        "httpStatus": 401,
+        "httpStatusText": "Unauthorized",
+        "eventsReceived": 0,
+        "messages": [],
+        "fbtraceId": "A8KErJIklb0XohDeS72qEYN",
+        "errorCode": 190,
+        "errorMessage": "Invalid OAuth access token - Cannot parse access token",
+        "rawBody": "{\"error\":{\"message\":\"Invalid OAuth access token - Cannot parse access token\",\"type\":\"OAuthException\",\"code\":190,\"fbtrace_id\":\"A8KErJIklb0XohDeS72qEYN\"}}",
+        "metaResponseBody": {
+          "error": {
+            "message": "Invalid OAuth access token - Cannot parse access token",
+            "type": "OAuthException",
+            "code": 190,
+            "fbtrace_id": "A8KErJIklb0XohDeS72qEYN"
+          }
+        },
+        "responseParseStatus": "success",
+        "parseError": null
+      },
+      "durationMs": 355,
+      "completedAt": "2026-11-22T09:07:59.372Z"
+    },
+    {
+      "_id": "log_1795338010526_8l547",
+      "createdAt": "2026-11-22T09:00:10.526Z",
+      "updatedAt": "2026-11-22T09:00:10.808Z",
+      "eventId": "pageview_1795338010526_se318n7",
+      "eventName": "PageView",
+      "orderId": "",
+      "eventSource": "browser_forwarded",
+      "eventSourceUrl": "http://localhost:3000/",
+      "status": "failed",
+      "matching": {
+        "hasFbp": false,
+        "hasFbc": false,
+        "fbcSource": "none",
+        "hasIp": false,
+        "hasUserAgent": true,
+        "hasPhone": false,
+        "hasEmail": false,
+        "hasCity": false,
+        "hasCountry": false,
+        "hasExternalId": false,
+        "presentParameters": [
+          "client_user_agent"
+        ],
+        "missingParameters": [
+          "fbp",
+          "fbc",
+          "client_ip_address",
+          "ph",
+          "em",
+          "ct",
+          "country"
+        ]
+      },
+      "request": {
+        "endpoint": "https://graph.facebook.com/v19.0/META_PIXEL_ID/events",
+        "method": "POST",
+        "eventCount": 1,
+        "payload": {
+          "data": [
+            {
+              "event_name": "PageView",
+              "event_time": 1795338010,
+              "event_id": "pageview_1795338010526_se318n7",
+              "event_source_url": "http://localhost:3000/",
+              "action_source": "website",
+              "user_data": {
+                "client_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
+              }
+            }
+          ]
+        }
+      },
+      "attempts": 1,
+      "expiresAt": "2026-11-29T09:00:10.526Z",
+      "response": {
+        "httpStatus": 401,
+        "httpStatusText": "Unauthorized",
+        "eventsReceived": 0,
+        "messages": [],
+        "fbtraceId": "ALY71-qA8kA_wIXyiLdbAv5",
+        "errorCode": 190,
+        "errorMessage": "Invalid OAuth access token - Cannot parse access token",
+        "rawBody": "{\"error\":{\"message\":\"Invalid OAuth access token - Cannot parse access token\",\"type\":\"OAuthException\",\"code\":190,\"fbtrace_id\":\"ALY71-qA8kA_wIXyiLdbAv5\"}}",
+        "metaResponseBody": {
+          "error": {
+            "message": "Invalid OAuth access token - Cannot parse access token",
+            "type": "OAuthException",
+            "code": 190,
+            "fbtrace_id": "ALY71-qA8kA_wIXyiLdbAv5"
+          }
+        },
+        "responseParseStatus": "success",
+        "parseError": null
+      },
+      "durationMs": 282,
+      "completedAt": "2026-11-22T09:00:10.808Z"
+    },
+    {
+      "_id": "log_1795338008510_v62q2",
+      "createdAt": "2026-11-22T09:00:08.510Z",
+      "updatedAt": "2026-11-22T09:00:09.015Z",
+      "eventId": "pageview_1795338008520_a1dlicr",
+      "eventName": "PageView",
+      "orderId": "",
+      "eventSource": "browser_forwarded",
+      "eventSourceUrl": "http://localhost:3000/",
+      "status": "failed",
+      "matching": {
+        "hasFbp": true,
+        "hasFbc": false,
+        "fbcSource": "none",
+        "hasIp": false,
+        "hasUserAgent": true,
+        "hasPhone": false,
+        "hasEmail": false,
+        "hasCity": false,
+        "hasCountry": false,
+        "hasExternalId": false,
+        "presentParameters": [
+          "fbp",
+          "client_user_agent"
+        ],
+        "missingParameters": [
+          "fbc",
+          "client_ip_address",
+          "ph",
+          "em",
+          "ct",
+          "country"
+        ]
+      },
+      "request": {
+        "endpoint": "https://graph.facebook.com/v19.0/META_PIXEL_ID/events",
+        "method": "POST",
+        "eventCount": 1,
+        "payload": {
+          "data": [
+            {
+              "event_name": "PageView",
+              "event_time": 1795338008,
+              "event_id": "pageview_1795338008520_a1dlicr",
+              "event_source_url": "http://localhost:3000/",
+              "action_source": "website",
+              "user_data": {
+                "fbp": "fb.0.1795267164730.146773037210383808",
+                "client_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/158.0.0.0 Safari/537.36 Edg/158.0.0.0"
+              }
+            }
+          ]
+        }
+      },
+      "attempts": 1,
+      "expiresAt": "2026-11-29T09:00:08.510Z",
+      "response": {
+        "httpStatus": 401,
+        "httpStatusText": "Unauthorized",
+        "eventsReceived": 0,
+        "messages": [],
+        "fbtraceId": "AmUfpmiU56A8JPajrtnkXk9",
+        "errorCode": 190,
+        "errorMessage": "Invalid OAuth access token - Cannot parse access token",
+        "rawBody": "{\"error\":{\"message\":\"Invalid OAuth access token - Cannot parse access token\",\"type\":\"OAuthException\",\"code\":190,\"fbtrace_id\":\"AmUfpmiU56A8JPajrtnkXk9\"}}",
+        "metaResponseBody": {
+          "error": {
+            "message": "Invalid OAuth access token - Cannot parse access token",
+            "type": "OAuthException",
+            "code": 190,
+            "fbtrace_id": "AmUfpmiU56A8JPajrtnkXk9"
+          }
+        },
+        "responseParseStatus": "success",
+        "parseError": null
+      },
+      "durationMs": 505,
+      "completedAt": "2026-11-22T09:00:09.015Z"
     },
     {
       "_id": "log_1795337891494_8ytjx",
