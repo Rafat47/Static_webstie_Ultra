@@ -41,9 +41,20 @@
       "description": "",
       "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTNVAT34lr28fw2q39pkuyC8ZUGhzn2-mvfE_oV5oB1TQ&s=10",
       "isActive": true,
-      "displayOrder": 4,
+      "displayOrder": 5,
       "createdAt": "2026-11-20T19:48:59.933Z",
-      "updatedAt": "2026-11-20T19:48:59.933Z"
+      "updatedAt": "2026-11-22T08:40:31.018Z"
+    },
+    {
+      "_id": "cat_1795334541164",
+      "createdAt": "2026-11-22T08:02:21.164Z",
+      "updatedAt": "2026-11-22T08:02:21.164Z",
+      "name": "Demo 6",
+      "slug": "demo-6",
+      "description": "",
+      "image": "",
+      "isActive": true,
+      "displayOrder": 6
     },
     {
       "_id": "6b0072b8ca8f2dea4a890e17",
@@ -52,9 +63,9 @@
       "description": "Silicone scalp massagers, sanitizing sprays, and precision calibrated droppers.",
       "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTcwOPBl8_JgtCSo5g5PTLol3RQlsYRb2YU-LSn0prrCw&s=10",
       "isActive": true,
-      "displayOrder": 5,
+      "displayOrder": 54,
       "createdAt": "2026-11-20T16:18:00.640Z",
-      "updatedAt": "2026-11-20T19:49:20.816Z"
+      "updatedAt": "2026-11-22T08:40:36.797Z"
     }
   ],
   "deliverySettings": {
@@ -125,7 +136,7 @@
   },
   "hero": {
     "badge": "100% Authentic Guaranteed",
-    "title": "Science-Backed Scalp Restoration BD",
+    "title": "Science-Backed Hair Restoration & Scalp Wellness",
     "subtitle": "Reactivate dormant hair follicles, increase scalp blood microcirculation, and reclaim thicker hair with dermatologically proven Minoxidil 5% and micro-needling systems.",
     "primaryBtnText": "Shop Now",
     "primaryBtnLink": "/shop",
@@ -212,6 +223,54 @@
     "subtitle": "Tap any product to explore complete details & packages"
   },
   "products": [
+    {
+      "_id": "prod_1795334930943",
+      "createdAt": "2026-11-22T08:08:50.943Z",
+      "updatedAt": "2026-11-22T09:01:40.211Z",
+      "name": "demo",
+      "title": "demo",
+      "slug": "demo",
+      "shortDescription": "",
+      "description": "",
+      "images": [],
+      "category": "Minoxidil",
+      "regularPrice": 100,
+      "salePrice": 90,
+      "stock": 46,
+      "isFeatured": true,
+      "isActive": true,
+      "productType": "minoxidil",
+      "comboItems": [],
+      "badge": "",
+      "keyBenefits": [],
+      "specifications": [],
+      "displayOrder": 1,
+      "carouselOrder": 1
+    },
+    {
+      "_id": "prod_1795334769036",
+      "createdAt": "2026-11-22T08:06:09.036Z",
+      "updatedAt": "2026-11-22T08:07:15.429Z",
+      "name": "Demo product",
+      "title": "Demo product",
+      "slug": "demo-product",
+      "shortDescription": "",
+      "description": "",
+      "images": [],
+      "category": "Demo 6",
+      "regularPrice": 15,
+      "salePrice": 9,
+      "stock": 50,
+      "isFeatured": true,
+      "isActive": true,
+      "productType": "minoxidil",
+      "comboItems": [],
+      "badge": "",
+      "keyBenefits": [],
+      "specifications": [],
+      "displayOrder": 25,
+      "carouselOrder": 25
+    },
     {
       "_id": "prod_1795285533548",
       "createdAt": "2026-11-21T18:25:33.548Z",
@@ -510,7 +569,7 @@
       "category": "Minoxidil",
       "regularPrice": 1250,
       "salePrice": 830,
-      "stock": 37,
+      "stock": 31,
       "isFeatured": true,
       "isActive": true,
       "productType": "minoxidil",
@@ -520,7 +579,7 @@
       "specifications": [],
       "carouselOrder": 0,
       "createdAt": "2026-11-20T18:37:07.958Z",
-      "updatedAt": "2026-11-22T01:25:03.072Z",
+      "updatedAt": "2026-11-22T09:01:38.209Z",
       "displayOrder": 0
     },
     {
@@ -802,9 +861,315 @@
     "whatsappNumber": "+8801356813069",
     "address": "Sonirakra, Dhonia, Dhaka 1236"
   },
-  "updatedAt": "2026-11-22T01:25:03.379Z",
-  "version": 179,
+  "updatedAt": "2026-11-22T09:01:40.234Z",
+  "version": 198,
   "orders": [
+    {
+      "_id": "ord_1795338100222",
+      "createdAt": "2026-11-22T09:01:40.222Z",
+      "updatedAt": "2026-11-22T09:01:40.222Z",
+      "statusHistory": [
+        {
+          "status": "Pending",
+          "timestamp": "2026-11-22T09:01:40.222Z",
+          "note": "Order placed by customer via Cash on Delivery",
+          "updatedBy": "System"
+        }
+      ],
+      "orderId": "HAIR-2611-OPMR",
+      "orderNumber": "HAIR-2611-OPMR",
+      "customer": {
+        "fullName": "Mahmudullah Riyad",
+        "phoneNumber": "01912345678",
+        "district": "Dhaka",
+        "deliveryArea": "inside_dhaka",
+        "address": "Uttara Sector 7, Dhaka",
+        "notes": ""
+      },
+      "items": [
+        {
+          "productId": "prod_1795334930943",
+          "productName": "demo",
+          "slug": "demo",
+          "category": "Minoxidil",
+          "image": "",
+          "unitPrice": 90,
+          "quantity": 2,
+          "itemTotal": 180
+        }
+      ],
+      "subtotal": 180,
+      "discount": 0,
+      "deliveryCharge": 70,
+      "finalTotal": 250,
+      "paymentMethod": "COD",
+      "orderStatus": "Pending",
+      "attribution": {
+        "fbp": "",
+        "fbc": "",
+        "fbcSource": "none",
+        "fbclid": "",
+        "utmSource": "",
+        "utmMedium": "",
+        "utmCampaign": "",
+        "utmContent": "",
+        "utmTerm": "",
+        "landingPage": "",
+        "referrer": "",
+        "userAgent": "node",
+        "ip": ""
+      },
+      "metaEventId": "order_HAIR-2611-OPMR"
+    },
+    {
+      "_id": "ord_1795338098221",
+      "createdAt": "2026-11-22T09:01:38.221Z",
+      "updatedAt": "2026-11-22T09:01:38.587Z",
+      "statusHistory": [
+        {
+          "status": "Pending",
+          "timestamp": "2026-11-22T09:01:38.220Z",
+          "note": "Order placed by customer via Cash on Delivery",
+          "updatedBy": "System"
+        },
+        {
+          "status": "Confirmed",
+          "timestamp": "2026-11-22T09:01:38.587Z",
+          "note": "Customer confirmed via phone call",
+          "updatedBy": "admin"
+        }
+      ],
+      "orderId": "HAIR-2611-3VBR",
+      "orderNumber": "HAIR-2611-3VBR",
+      "customer": {
+        "fullName": "Shakib Al Hasan",
+        "phoneNumber": "01712345678",
+        "district": "Dhaka",
+        "deliveryArea": "inside_dhaka",
+        "address": "House 12, Road 4, Banani, Dhaka",
+        "notes": ""
+      },
+      "items": [
+        {
+          "productId": "prod_1795199827958",
+          "productName": "Kirkland Minoxidil 5% Extra Strength – Topical Hair Regrowth Solution (60ml)",
+          "slug": "original-kirkland-5-60ml",
+          "category": "Minoxidil",
+          "image": "https://res.cloudinary.com/wvd1wcrw/image/upload/v1795255189/imresizer-resize-image-Picsart-AiImageEnhancer.webp",
+          "unitPrice": 830,
+          "quantity": 2,
+          "itemTotal": 1660
+        }
+      ],
+      "subtotal": 1660,
+      "discount": 0,
+      "deliveryCharge": 70,
+      "finalTotal": 1730,
+      "paymentMethod": "COD",
+      "orderStatus": "Confirmed",
+      "attribution": {
+        "fbp": "",
+        "fbc": "",
+        "fbcSource": "none",
+        "fbclid": "test_fbclid_12345",
+        "utmSource": "facebook",
+        "utmMedium": "",
+        "utmCampaign": "winter_minoxidil_sale",
+        "utmContent": "",
+        "utmTerm": "",
+        "landingPage": "",
+        "referrer": "",
+        "userAgent": "node",
+        "ip": ""
+      },
+      "metaEventId": "order_HAIR-2611-3VBR",
+      "internalNotes": "Steadfast Courier Booking #987654"
+    },
+    {
+      "_id": "ord_1795337955101",
+      "createdAt": "2026-11-22T08:59:15.101Z",
+      "updatedAt": "2026-11-22T08:59:15.326Z",
+      "statusHistory": [
+        {
+          "status": "Pending",
+          "timestamp": "2026-11-22T08:59:15.100Z",
+          "note": "Order placed by customer via Cash on Delivery",
+          "updatedBy": "System"
+        },
+        {
+          "status": "Confirmed",
+          "timestamp": "2026-11-22T08:59:15.326Z",
+          "note": "Customer confirmed via phone call",
+          "updatedBy": "admin"
+        }
+      ],
+      "orderId": "HAIR-2611-Y0ED",
+      "orderNumber": "HAIR-2611-Y0ED",
+      "customer": {
+        "fullName": "Shakib Al Hasan",
+        "phoneNumber": "01712345678",
+        "district": "Dhaka",
+        "deliveryArea": "inside_dhaka",
+        "address": "House 12, Road 4, Banani, Dhaka",
+        "notes": ""
+      },
+      "items": [
+        {
+          "productId": "prod_1795199827958",
+          "productName": "Kirkland Minoxidil 5% Extra Strength – Topical Hair Regrowth Solution (60ml)",
+          "slug": "original-kirkland-5-60ml",
+          "category": "Minoxidil",
+          "image": "https://res.cloudinary.com/wvd1wcrw/image/upload/v1795255189/imresizer-resize-image-Picsart-AiImageEnhancer.webp",
+          "unitPrice": 830,
+          "quantity": 2,
+          "itemTotal": 1660
+        }
+      ],
+      "subtotal": 1660,
+      "discount": 0,
+      "deliveryCharge": 70,
+      "finalTotal": 1730,
+      "paymentMethod": "COD",
+      "orderStatus": "Confirmed",
+      "attribution": {
+        "fbp": "",
+        "fbc": "",
+        "fbcSource": "none",
+        "fbclid": "test_fbclid_12345",
+        "utmSource": "facebook",
+        "utmMedium": "",
+        "utmCampaign": "winter_minoxidil_sale",
+        "utmContent": "",
+        "utmTerm": "",
+        "landingPage": "",
+        "referrer": "",
+        "userAgent": "node",
+        "ip": ""
+      },
+      "metaEventId": "order_HAIR-2611-Y0ED",
+      "internalNotes": "Steadfast Courier Booking #987654"
+    },
+    {
+      "_id": "ord_1795337918412",
+      "createdAt": "2026-11-22T08:58:38.412Z",
+      "updatedAt": "2026-11-22T08:58:38.412Z",
+      "statusHistory": [
+        {
+          "status": "Pending",
+          "timestamp": "2026-11-22T08:58:38.412Z",
+          "note": "Order placed by customer via Cash on Delivery",
+          "updatedBy": "System"
+        }
+      ],
+      "orderId": "HAIR-2611-O78J",
+      "orderNumber": "HAIR-2611-O78J",
+      "customer": {
+        "fullName": "Mahmudullah Riyad",
+        "phoneNumber": "01912345678",
+        "district": "Dhaka",
+        "deliveryArea": "inside_dhaka",
+        "address": "Uttara Sector 7, Dhaka",
+        "notes": ""
+      },
+      "items": [
+        {
+          "productId": "prod_1795334930943",
+          "productName": "demo",
+          "slug": "demo",
+          "category": "Minoxidil",
+          "image": "",
+          "unitPrice": 90,
+          "quantity": 2,
+          "itemTotal": 180
+        }
+      ],
+      "subtotal": 180,
+      "discount": 0,
+      "deliveryCharge": 70,
+      "finalTotal": 250,
+      "paymentMethod": "COD",
+      "orderStatus": "Pending",
+      "attribution": {
+        "fbp": "",
+        "fbc": "",
+        "fbcSource": "none",
+        "fbclid": "",
+        "utmSource": "",
+        "utmMedium": "",
+        "utmCampaign": "",
+        "utmContent": "",
+        "utmTerm": "",
+        "landingPage": "",
+        "referrer": "",
+        "userAgent": "node",
+        "ip": ""
+      },
+      "metaEventId": "order_HAIR-2611-O78J"
+    },
+    {
+      "_id": "ord_1795337905625",
+      "createdAt": "2026-11-22T08:58:25.625Z",
+      "updatedAt": "2026-11-22T08:58:25.858Z",
+      "statusHistory": [
+        {
+          "status": "Pending",
+          "timestamp": "2026-11-22T08:58:25.624Z",
+          "note": "Order placed by customer via Cash on Delivery",
+          "updatedBy": "System"
+        },
+        {
+          "status": "Confirmed",
+          "timestamp": "2026-11-22T08:58:25.858Z",
+          "note": "Customer confirmed via phone call",
+          "updatedBy": "admin"
+        }
+      ],
+      "orderId": "HAIR-2611-1L87",
+      "orderNumber": "HAIR-2611-1L87",
+      "customer": {
+        "fullName": "Shakib Al Hasan",
+        "phoneNumber": "01712345678",
+        "district": "Dhaka",
+        "deliveryArea": "inside_dhaka",
+        "address": "House 12, Road 4, Banani, Dhaka",
+        "notes": ""
+      },
+      "items": [
+        {
+          "productId": "prod_1795199827958",
+          "productName": "Kirkland Minoxidil 5% Extra Strength – Topical Hair Regrowth Solution (60ml)",
+          "slug": "original-kirkland-5-60ml",
+          "category": "Minoxidil",
+          "image": "https://res.cloudinary.com/wvd1wcrw/image/upload/v1795255189/imresizer-resize-image-Picsart-AiImageEnhancer.webp",
+          "unitPrice": 830,
+          "quantity": 2,
+          "itemTotal": 1660
+        }
+      ],
+      "subtotal": 1660,
+      "discount": 0,
+      "deliveryCharge": 70,
+      "finalTotal": 1730,
+      "paymentMethod": "COD",
+      "orderStatus": "Confirmed",
+      "attribution": {
+        "fbp": "",
+        "fbc": "",
+        "fbcSource": "none",
+        "fbclid": "test_fbclid_12345",
+        "utmSource": "facebook",
+        "utmMedium": "",
+        "utmCampaign": "winter_minoxidil_sale",
+        "utmContent": "",
+        "utmTerm": "",
+        "landingPage": "",
+        "referrer": "",
+        "userAgent": "node",
+        "ip": ""
+      },
+      "metaEventId": "order_HAIR-2611-1L87",
+      "internalNotes": "Steadfast Courier Booking #987654"
+    },
     {
       "_id": "ord_1795310703081",
       "createdAt": "2026-11-22T01:25:03.081Z",
@@ -2188,6 +2553,3586 @@
     }
   ],
   "metaEventLogs": [
+    {
+      "_id": "log_1795338100234_4m0z1",
+      "createdAt": "2026-11-22T09:01:40.234Z",
+      "updatedAt": "2026-11-22T09:01:40.234Z",
+      "eventId": "order_HAIR-2611-OPMR",
+      "eventName": "Purchase",
+      "orderId": "HAIR-2611-OPMR",
+      "eventSource": "server_order",
+      "eventSourceUrl": "",
+      "status": "pending",
+      "matching": {
+        "hasFbp": false,
+        "hasFbc": false,
+        "fbcSource": "none",
+        "hasIp": false,
+        "hasUserAgent": true,
+        "hasPhone": true,
+        "hasEmail": false,
+        "hasCity": true,
+        "hasCountry": true,
+        "hasExternalId": false,
+        "presentParameters": [
+          "client_user_agent",
+          "ph",
+          "ct",
+          "country"
+        ],
+        "missingParameters": [
+          "fbp",
+          "fbc",
+          "client_ip_address",
+          "em"
+        ]
+      },
+      "request": {
+        "endpoint": "https://graph.facebook.com/v19.0/META_PIXEL_ID/events",
+        "method": "POST",
+        "eventCount": 1,
+        "payload": {
+          "data": [
+            {
+              "event_name": "Purchase",
+              "event_time": 1795338100,
+              "event_id": "order_HAIR-2611-OPMR",
+              "event_source_url": "",
+              "action_source": "website",
+              "user_data": {
+                "ph": [
+                  "c691a4f4c402c6e7bed334ae7229352cd05305726eafb1dcad79dc11116934df"
+                ],
+                "fn": [
+                  "f2496823a2085fadab36f1ea49768a02dbafa543d653a5a3bd418cb4d8337425"
+                ],
+                "ln": [
+                  "0fe257c0bbde2ee686f7a06ec88c5ba0720ff723c56cded2ae25e1f55a12cd43"
+                ],
+                "ct": [
+                  "de90643718108ec9a93cc6905f2b976297505a8abeac37b747132877fb32fb8d"
+                ],
+                "country": [
+                  "5e657ff6158d3e2a6d23e2a523917a2305acee9423365e268695c4b7b8919f4c"
+                ],
+                "client_user_agent": "node"
+              },
+              "custom_data": {
+                "currency": "BDT",
+                "value": 250,
+                "order_id": "HAIR-2611-OPMR",
+                "content_name": "Order Purchase",
+                "content_type": "product",
+                "content_category": "Minoxidil",
+                "content_categories": [
+                  "Minoxidil"
+                ],
+                "contents": [
+                  {
+                    "id": "prod_1795334930943",
+                    "quantity": 2,
+                    "item_price": 90,
+                    "category": "Minoxidil"
+                  }
+                ],
+                "num_items": 2
+              }
+            }
+          ]
+        }
+      },
+      "attempts": 1,
+      "expiresAt": "2026-11-29T09:01:40.234Z"
+    },
+    {
+      "_id": "log_1795338098234_zyh7e",
+      "createdAt": "2026-11-22T09:01:38.234Z",
+      "updatedAt": "2026-11-22T09:01:38.234Z",
+      "eventId": "order_HAIR-2611-3VBR",
+      "eventName": "Purchase",
+      "orderId": "HAIR-2611-3VBR",
+      "eventSource": "server_order",
+      "eventSourceUrl": "",
+      "status": "pending",
+      "matching": {
+        "hasFbp": false,
+        "hasFbc": false,
+        "fbcSource": "none",
+        "hasIp": false,
+        "hasUserAgent": true,
+        "hasPhone": true,
+        "hasEmail": false,
+        "hasCity": true,
+        "hasCountry": true,
+        "hasExternalId": false,
+        "presentParameters": [
+          "client_user_agent",
+          "ph",
+          "ct",
+          "country"
+        ],
+        "missingParameters": [
+          "fbp",
+          "fbc",
+          "client_ip_address",
+          "em"
+        ]
+      },
+      "request": {
+        "endpoint": "https://graph.facebook.com/v19.0/META_PIXEL_ID/events",
+        "method": "POST",
+        "eventCount": 1,
+        "payload": {
+          "data": [
+            {
+              "event_name": "Purchase",
+              "event_time": 1795338098,
+              "event_id": "order_HAIR-2611-3VBR",
+              "event_source_url": "",
+              "action_source": "website",
+              "user_data": {
+                "ph": [
+                  "c327520f85b0c6058fed05dfc0a63d8755f325b6ea1b550824f4a8e380d75de1"
+                ],
+                "fn": [
+                  "cbab2c1879445f5aecacda9dbad7fe2854010052f42aa4f5130e4749081e399f"
+                ],
+                "ln": [
+                  "a08ba4513b24fbf2aae9aeb9902e49c4f8c85d5833d9040ad9b67336b4fece43"
+                ],
+                "ct": [
+                  "de90643718108ec9a93cc6905f2b976297505a8abeac37b747132877fb32fb8d"
+                ],
+                "country": [
+                  "5e657ff6158d3e2a6d23e2a523917a2305acee9423365e268695c4b7b8919f4c"
+                ],
+                "client_user_agent": "node"
+              },
+              "custom_data": {
+                "currency": "BDT",
+                "value": 1730,
+                "order_id": "HAIR-2611-3VBR",
+                "content_name": "Order Purchase",
+                "content_type": "product",
+                "content_category": "Minoxidil",
+                "content_categories": [
+                  "Minoxidil"
+                ],
+                "contents": [
+                  {
+                    "id": "prod_1795199827958",
+                    "quantity": 2,
+                    "item_price": 830,
+                    "category": "Minoxidil"
+                  }
+                ],
+                "num_items": 2
+              }
+            }
+          ]
+        }
+      },
+      "attempts": 1,
+      "expiresAt": "2026-11-29T09:01:38.233Z"
+    },
+    {
+      "_id": "log_1795337955112_nim51",
+      "createdAt": "2026-11-22T08:59:15.112Z",
+      "updatedAt": "2026-11-22T08:59:15.112Z",
+      "eventId": "order_HAIR-2611-Y0ED",
+      "eventName": "Purchase",
+      "orderId": "HAIR-2611-Y0ED",
+      "eventSource": "server_order",
+      "eventSourceUrl": "",
+      "status": "pending",
+      "matching": {
+        "hasFbp": false,
+        "hasFbc": false,
+        "fbcSource": "none",
+        "hasIp": false,
+        "hasUserAgent": true,
+        "hasPhone": true,
+        "hasEmail": false,
+        "hasCity": true,
+        "hasCountry": true,
+        "hasExternalId": false,
+        "presentParameters": [
+          "client_user_agent",
+          "ph",
+          "ct",
+          "country"
+        ],
+        "missingParameters": [
+          "fbp",
+          "fbc",
+          "client_ip_address",
+          "em"
+        ]
+      },
+      "request": {
+        "endpoint": "https://graph.facebook.com/v19.0/META_PIXEL_ID/events",
+        "method": "POST",
+        "eventCount": 1,
+        "payload": {
+          "data": [
+            {
+              "event_name": "Purchase",
+              "event_time": 1795337955,
+              "event_id": "order_HAIR-2611-Y0ED",
+              "event_source_url": "",
+              "action_source": "website",
+              "user_data": {
+                "ph": [
+                  "c327520f85b0c6058fed05dfc0a63d8755f325b6ea1b550824f4a8e380d75de1"
+                ],
+                "fn": [
+                  "cbab2c1879445f5aecacda9dbad7fe2854010052f42aa4f5130e4749081e399f"
+                ],
+                "ln": [
+                  "a08ba4513b24fbf2aae9aeb9902e49c4f8c85d5833d9040ad9b67336b4fece43"
+                ],
+                "ct": [
+                  "de90643718108ec9a93cc6905f2b976297505a8abeac37b747132877fb32fb8d"
+                ],
+                "country": [
+                  "5e657ff6158d3e2a6d23e2a523917a2305acee9423365e268695c4b7b8919f4c"
+                ],
+                "client_user_agent": "node"
+              },
+              "custom_data": {
+                "currency": "BDT",
+                "value": 1730,
+                "order_id": "HAIR-2611-Y0ED",
+                "content_name": "Order Purchase",
+                "content_type": "product",
+                "content_category": "Minoxidil",
+                "content_categories": [
+                  "Minoxidil"
+                ],
+                "contents": [
+                  {
+                    "id": "prod_1795199827958",
+                    "quantity": 2,
+                    "item_price": 830,
+                    "category": "Minoxidil"
+                  }
+                ],
+                "num_items": 2
+              }
+            }
+          ]
+        }
+      },
+      "attempts": 1,
+      "expiresAt": "2026-11-29T08:59:15.112Z"
+    },
+    {
+      "_id": "log_1795337918426_30lzm",
+      "createdAt": "2026-11-22T08:58:38.426Z",
+      "updatedAt": "2026-11-22T08:58:38.426Z",
+      "eventId": "order_HAIR-2611-O78J",
+      "eventName": "Purchase",
+      "orderId": "HAIR-2611-O78J",
+      "eventSource": "server_order",
+      "eventSourceUrl": "",
+      "status": "pending",
+      "matching": {
+        "hasFbp": false,
+        "hasFbc": false,
+        "fbcSource": "none",
+        "hasIp": false,
+        "hasUserAgent": true,
+        "hasPhone": true,
+        "hasEmail": false,
+        "hasCity": true,
+        "hasCountry": true,
+        "hasExternalId": false,
+        "presentParameters": [
+          "client_user_agent",
+          "ph",
+          "ct",
+          "country"
+        ],
+        "missingParameters": [
+          "fbp",
+          "fbc",
+          "client_ip_address",
+          "em"
+        ]
+      },
+      "request": {
+        "endpoint": "https://graph.facebook.com/v19.0/META_PIXEL_ID/events",
+        "method": "POST",
+        "eventCount": 1,
+        "payload": {
+          "data": [
+            {
+              "event_name": "Purchase",
+              "event_time": 1795337918,
+              "event_id": "order_HAIR-2611-O78J",
+              "event_source_url": "",
+              "action_source": "website",
+              "user_data": {
+                "ph": [
+                  "c691a4f4c402c6e7bed334ae7229352cd05305726eafb1dcad79dc11116934df"
+                ],
+                "fn": [
+                  "f2496823a2085fadab36f1ea49768a02dbafa543d653a5a3bd418cb4d8337425"
+                ],
+                "ln": [
+                  "0fe257c0bbde2ee686f7a06ec88c5ba0720ff723c56cded2ae25e1f55a12cd43"
+                ],
+                "ct": [
+                  "de90643718108ec9a93cc6905f2b976297505a8abeac37b747132877fb32fb8d"
+                ],
+                "country": [
+                  "5e657ff6158d3e2a6d23e2a523917a2305acee9423365e268695c4b7b8919f4c"
+                ],
+                "client_user_agent": "node"
+              },
+              "custom_data": {
+                "currency": "BDT",
+                "value": 250,
+                "order_id": "HAIR-2611-O78J",
+                "content_name": "Order Purchase",
+                "content_type": "product",
+                "content_category": "Minoxidil",
+                "content_categories": [
+                  "Minoxidil"
+                ],
+                "contents": [
+                  {
+                    "id": "prod_1795334930943",
+                    "quantity": 2,
+                    "item_price": 90,
+                    "category": "Minoxidil"
+                  }
+                ],
+                "num_items": 2
+              }
+            }
+          ]
+        }
+      },
+      "attempts": 1,
+      "expiresAt": "2026-11-29T08:58:38.425Z"
+    },
+    {
+      "_id": "log_1795337905639_1gal0",
+      "createdAt": "2026-11-22T08:58:25.639Z",
+      "updatedAt": "2026-11-22T08:58:25.639Z",
+      "eventId": "order_HAIR-2611-1L87",
+      "eventName": "Purchase",
+      "orderId": "HAIR-2611-1L87",
+      "eventSource": "server_order",
+      "eventSourceUrl": "",
+      "status": "pending",
+      "matching": {
+        "hasFbp": false,
+        "hasFbc": false,
+        "fbcSource": "none",
+        "hasIp": false,
+        "hasUserAgent": true,
+        "hasPhone": true,
+        "hasEmail": false,
+        "hasCity": true,
+        "hasCountry": true,
+        "hasExternalId": false,
+        "presentParameters": [
+          "client_user_agent",
+          "ph",
+          "ct",
+          "country"
+        ],
+        "missingParameters": [
+          "fbp",
+          "fbc",
+          "client_ip_address",
+          "em"
+        ]
+      },
+      "request": {
+        "endpoint": "https://graph.facebook.com/v19.0/META_PIXEL_ID/events",
+        "method": "POST",
+        "eventCount": 1,
+        "payload": {
+          "data": [
+            {
+              "event_name": "Purchase",
+              "event_time": 1795337905,
+              "event_id": "order_HAIR-2611-1L87",
+              "event_source_url": "",
+              "action_source": "website",
+              "user_data": {
+                "ph": [
+                  "c327520f85b0c6058fed05dfc0a63d8755f325b6ea1b550824f4a8e380d75de1"
+                ],
+                "fn": [
+                  "cbab2c1879445f5aecacda9dbad7fe2854010052f42aa4f5130e4749081e399f"
+                ],
+                "ln": [
+                  "a08ba4513b24fbf2aae9aeb9902e49c4f8c85d5833d9040ad9b67336b4fece43"
+                ],
+                "ct": [
+                  "de90643718108ec9a93cc6905f2b976297505a8abeac37b747132877fb32fb8d"
+                ],
+                "country": [
+                  "5e657ff6158d3e2a6d23e2a523917a2305acee9423365e268695c4b7b8919f4c"
+                ],
+                "client_user_agent": "node"
+              },
+              "custom_data": {
+                "currency": "BDT",
+                "value": 1730,
+                "order_id": "HAIR-2611-1L87",
+                "content_name": "Order Purchase",
+                "content_type": "product",
+                "content_category": "Minoxidil",
+                "content_categories": [
+                  "Minoxidil"
+                ],
+                "contents": [
+                  {
+                    "id": "prod_1795199827958",
+                    "quantity": 2,
+                    "item_price": 830,
+                    "category": "Minoxidil"
+                  }
+                ],
+                "num_items": 2
+              }
+            }
+          ]
+        }
+      },
+      "attempts": 1,
+      "expiresAt": "2026-11-29T08:58:25.639Z"
+    },
+    {
+      "_id": "log_1795337891494_8ytjx",
+      "createdAt": "2026-11-22T08:58:11.494Z",
+      "updatedAt": "2026-11-22T08:58:11.779Z",
+      "eventId": "pageview_1795337891476_orez4pg",
+      "eventName": "PageView",
+      "orderId": "",
+      "eventSource": "browser_forwarded",
+      "eventSourceUrl": "http://localhost:3000/",
+      "status": "failed",
+      "matching": {
+        "hasFbp": false,
+        "hasFbc": false,
+        "fbcSource": "none",
+        "hasIp": false,
+        "hasUserAgent": true,
+        "hasPhone": false,
+        "hasEmail": false,
+        "hasCity": false,
+        "hasCountry": false,
+        "hasExternalId": false,
+        "presentParameters": [
+          "client_user_agent"
+        ],
+        "missingParameters": [
+          "fbp",
+          "fbc",
+          "client_ip_address",
+          "ph",
+          "em",
+          "ct",
+          "country"
+        ]
+      },
+      "request": {
+        "endpoint": "https://graph.facebook.com/v19.0/META_PIXEL_ID/events",
+        "method": "POST",
+        "eventCount": 1,
+        "payload": {
+          "data": [
+            {
+              "event_name": "PageView",
+              "event_time": 1795337891,
+              "event_id": "pageview_1795337891476_orez4pg",
+              "event_source_url": "http://localhost:3000/",
+              "action_source": "website",
+              "user_data": {
+                "client_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
+              }
+            }
+          ]
+        }
+      },
+      "attempts": 1,
+      "expiresAt": "2026-11-29T08:58:11.494Z",
+      "response": {
+        "httpStatus": 401,
+        "httpStatusText": "Unauthorized",
+        "eventsReceived": 0,
+        "messages": [],
+        "fbtraceId": "AiOLGy3Y0Nu0YKT8BDOCE7o",
+        "errorCode": 190,
+        "errorMessage": "Invalid OAuth access token - Cannot parse access token",
+        "rawBody": "{\"error\":{\"message\":\"Invalid OAuth access token - Cannot parse access token\",\"type\":\"OAuthException\",\"code\":190,\"fbtrace_id\":\"AiOLGy3Y0Nu0YKT8BDOCE7o\"}}",
+        "metaResponseBody": {
+          "error": {
+            "message": "Invalid OAuth access token - Cannot parse access token",
+            "type": "OAuthException",
+            "code": 190,
+            "fbtrace_id": "AiOLGy3Y0Nu0YKT8BDOCE7o"
+          }
+        },
+        "responseParseStatus": "success",
+        "parseError": null
+      },
+      "durationMs": 284,
+      "completedAt": "2026-11-22T08:58:11.779Z"
+    },
+    {
+      "_id": "log_1795337890520_lp7qb",
+      "createdAt": "2026-11-22T08:58:10.520Z",
+      "updatedAt": "2026-11-22T08:58:10.908Z",
+      "eventId": "pageview_1795337890517_baqnnhu",
+      "eventName": "PageView",
+      "orderId": "",
+      "eventSource": "browser_forwarded",
+      "eventSourceUrl": "http://localhost:3000/",
+      "status": "failed",
+      "matching": {
+        "hasFbp": true,
+        "hasFbc": false,
+        "fbcSource": "none",
+        "hasIp": false,
+        "hasUserAgent": true,
+        "hasPhone": false,
+        "hasEmail": false,
+        "hasCity": false,
+        "hasCountry": false,
+        "hasExternalId": false,
+        "presentParameters": [
+          "fbp",
+          "client_user_agent"
+        ],
+        "missingParameters": [
+          "fbc",
+          "client_ip_address",
+          "ph",
+          "em",
+          "ct",
+          "country"
+        ]
+      },
+      "request": {
+        "endpoint": "https://graph.facebook.com/v19.0/META_PIXEL_ID/events",
+        "method": "POST",
+        "eventCount": 1,
+        "payload": {
+          "data": [
+            {
+              "event_name": "PageView",
+              "event_time": 1795337890,
+              "event_id": "pageview_1795337890517_baqnnhu",
+              "event_source_url": "http://localhost:3000/",
+              "action_source": "website",
+              "user_data": {
+                "fbp": "fb.0.1795267164730.146773037210383808",
+                "client_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/158.0.0.0 Safari/537.36 Edg/158.0.0.0"
+              }
+            }
+          ]
+        }
+      },
+      "attempts": 1,
+      "expiresAt": "2026-11-29T08:58:10.520Z",
+      "response": {
+        "httpStatus": 401,
+        "httpStatusText": "Unauthorized",
+        "eventsReceived": 0,
+        "messages": [],
+        "fbtraceId": "ACQQqGjvnfb_mwJeGaSoNQM",
+        "errorCode": 190,
+        "errorMessage": "Invalid OAuth access token - Cannot parse access token",
+        "rawBody": "{\"error\":{\"message\":\"Invalid OAuth access token - Cannot parse access token\",\"type\":\"OAuthException\",\"code\":190,\"fbtrace_id\":\"ACQQqGjvnfb_mwJeGaSoNQM\"}}",
+        "metaResponseBody": {
+          "error": {
+            "message": "Invalid OAuth access token - Cannot parse access token",
+            "type": "OAuthException",
+            "code": 190,
+            "fbtrace_id": "ACQQqGjvnfb_mwJeGaSoNQM"
+          }
+        },
+        "responseParseStatus": "success",
+        "parseError": null
+      },
+      "durationMs": 387,
+      "completedAt": "2026-11-22T08:58:10.908Z"
+    },
+    {
+      "_id": "log_1795337884377_tjd9b",
+      "createdAt": "2026-11-22T08:58:04.377Z",
+      "updatedAt": "2026-11-22T08:58:04.639Z",
+      "eventId": "pageview_1795337884345_l9gk2l4",
+      "eventName": "PageView",
+      "orderId": "",
+      "eventSource": "browser_forwarded",
+      "eventSourceUrl": "http://localhost:3000/",
+      "status": "failed",
+      "matching": {
+        "hasFbp": false,
+        "hasFbc": false,
+        "fbcSource": "none",
+        "hasIp": false,
+        "hasUserAgent": true,
+        "hasPhone": false,
+        "hasEmail": false,
+        "hasCity": false,
+        "hasCountry": false,
+        "hasExternalId": false,
+        "presentParameters": [
+          "client_user_agent"
+        ],
+        "missingParameters": [
+          "fbp",
+          "fbc",
+          "client_ip_address",
+          "ph",
+          "em",
+          "ct",
+          "country"
+        ]
+      },
+      "request": {
+        "endpoint": "https://graph.facebook.com/v19.0/META_PIXEL_ID/events",
+        "method": "POST",
+        "eventCount": 1,
+        "payload": {
+          "data": [
+            {
+              "event_name": "PageView",
+              "event_time": 1795337884,
+              "event_id": "pageview_1795337884345_l9gk2l4",
+              "event_source_url": "http://localhost:3000/",
+              "action_source": "website",
+              "user_data": {
+                "client_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
+              }
+            }
+          ]
+        }
+      },
+      "attempts": 1,
+      "expiresAt": "2026-11-29T08:58:04.377Z",
+      "response": {
+        "httpStatus": 401,
+        "httpStatusText": "Unauthorized",
+        "eventsReceived": 0,
+        "messages": [],
+        "fbtraceId": "AQ7nxTvh-B1vzHGoNV5rppH",
+        "errorCode": 190,
+        "errorMessage": "Invalid OAuth access token - Cannot parse access token",
+        "rawBody": "{\"error\":{\"message\":\"Invalid OAuth access token - Cannot parse access token\",\"type\":\"OAuthException\",\"code\":190,\"fbtrace_id\":\"AQ7nxTvh-B1vzHGoNV5rppH\"}}",
+        "metaResponseBody": {
+          "error": {
+            "message": "Invalid OAuth access token - Cannot parse access token",
+            "type": "OAuthException",
+            "code": 190,
+            "fbtrace_id": "AQ7nxTvh-B1vzHGoNV5rppH"
+          }
+        },
+        "responseParseStatus": "success",
+        "parseError": null
+      },
+      "durationMs": 262,
+      "completedAt": "2026-11-22T08:58:04.639Z"
+    },
+    {
+      "_id": "log_1795337882457_lrw4p",
+      "createdAt": "2026-11-22T08:58:02.457Z",
+      "updatedAt": "2026-11-22T08:58:03.106Z",
+      "eventId": "pageview_1795337882453_p98jrpu",
+      "eventName": "PageView",
+      "orderId": "",
+      "eventSource": "browser_forwarded",
+      "eventSourceUrl": "http://localhost:3000/",
+      "status": "failed",
+      "matching": {
+        "hasFbp": true,
+        "hasFbc": false,
+        "fbcSource": "none",
+        "hasIp": false,
+        "hasUserAgent": true,
+        "hasPhone": false,
+        "hasEmail": false,
+        "hasCity": false,
+        "hasCountry": false,
+        "hasExternalId": false,
+        "presentParameters": [
+          "fbp",
+          "client_user_agent"
+        ],
+        "missingParameters": [
+          "fbc",
+          "client_ip_address",
+          "ph",
+          "em",
+          "ct",
+          "country"
+        ]
+      },
+      "request": {
+        "endpoint": "https://graph.facebook.com/v19.0/META_PIXEL_ID/events",
+        "method": "POST",
+        "eventCount": 1,
+        "payload": {
+          "data": [
+            {
+              "event_name": "PageView",
+              "event_time": 1795337882,
+              "event_id": "pageview_1795337882453_p98jrpu",
+              "event_source_url": "http://localhost:3000/",
+              "action_source": "website",
+              "user_data": {
+                "fbp": "fb.0.1795267164730.146773037210383808",
+                "client_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/158.0.0.0 Safari/537.36 Edg/158.0.0.0"
+              }
+            }
+          ]
+        }
+      },
+      "attempts": 1,
+      "expiresAt": "2026-11-29T08:58:02.457Z",
+      "response": {
+        "httpStatus": 401,
+        "httpStatusText": "Unauthorized",
+        "eventsReceived": 0,
+        "messages": [],
+        "fbtraceId": "AMj3Me9hTmMsf6zGvEIFueH",
+        "errorCode": 190,
+        "errorMessage": "Invalid OAuth access token - Cannot parse access token",
+        "rawBody": "{\"error\":{\"message\":\"Invalid OAuth access token - Cannot parse access token\",\"type\":\"OAuthException\",\"code\":190,\"fbtrace_id\":\"AMj3Me9hTmMsf6zGvEIFueH\"}}",
+        "metaResponseBody": {
+          "error": {
+            "message": "Invalid OAuth access token - Cannot parse access token",
+            "type": "OAuthException",
+            "code": 190,
+            "fbtrace_id": "AMj3Me9hTmMsf6zGvEIFueH"
+          }
+        },
+        "responseParseStatus": "success",
+        "parseError": null
+      },
+      "durationMs": 649,
+      "completedAt": "2026-11-22T08:58:03.106Z"
+    },
+    {
+      "_id": "log_1795336927828_q9rjx",
+      "createdAt": "2026-11-22T08:42:07.828Z",
+      "updatedAt": "2026-11-22T08:42:08.376Z",
+      "eventId": "pageview_1795336927822_33qh1r4",
+      "eventName": "PageView",
+      "orderId": "",
+      "eventSource": "browser_forwarded",
+      "eventSourceUrl": "http://localhost:3000/",
+      "status": "failed",
+      "matching": {
+        "hasFbp": false,
+        "hasFbc": false,
+        "fbcSource": "none",
+        "hasIp": false,
+        "hasUserAgent": true,
+        "hasPhone": false,
+        "hasEmail": false,
+        "hasCity": false,
+        "hasCountry": false,
+        "hasExternalId": false,
+        "presentParameters": [
+          "client_user_agent"
+        ],
+        "missingParameters": [
+          "fbp",
+          "fbc",
+          "client_ip_address",
+          "ph",
+          "em",
+          "ct",
+          "country"
+        ]
+      },
+      "request": {
+        "endpoint": "https://graph.facebook.com/v19.0/META_PIXEL_ID/events",
+        "method": "POST",
+        "eventCount": 1,
+        "payload": {
+          "data": [
+            {
+              "event_name": "PageView",
+              "event_time": 1795336927,
+              "event_id": "pageview_1795336927822_33qh1r4",
+              "event_source_url": "http://localhost:3000/",
+              "action_source": "website",
+              "user_data": {
+                "client_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
+              }
+            }
+          ]
+        }
+      },
+      "attempts": 1,
+      "expiresAt": "2026-11-29T08:42:07.828Z",
+      "response": {
+        "httpStatus": 401,
+        "httpStatusText": "Unauthorized",
+        "eventsReceived": 0,
+        "messages": [],
+        "fbtraceId": "AvvaeIguO7q1T3NKR_nQ-Ll",
+        "errorCode": 190,
+        "errorMessage": "Invalid OAuth access token - Cannot parse access token",
+        "rawBody": "{\"error\":{\"message\":\"Invalid OAuth access token - Cannot parse access token\",\"type\":\"OAuthException\",\"code\":190,\"fbtrace_id\":\"AvvaeIguO7q1T3NKR_nQ-Ll\"}}",
+        "metaResponseBody": {
+          "error": {
+            "message": "Invalid OAuth access token - Cannot parse access token",
+            "type": "OAuthException",
+            "code": 190,
+            "fbtrace_id": "AvvaeIguO7q1T3NKR_nQ-Ll"
+          }
+        },
+        "responseParseStatus": "success",
+        "parseError": null
+      },
+      "durationMs": 548,
+      "completedAt": "2026-11-22T08:42:08.376Z"
+    },
+    {
+      "_id": "log_1795336886141_96ksj",
+      "createdAt": "2026-11-22T08:41:26.141Z",
+      "updatedAt": "2026-11-22T08:41:26.479Z",
+      "eventId": "pageview_1795336886142_somce04",
+      "eventName": "PageView",
+      "orderId": "",
+      "eventSource": "browser_forwarded",
+      "eventSourceUrl": "http://localhost:3000/",
+      "status": "failed",
+      "matching": {
+        "hasFbp": false,
+        "hasFbc": false,
+        "fbcSource": "none",
+        "hasIp": false,
+        "hasUserAgent": true,
+        "hasPhone": false,
+        "hasEmail": false,
+        "hasCity": false,
+        "hasCountry": false,
+        "hasExternalId": false,
+        "presentParameters": [
+          "client_user_agent"
+        ],
+        "missingParameters": [
+          "fbp",
+          "fbc",
+          "client_ip_address",
+          "ph",
+          "em",
+          "ct",
+          "country"
+        ]
+      },
+      "request": {
+        "endpoint": "https://graph.facebook.com/v19.0/META_PIXEL_ID/events",
+        "method": "POST",
+        "eventCount": 1,
+        "payload": {
+          "data": [
+            {
+              "event_name": "PageView",
+              "event_time": 1795336886,
+              "event_id": "pageview_1795336886142_somce04",
+              "event_source_url": "http://localhost:3000/",
+              "action_source": "website",
+              "user_data": {
+                "client_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
+              }
+            }
+          ]
+        }
+      },
+      "attempts": 1,
+      "expiresAt": "2026-11-29T08:41:26.141Z",
+      "response": {
+        "httpStatus": 401,
+        "httpStatusText": "Unauthorized",
+        "eventsReceived": 0,
+        "messages": [],
+        "fbtraceId": "ARLpeHPfYTNS9PTqNZx-H1S",
+        "errorCode": 190,
+        "errorMessage": "Invalid OAuth access token - Cannot parse access token",
+        "rawBody": "{\"error\":{\"message\":\"Invalid OAuth access token - Cannot parse access token\",\"type\":\"OAuthException\",\"code\":190,\"fbtrace_id\":\"ARLpeHPfYTNS9PTqNZx-H1S\"}}",
+        "metaResponseBody": {
+          "error": {
+            "message": "Invalid OAuth access token - Cannot parse access token",
+            "type": "OAuthException",
+            "code": 190,
+            "fbtrace_id": "ARLpeHPfYTNS9PTqNZx-H1S"
+          }
+        },
+        "responseParseStatus": "success",
+        "parseError": null
+      },
+      "durationMs": 338,
+      "completedAt": "2026-11-22T08:41:26.479Z"
+    },
+    {
+      "_id": "log_1795336690604_79mkj",
+      "createdAt": "2026-11-22T08:38:10.604Z",
+      "updatedAt": "2026-11-22T08:38:12.956Z",
+      "eventId": "pageview_1795336690599_zbo020q",
+      "eventName": "PageView",
+      "orderId": "",
+      "eventSource": "browser_forwarded",
+      "eventSourceUrl": "http://localhost:3000/",
+      "status": "failed",
+      "matching": {
+        "hasFbp": false,
+        "hasFbc": false,
+        "fbcSource": "none",
+        "hasIp": false,
+        "hasUserAgent": true,
+        "hasPhone": false,
+        "hasEmail": false,
+        "hasCity": false,
+        "hasCountry": false,
+        "hasExternalId": false,
+        "presentParameters": [
+          "client_user_agent"
+        ],
+        "missingParameters": [
+          "fbp",
+          "fbc",
+          "client_ip_address",
+          "ph",
+          "em",
+          "ct",
+          "country"
+        ]
+      },
+      "request": {
+        "endpoint": "https://graph.facebook.com/v19.0/META_PIXEL_ID/events",
+        "method": "POST",
+        "eventCount": 1,
+        "payload": {
+          "data": [
+            {
+              "event_name": "PageView",
+              "event_time": 1795336690,
+              "event_id": "pageview_1795336690599_zbo020q",
+              "event_source_url": "http://localhost:3000/",
+              "action_source": "website",
+              "user_data": {
+                "client_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
+              }
+            }
+          ]
+        }
+      },
+      "attempts": 1,
+      "expiresAt": "2026-11-29T08:38:10.604Z",
+      "response": {
+        "httpStatus": 401,
+        "httpStatusText": "Unauthorized",
+        "eventsReceived": 0,
+        "messages": [],
+        "fbtraceId": "AzIsIg3toj7AUfFFbfCcDLb",
+        "errorCode": 190,
+        "errorMessage": "Invalid OAuth access token - Cannot parse access token",
+        "rawBody": "{\"error\":{\"message\":\"Invalid OAuth access token - Cannot parse access token\",\"type\":\"OAuthException\",\"code\":190,\"fbtrace_id\":\"AzIsIg3toj7AUfFFbfCcDLb\"}}",
+        "metaResponseBody": {
+          "error": {
+            "message": "Invalid OAuth access token - Cannot parse access token",
+            "type": "OAuthException",
+            "code": 190,
+            "fbtrace_id": "AzIsIg3toj7AUfFFbfCcDLb"
+          }
+        },
+        "responseParseStatus": "success",
+        "parseError": null
+      },
+      "durationMs": 2352,
+      "completedAt": "2026-11-22T08:38:12.956Z"
+    },
+    {
+      "_id": "log_1795336624459_sunrq",
+      "createdAt": "2026-11-22T08:37:04.459Z",
+      "updatedAt": "2026-11-22T08:37:05.964Z",
+      "eventId": "pageview_1795336624456_tiulqkc",
+      "eventName": "PageView",
+      "orderId": "",
+      "eventSource": "browser_forwarded",
+      "eventSourceUrl": "http://localhost:3000/",
+      "status": "failed",
+      "matching": {
+        "hasFbp": false,
+        "hasFbc": false,
+        "fbcSource": "none",
+        "hasIp": false,
+        "hasUserAgent": true,
+        "hasPhone": false,
+        "hasEmail": false,
+        "hasCity": false,
+        "hasCountry": false,
+        "hasExternalId": false,
+        "presentParameters": [
+          "client_user_agent"
+        ],
+        "missingParameters": [
+          "fbp",
+          "fbc",
+          "client_ip_address",
+          "ph",
+          "em",
+          "ct",
+          "country"
+        ]
+      },
+      "request": {
+        "endpoint": "https://graph.facebook.com/v19.0/META_PIXEL_ID/events",
+        "method": "POST",
+        "eventCount": 1,
+        "payload": {
+          "data": [
+            {
+              "event_name": "PageView",
+              "event_time": 1795336624,
+              "event_id": "pageview_1795336624456_tiulqkc",
+              "event_source_url": "http://localhost:3000/",
+              "action_source": "website",
+              "user_data": {
+                "client_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
+              }
+            }
+          ]
+        }
+      },
+      "attempts": 1,
+      "expiresAt": "2026-11-29T08:37:04.459Z",
+      "response": {
+        "httpStatus": 401,
+        "httpStatusText": "Unauthorized",
+        "eventsReceived": 0,
+        "messages": [],
+        "fbtraceId": "AuGq9MWQJmXnlCM8IO4-TlD",
+        "errorCode": 190,
+        "errorMessage": "Invalid OAuth access token - Cannot parse access token",
+        "rawBody": "{\"error\":{\"message\":\"Invalid OAuth access token - Cannot parse access token\",\"type\":\"OAuthException\",\"code\":190,\"fbtrace_id\":\"AuGq9MWQJmXnlCM8IO4-TlD\"}}",
+        "metaResponseBody": {
+          "error": {
+            "message": "Invalid OAuth access token - Cannot parse access token",
+            "type": "OAuthException",
+            "code": 190,
+            "fbtrace_id": "AuGq9MWQJmXnlCM8IO4-TlD"
+          }
+        },
+        "responseParseStatus": "success",
+        "parseError": null
+      },
+      "durationMs": 1505,
+      "completedAt": "2026-11-22T08:37:05.964Z"
+    },
+    {
+      "_id": "log_1795336624421_j000t",
+      "createdAt": "2026-11-22T08:37:04.421Z",
+      "updatedAt": "2026-11-22T08:37:04.685Z",
+      "eventId": "pageview_1795336624418_uta189a",
+      "eventName": "PageView",
+      "orderId": "",
+      "eventSource": "browser_forwarded",
+      "eventSourceUrl": "http://localhost:3000/",
+      "status": "failed",
+      "matching": {
+        "hasFbp": true,
+        "hasFbc": false,
+        "fbcSource": "none",
+        "hasIp": false,
+        "hasUserAgent": true,
+        "hasPhone": false,
+        "hasEmail": false,
+        "hasCity": false,
+        "hasCountry": false,
+        "hasExternalId": false,
+        "presentParameters": [
+          "fbp",
+          "client_user_agent"
+        ],
+        "missingParameters": [
+          "fbc",
+          "client_ip_address",
+          "ph",
+          "em",
+          "ct",
+          "country"
+        ]
+      },
+      "request": {
+        "endpoint": "https://graph.facebook.com/v19.0/META_PIXEL_ID/events",
+        "method": "POST",
+        "eventCount": 1,
+        "payload": {
+          "data": [
+            {
+              "event_name": "PageView",
+              "event_time": 1795336624,
+              "event_id": "pageview_1795336624418_uta189a",
+              "event_source_url": "http://localhost:3000/",
+              "action_source": "website",
+              "user_data": {
+                "fbp": "fb.0.1795267164730.146773037210383808",
+                "client_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/158.0.0.0 Safari/537.36 Edg/158.0.0.0"
+              }
+            }
+          ]
+        }
+      },
+      "attempts": 1,
+      "expiresAt": "2026-11-29T08:37:04.421Z",
+      "response": {
+        "httpStatus": 401,
+        "httpStatusText": "Unauthorized",
+        "eventsReceived": 0,
+        "messages": [],
+        "fbtraceId": "AUzv9OfK9CrtcUMFQnjMQuz",
+        "errorCode": 190,
+        "errorMessage": "Invalid OAuth access token - Cannot parse access token",
+        "rawBody": "{\"error\":{\"message\":\"Invalid OAuth access token - Cannot parse access token\",\"type\":\"OAuthException\",\"code\":190,\"fbtrace_id\":\"AUzv9OfK9CrtcUMFQnjMQuz\"}}",
+        "metaResponseBody": {
+          "error": {
+            "message": "Invalid OAuth access token - Cannot parse access token",
+            "type": "OAuthException",
+            "code": 190,
+            "fbtrace_id": "AUzv9OfK9CrtcUMFQnjMQuz"
+          }
+        },
+        "responseParseStatus": "success",
+        "parseError": null
+      },
+      "durationMs": 264,
+      "completedAt": "2026-11-22T08:37:04.685Z"
+    },
+    {
+      "_id": "log_1795336622677_bq93q",
+      "createdAt": "2026-11-22T08:37:02.677Z",
+      "updatedAt": "2026-11-22T08:37:03.293Z",
+      "eventId": "pageview_1795336622671_gojhtez",
+      "eventName": "PageView",
+      "orderId": "",
+      "eventSource": "browser_forwarded",
+      "eventSourceUrl": "http://localhost:3000/",
+      "status": "failed",
+      "matching": {
+        "hasFbp": false,
+        "hasFbc": false,
+        "fbcSource": "none",
+        "hasIp": false,
+        "hasUserAgent": true,
+        "hasPhone": false,
+        "hasEmail": false,
+        "hasCity": false,
+        "hasCountry": false,
+        "hasExternalId": false,
+        "presentParameters": [
+          "client_user_agent"
+        ],
+        "missingParameters": [
+          "fbp",
+          "fbc",
+          "client_ip_address",
+          "ph",
+          "em",
+          "ct",
+          "country"
+        ]
+      },
+      "request": {
+        "endpoint": "https://graph.facebook.com/v19.0/META_PIXEL_ID/events",
+        "method": "POST",
+        "eventCount": 1,
+        "payload": {
+          "data": [
+            {
+              "event_name": "PageView",
+              "event_time": 1795336622,
+              "event_id": "pageview_1795336622671_gojhtez",
+              "event_source_url": "http://localhost:3000/",
+              "action_source": "website",
+              "user_data": {
+                "client_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
+              }
+            }
+          ]
+        }
+      },
+      "attempts": 1,
+      "expiresAt": "2026-11-29T08:37:02.677Z",
+      "response": {
+        "httpStatus": 401,
+        "httpStatusText": "Unauthorized",
+        "eventsReceived": 0,
+        "messages": [],
+        "fbtraceId": "A5ks3DYVOT4H614GA-54TR0",
+        "errorCode": 190,
+        "errorMessage": "Invalid OAuth access token - Cannot parse access token",
+        "rawBody": "{\"error\":{\"message\":\"Invalid OAuth access token - Cannot parse access token\",\"type\":\"OAuthException\",\"code\":190,\"fbtrace_id\":\"A5ks3DYVOT4H614GA-54TR0\"}}",
+        "metaResponseBody": {
+          "error": {
+            "message": "Invalid OAuth access token - Cannot parse access token",
+            "type": "OAuthException",
+            "code": 190,
+            "fbtrace_id": "A5ks3DYVOT4H614GA-54TR0"
+          }
+        },
+        "responseParseStatus": "success",
+        "parseError": null
+      },
+      "durationMs": 616,
+      "completedAt": "2026-11-22T08:37:03.293Z"
+    },
+    {
+      "_id": "log_1795336621825_pilt6",
+      "createdAt": "2026-11-22T08:37:01.825Z",
+      "updatedAt": "2026-11-22T08:37:02.091Z",
+      "eventId": "pageview_1795336621819_s4t6l8a",
+      "eventName": "PageView",
+      "orderId": "",
+      "eventSource": "browser_forwarded",
+      "eventSourceUrl": "http://localhost:3000/",
+      "status": "failed",
+      "matching": {
+        "hasFbp": false,
+        "hasFbc": false,
+        "fbcSource": "none",
+        "hasIp": false,
+        "hasUserAgent": true,
+        "hasPhone": false,
+        "hasEmail": false,
+        "hasCity": false,
+        "hasCountry": false,
+        "hasExternalId": false,
+        "presentParameters": [
+          "client_user_agent"
+        ],
+        "missingParameters": [
+          "fbp",
+          "fbc",
+          "client_ip_address",
+          "ph",
+          "em",
+          "ct",
+          "country"
+        ]
+      },
+      "request": {
+        "endpoint": "https://graph.facebook.com/v19.0/META_PIXEL_ID/events",
+        "method": "POST",
+        "eventCount": 1,
+        "payload": {
+          "data": [
+            {
+              "event_name": "PageView",
+              "event_time": 1795336621,
+              "event_id": "pageview_1795336621819_s4t6l8a",
+              "event_source_url": "http://localhost:3000/",
+              "action_source": "website",
+              "user_data": {
+                "client_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
+              }
+            }
+          ]
+        }
+      },
+      "attempts": 1,
+      "expiresAt": "2026-11-29T08:37:01.825Z",
+      "response": {
+        "httpStatus": 401,
+        "httpStatusText": "Unauthorized",
+        "eventsReceived": 0,
+        "messages": [],
+        "fbtraceId": "AQlMG6jR-dK-FrYI8J2q7AA",
+        "errorCode": 190,
+        "errorMessage": "Invalid OAuth access token - Cannot parse access token",
+        "rawBody": "{\"error\":{\"message\":\"Invalid OAuth access token - Cannot parse access token\",\"type\":\"OAuthException\",\"code\":190,\"fbtrace_id\":\"AQlMG6jR-dK-FrYI8J2q7AA\"}}",
+        "metaResponseBody": {
+          "error": {
+            "message": "Invalid OAuth access token - Cannot parse access token",
+            "type": "OAuthException",
+            "code": 190,
+            "fbtrace_id": "AQlMG6jR-dK-FrYI8J2q7AA"
+          }
+        },
+        "responseParseStatus": "success",
+        "parseError": null
+      },
+      "durationMs": 266,
+      "completedAt": "2026-11-22T08:37:02.091Z"
+    },
+    {
+      "_id": "log_1795336620001_5s4uf",
+      "createdAt": "2026-11-22T08:37:00.001Z",
+      "updatedAt": "2026-11-22T08:37:00.261Z",
+      "eventId": "pageview_1795336619996_vjono30",
+      "eventName": "PageView",
+      "orderId": "",
+      "eventSource": "browser_forwarded",
+      "eventSourceUrl": "http://localhost:3000/",
+      "status": "failed",
+      "matching": {
+        "hasFbp": false,
+        "hasFbc": false,
+        "fbcSource": "none",
+        "hasIp": false,
+        "hasUserAgent": true,
+        "hasPhone": false,
+        "hasEmail": false,
+        "hasCity": false,
+        "hasCountry": false,
+        "hasExternalId": false,
+        "presentParameters": [
+          "client_user_agent"
+        ],
+        "missingParameters": [
+          "fbp",
+          "fbc",
+          "client_ip_address",
+          "ph",
+          "em",
+          "ct",
+          "country"
+        ]
+      },
+      "request": {
+        "endpoint": "https://graph.facebook.com/v19.0/META_PIXEL_ID/events",
+        "method": "POST",
+        "eventCount": 1,
+        "payload": {
+          "data": [
+            {
+              "event_name": "PageView",
+              "event_time": 1795336620,
+              "event_id": "pageview_1795336619996_vjono30",
+              "event_source_url": "http://localhost:3000/",
+              "action_source": "website",
+              "user_data": {
+                "client_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
+              }
+            }
+          ]
+        }
+      },
+      "attempts": 1,
+      "expiresAt": "2026-11-29T08:37:00.001Z",
+      "response": {
+        "httpStatus": 401,
+        "httpStatusText": "Unauthorized",
+        "eventsReceived": 0,
+        "messages": [],
+        "fbtraceId": "A9e2S0Fj3FbvmhgyqhIjzAY",
+        "errorCode": 190,
+        "errorMessage": "Invalid OAuth access token - Cannot parse access token",
+        "rawBody": "{\"error\":{\"message\":\"Invalid OAuth access token - Cannot parse access token\",\"type\":\"OAuthException\",\"code\":190,\"fbtrace_id\":\"A9e2S0Fj3FbvmhgyqhIjzAY\"}}",
+        "metaResponseBody": {
+          "error": {
+            "message": "Invalid OAuth access token - Cannot parse access token",
+            "type": "OAuthException",
+            "code": 190,
+            "fbtrace_id": "A9e2S0Fj3FbvmhgyqhIjzAY"
+          }
+        },
+        "responseParseStatus": "success",
+        "parseError": null
+      },
+      "durationMs": 260,
+      "completedAt": "2026-11-22T08:37:00.261Z"
+    },
+    {
+      "_id": "log_1795336618173_grler",
+      "createdAt": "2026-11-22T08:36:58.173Z",
+      "updatedAt": "2026-11-22T08:36:58.486Z",
+      "eventId": "pageview_1795336618167_q0dqqgs",
+      "eventName": "PageView",
+      "orderId": "",
+      "eventSource": "browser_forwarded",
+      "eventSourceUrl": "http://localhost:3000/",
+      "status": "failed",
+      "matching": {
+        "hasFbp": false,
+        "hasFbc": false,
+        "fbcSource": "none",
+        "hasIp": false,
+        "hasUserAgent": true,
+        "hasPhone": false,
+        "hasEmail": false,
+        "hasCity": false,
+        "hasCountry": false,
+        "hasExternalId": false,
+        "presentParameters": [
+          "client_user_agent"
+        ],
+        "missingParameters": [
+          "fbp",
+          "fbc",
+          "client_ip_address",
+          "ph",
+          "em",
+          "ct",
+          "country"
+        ]
+      },
+      "request": {
+        "endpoint": "https://graph.facebook.com/v19.0/META_PIXEL_ID/events",
+        "method": "POST",
+        "eventCount": 1,
+        "payload": {
+          "data": [
+            {
+              "event_name": "PageView",
+              "event_time": 1795336618,
+              "event_id": "pageview_1795336618167_q0dqqgs",
+              "event_source_url": "http://localhost:3000/",
+              "action_source": "website",
+              "user_data": {
+                "client_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
+              }
+            }
+          ]
+        }
+      },
+      "attempts": 1,
+      "expiresAt": "2026-11-29T08:36:58.173Z",
+      "response": {
+        "httpStatus": 401,
+        "httpStatusText": "Unauthorized",
+        "eventsReceived": 0,
+        "messages": [],
+        "fbtraceId": "AcFzVqNy7uHIPo8ofE0HM-5",
+        "errorCode": 190,
+        "errorMessage": "Invalid OAuth access token - Cannot parse access token",
+        "rawBody": "{\"error\":{\"message\":\"Invalid OAuth access token - Cannot parse access token\",\"type\":\"OAuthException\",\"code\":190,\"fbtrace_id\":\"AcFzVqNy7uHIPo8ofE0HM-5\"}}",
+        "metaResponseBody": {
+          "error": {
+            "message": "Invalid OAuth access token - Cannot parse access token",
+            "type": "OAuthException",
+            "code": 190,
+            "fbtrace_id": "AcFzVqNy7uHIPo8ofE0HM-5"
+          }
+        },
+        "responseParseStatus": "success",
+        "parseError": null
+      },
+      "durationMs": 312,
+      "completedAt": "2026-11-22T08:36:58.486Z"
+    },
+    {
+      "_id": "log_1795336613411_lza49",
+      "createdAt": "2026-11-22T08:36:53.411Z",
+      "updatedAt": "2026-11-22T08:36:53.740Z",
+      "eventId": "pageview_1795336613419_x11g5nu",
+      "eventName": "PageView",
+      "orderId": "",
+      "eventSource": "browser_forwarded",
+      "eventSourceUrl": "http://localhost:3000/",
+      "status": "failed",
+      "matching": {
+        "hasFbp": false,
+        "hasFbc": false,
+        "fbcSource": "none",
+        "hasIp": false,
+        "hasUserAgent": true,
+        "hasPhone": false,
+        "hasEmail": false,
+        "hasCity": false,
+        "hasCountry": false,
+        "hasExternalId": false,
+        "presentParameters": [
+          "client_user_agent"
+        ],
+        "missingParameters": [
+          "fbp",
+          "fbc",
+          "client_ip_address",
+          "ph",
+          "em",
+          "ct",
+          "country"
+        ]
+      },
+      "request": {
+        "endpoint": "https://graph.facebook.com/v19.0/META_PIXEL_ID/events",
+        "method": "POST",
+        "eventCount": 1,
+        "payload": {
+          "data": [
+            {
+              "event_name": "PageView",
+              "event_time": 1795336613,
+              "event_id": "pageview_1795336613419_x11g5nu",
+              "event_source_url": "http://localhost:3000/",
+              "action_source": "website",
+              "user_data": {
+                "client_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
+              }
+            }
+          ]
+        }
+      },
+      "attempts": 1,
+      "expiresAt": "2026-11-29T08:36:53.411Z",
+      "response": {
+        "httpStatus": 401,
+        "httpStatusText": "Unauthorized",
+        "eventsReceived": 0,
+        "messages": [],
+        "fbtraceId": "AwI2CqEoPmK1097l1-TLOfV",
+        "errorCode": 190,
+        "errorMessage": "Invalid OAuth access token - Cannot parse access token",
+        "rawBody": "{\"error\":{\"message\":\"Invalid OAuth access token - Cannot parse access token\",\"type\":\"OAuthException\",\"code\":190,\"fbtrace_id\":\"AwI2CqEoPmK1097l1-TLOfV\"}}",
+        "metaResponseBody": {
+          "error": {
+            "message": "Invalid OAuth access token - Cannot parse access token",
+            "type": "OAuthException",
+            "code": 190,
+            "fbtrace_id": "AwI2CqEoPmK1097l1-TLOfV"
+          }
+        },
+        "responseParseStatus": "success",
+        "parseError": null
+      },
+      "durationMs": 329,
+      "completedAt": "2026-11-22T08:36:53.740Z"
+    },
+    {
+      "_id": "log_1795336560218_f3l58",
+      "createdAt": "2026-11-22T08:36:00.218Z",
+      "updatedAt": "2026-11-22T08:36:02.729Z",
+      "eventId": "pageview_1795336560197_f6ayhi8",
+      "eventName": "PageView",
+      "orderId": "",
+      "eventSource": "browser_forwarded",
+      "eventSourceUrl": "http://localhost:3000/",
+      "status": "failed",
+      "matching": {
+        "hasFbp": false,
+        "hasFbc": false,
+        "fbcSource": "none",
+        "hasIp": false,
+        "hasUserAgent": true,
+        "hasPhone": false,
+        "hasEmail": false,
+        "hasCity": false,
+        "hasCountry": false,
+        "hasExternalId": false,
+        "presentParameters": [
+          "client_user_agent"
+        ],
+        "missingParameters": [
+          "fbp",
+          "fbc",
+          "client_ip_address",
+          "ph",
+          "em",
+          "ct",
+          "country"
+        ]
+      },
+      "request": {
+        "endpoint": "https://graph.facebook.com/v19.0/META_PIXEL_ID/events",
+        "method": "POST",
+        "eventCount": 1,
+        "payload": {
+          "data": [
+            {
+              "event_name": "PageView",
+              "event_time": 1795336560,
+              "event_id": "pageview_1795336560197_f6ayhi8",
+              "event_source_url": "http://localhost:3000/",
+              "action_source": "website",
+              "user_data": {
+                "client_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
+              }
+            }
+          ]
+        }
+      },
+      "attempts": 1,
+      "expiresAt": "2026-11-29T08:36:00.217Z",
+      "response": {
+        "httpStatus": 401,
+        "httpStatusText": "Unauthorized",
+        "eventsReceived": 0,
+        "messages": [],
+        "fbtraceId": "AjaHhr8g8UJdmCxh-MjJ86U",
+        "errorCode": 190,
+        "errorMessage": "Invalid OAuth access token - Cannot parse access token",
+        "rawBody": "{\"error\":{\"message\":\"Invalid OAuth access token - Cannot parse access token\",\"type\":\"OAuthException\",\"code\":190,\"fbtrace_id\":\"AjaHhr8g8UJdmCxh-MjJ86U\"}}",
+        "metaResponseBody": {
+          "error": {
+            "message": "Invalid OAuth access token - Cannot parse access token",
+            "type": "OAuthException",
+            "code": 190,
+            "fbtrace_id": "AjaHhr8g8UJdmCxh-MjJ86U"
+          }
+        },
+        "responseParseStatus": "success",
+        "parseError": null
+      },
+      "durationMs": 2511,
+      "completedAt": "2026-11-22T08:36:02.729Z"
+    },
+    {
+      "_id": "log_1795335186299_da9ui",
+      "createdAt": "2026-11-22T08:13:06.299Z",
+      "updatedAt": "2026-11-22T08:13:06.628Z",
+      "eventId": "pageview_1795335186304_sk8hc01",
+      "eventName": "PageView",
+      "orderId": "",
+      "eventSource": "browser_forwarded",
+      "eventSourceUrl": "http://localhost:3000/",
+      "status": "failed",
+      "matching": {
+        "hasFbp": false,
+        "hasFbc": false,
+        "fbcSource": "none",
+        "hasIp": false,
+        "hasUserAgent": true,
+        "hasPhone": false,
+        "hasEmail": false,
+        "hasCity": false,
+        "hasCountry": false,
+        "hasExternalId": false,
+        "presentParameters": [
+          "client_user_agent"
+        ],
+        "missingParameters": [
+          "fbp",
+          "fbc",
+          "client_ip_address",
+          "ph",
+          "em",
+          "ct",
+          "country"
+        ]
+      },
+      "request": {
+        "endpoint": "https://graph.facebook.com/v19.0/META_PIXEL_ID/events",
+        "method": "POST",
+        "eventCount": 1,
+        "payload": {
+          "data": [
+            {
+              "event_name": "PageView",
+              "event_time": 1795335186,
+              "event_id": "pageview_1795335186304_sk8hc01",
+              "event_source_url": "http://localhost:3000/",
+              "action_source": "website",
+              "user_data": {
+                "client_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
+              }
+            }
+          ]
+        }
+      },
+      "attempts": 1,
+      "expiresAt": "2026-11-29T08:13:06.299Z",
+      "response": {
+        "httpStatus": 401,
+        "httpStatusText": "Unauthorized",
+        "eventsReceived": 0,
+        "messages": [],
+        "fbtraceId": "AtJLZJOSTNSogpArID2hmvK",
+        "errorCode": 190,
+        "errorMessage": "Invalid OAuth access token - Cannot parse access token",
+        "rawBody": "{\"error\":{\"message\":\"Invalid OAuth access token - Cannot parse access token\",\"type\":\"OAuthException\",\"code\":190,\"fbtrace_id\":\"AtJLZJOSTNSogpArID2hmvK\"}}",
+        "metaResponseBody": {
+          "error": {
+            "message": "Invalid OAuth access token - Cannot parse access token",
+            "type": "OAuthException",
+            "code": 190,
+            "fbtrace_id": "AtJLZJOSTNSogpArID2hmvK"
+          }
+        },
+        "responseParseStatus": "success",
+        "parseError": null
+      },
+      "durationMs": 329,
+      "completedAt": "2026-11-22T08:13:06.628Z"
+    },
+    {
+      "_id": "log_1795335173685_mndgt",
+      "createdAt": "2026-11-22T08:12:53.685Z",
+      "updatedAt": "2026-11-22T08:12:54.263Z",
+      "eventId": "pageview_1795335173690_y6tk8na",
+      "eventName": "PageView",
+      "orderId": "",
+      "eventSource": "browser_forwarded",
+      "eventSourceUrl": "http://localhost:3000/",
+      "status": "failed",
+      "matching": {
+        "hasFbp": false,
+        "hasFbc": false,
+        "fbcSource": "none",
+        "hasIp": false,
+        "hasUserAgent": true,
+        "hasPhone": false,
+        "hasEmail": false,
+        "hasCity": false,
+        "hasCountry": false,
+        "hasExternalId": false,
+        "presentParameters": [
+          "client_user_agent"
+        ],
+        "missingParameters": [
+          "fbp",
+          "fbc",
+          "client_ip_address",
+          "ph",
+          "em",
+          "ct",
+          "country"
+        ]
+      },
+      "request": {
+        "endpoint": "https://graph.facebook.com/v19.0/META_PIXEL_ID/events",
+        "method": "POST",
+        "eventCount": 1,
+        "payload": {
+          "data": [
+            {
+              "event_name": "PageView",
+              "event_time": 1795335173,
+              "event_id": "pageview_1795335173690_y6tk8na",
+              "event_source_url": "http://localhost:3000/",
+              "action_source": "website",
+              "user_data": {
+                "client_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
+              }
+            }
+          ]
+        }
+      },
+      "attempts": 1,
+      "expiresAt": "2026-11-29T08:12:53.685Z",
+      "response": {
+        "httpStatus": 401,
+        "httpStatusText": "Unauthorized",
+        "eventsReceived": 0,
+        "messages": [],
+        "fbtraceId": "A6EsswyeI5nKfxIoYnEW5ce",
+        "errorCode": 190,
+        "errorMessage": "Invalid OAuth access token - Cannot parse access token",
+        "rawBody": "{\"error\":{\"message\":\"Invalid OAuth access token - Cannot parse access token\",\"type\":\"OAuthException\",\"code\":190,\"fbtrace_id\":\"A6EsswyeI5nKfxIoYnEW5ce\"}}",
+        "metaResponseBody": {
+          "error": {
+            "message": "Invalid OAuth access token - Cannot parse access token",
+            "type": "OAuthException",
+            "code": 190,
+            "fbtrace_id": "A6EsswyeI5nKfxIoYnEW5ce"
+          }
+        },
+        "responseParseStatus": "success",
+        "parseError": null
+      },
+      "durationMs": 578,
+      "completedAt": "2026-11-22T08:12:54.263Z"
+    },
+    {
+      "_id": "log_1795335136937_dlkea",
+      "createdAt": "2026-11-22T08:12:16.938Z",
+      "updatedAt": "2026-11-22T08:12:17.343Z",
+      "eventId": "pageview_1795335136943_ch1e2l0",
+      "eventName": "PageView",
+      "orderId": "",
+      "eventSource": "browser_forwarded",
+      "eventSourceUrl": "http://localhost:3000/",
+      "status": "failed",
+      "matching": {
+        "hasFbp": false,
+        "hasFbc": false,
+        "fbcSource": "none",
+        "hasIp": false,
+        "hasUserAgent": true,
+        "hasPhone": false,
+        "hasEmail": false,
+        "hasCity": false,
+        "hasCountry": false,
+        "hasExternalId": false,
+        "presentParameters": [
+          "client_user_agent"
+        ],
+        "missingParameters": [
+          "fbp",
+          "fbc",
+          "client_ip_address",
+          "ph",
+          "em",
+          "ct",
+          "country"
+        ]
+      },
+      "request": {
+        "endpoint": "https://graph.facebook.com/v19.0/META_PIXEL_ID/events",
+        "method": "POST",
+        "eventCount": 1,
+        "payload": {
+          "data": [
+            {
+              "event_name": "PageView",
+              "event_time": 1795335136,
+              "event_id": "pageview_1795335136943_ch1e2l0",
+              "event_source_url": "http://localhost:3000/",
+              "action_source": "website",
+              "user_data": {
+                "client_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
+              }
+            }
+          ]
+        }
+      },
+      "attempts": 1,
+      "expiresAt": "2026-11-29T08:12:16.937Z",
+      "response": {
+        "httpStatus": 401,
+        "httpStatusText": "Unauthorized",
+        "eventsReceived": 0,
+        "messages": [],
+        "fbtraceId": "ApdXQUKowM0EP9A5qxfJySV",
+        "errorCode": 190,
+        "errorMessage": "Invalid OAuth access token - Cannot parse access token",
+        "rawBody": "{\"error\":{\"message\":\"Invalid OAuth access token - Cannot parse access token\",\"type\":\"OAuthException\",\"code\":190,\"fbtrace_id\":\"ApdXQUKowM0EP9A5qxfJySV\"}}",
+        "metaResponseBody": {
+          "error": {
+            "message": "Invalid OAuth access token - Cannot parse access token",
+            "type": "OAuthException",
+            "code": 190,
+            "fbtrace_id": "ApdXQUKowM0EP9A5qxfJySV"
+          }
+        },
+        "responseParseStatus": "success",
+        "parseError": null
+      },
+      "durationMs": 406,
+      "completedAt": "2026-11-22T08:12:17.343Z"
+    },
+    {
+      "_id": "log_1795335101011_f4zi4",
+      "createdAt": "2026-11-22T08:11:41.011Z",
+      "updatedAt": "2026-11-22T08:11:41.268Z",
+      "eventId": "pageview_1795335101007_hxkcgqe",
+      "eventName": "PageView",
+      "orderId": "",
+      "eventSource": "browser_forwarded",
+      "eventSourceUrl": "http://localhost:3000/",
+      "status": "failed",
+      "matching": {
+        "hasFbp": true,
+        "hasFbc": false,
+        "fbcSource": "none",
+        "hasIp": false,
+        "hasUserAgent": true,
+        "hasPhone": false,
+        "hasEmail": false,
+        "hasCity": false,
+        "hasCountry": false,
+        "hasExternalId": false,
+        "presentParameters": [
+          "fbp",
+          "client_user_agent"
+        ],
+        "missingParameters": [
+          "fbc",
+          "client_ip_address",
+          "ph",
+          "em",
+          "ct",
+          "country"
+        ]
+      },
+      "request": {
+        "endpoint": "https://graph.facebook.com/v19.0/META_PIXEL_ID/events",
+        "method": "POST",
+        "eventCount": 1,
+        "payload": {
+          "data": [
+            {
+              "event_name": "PageView",
+              "event_time": 1795335101,
+              "event_id": "pageview_1795335101007_hxkcgqe",
+              "event_source_url": "http://localhost:3000/",
+              "action_source": "website",
+              "user_data": {
+                "fbp": "fb.0.1795267164730.146773037210383808",
+                "client_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/158.0.0.0 Safari/537.36 Edg/158.0.0.0"
+              }
+            }
+          ]
+        }
+      },
+      "attempts": 1,
+      "expiresAt": "2026-11-29T08:11:41.011Z",
+      "response": {
+        "httpStatus": 401,
+        "httpStatusText": "Unauthorized",
+        "eventsReceived": 0,
+        "messages": [],
+        "fbtraceId": "Au23uRm7HuImO2JWWcgbXl-",
+        "errorCode": 190,
+        "errorMessage": "Invalid OAuth access token - Cannot parse access token",
+        "rawBody": "{\"error\":{\"message\":\"Invalid OAuth access token - Cannot parse access token\",\"type\":\"OAuthException\",\"code\":190,\"fbtrace_id\":\"Au23uRm7HuImO2JWWcgbXl-\"}}",
+        "metaResponseBody": {
+          "error": {
+            "message": "Invalid OAuth access token - Cannot parse access token",
+            "type": "OAuthException",
+            "code": 190,
+            "fbtrace_id": "Au23uRm7HuImO2JWWcgbXl-"
+          }
+        },
+        "responseParseStatus": "success",
+        "parseError": null
+      },
+      "durationMs": 257,
+      "completedAt": "2026-11-22T08:11:41.268Z"
+    },
+    {
+      "_id": "log_1795335100075_ge2cf",
+      "createdAt": "2026-11-22T08:11:40.075Z",
+      "updatedAt": "2026-11-22T08:11:40.398Z",
+      "eventId": "pageview_1795335100071_g9i6aen",
+      "eventName": "PageView",
+      "orderId": "",
+      "eventSource": "browser_forwarded",
+      "eventSourceUrl": "http://localhost:3000/",
+      "status": "failed",
+      "matching": {
+        "hasFbp": true,
+        "hasFbc": false,
+        "fbcSource": "none",
+        "hasIp": false,
+        "hasUserAgent": true,
+        "hasPhone": false,
+        "hasEmail": false,
+        "hasCity": false,
+        "hasCountry": false,
+        "hasExternalId": false,
+        "presentParameters": [
+          "fbp",
+          "client_user_agent"
+        ],
+        "missingParameters": [
+          "fbc",
+          "client_ip_address",
+          "ph",
+          "em",
+          "ct",
+          "country"
+        ]
+      },
+      "request": {
+        "endpoint": "https://graph.facebook.com/v19.0/META_PIXEL_ID/events",
+        "method": "POST",
+        "eventCount": 1,
+        "payload": {
+          "data": [
+            {
+              "event_name": "PageView",
+              "event_time": 1795335100,
+              "event_id": "pageview_1795335100071_g9i6aen",
+              "event_source_url": "http://localhost:3000/",
+              "action_source": "website",
+              "user_data": {
+                "fbp": "fb.0.1795267164730.146773037210383808",
+                "client_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/158.0.0.0 Safari/537.36 Edg/158.0.0.0"
+              }
+            }
+          ]
+        }
+      },
+      "attempts": 1,
+      "expiresAt": "2026-11-29T08:11:40.075Z",
+      "response": {
+        "httpStatus": 401,
+        "httpStatusText": "Unauthorized",
+        "eventsReceived": 0,
+        "messages": [],
+        "fbtraceId": "AeFjch65S2wSLDJivvx7-W7",
+        "errorCode": 190,
+        "errorMessage": "Invalid OAuth access token - Cannot parse access token",
+        "rawBody": "{\"error\":{\"message\":\"Invalid OAuth access token - Cannot parse access token\",\"type\":\"OAuthException\",\"code\":190,\"fbtrace_id\":\"AeFjch65S2wSLDJivvx7-W7\"}}",
+        "metaResponseBody": {
+          "error": {
+            "message": "Invalid OAuth access token - Cannot parse access token",
+            "type": "OAuthException",
+            "code": 190,
+            "fbtrace_id": "AeFjch65S2wSLDJivvx7-W7"
+          }
+        },
+        "responseParseStatus": "success",
+        "parseError": null
+      },
+      "durationMs": 323,
+      "completedAt": "2026-11-22T08:11:40.398Z"
+    },
+    {
+      "_id": "log_1795335057908_78o6j",
+      "createdAt": "2026-11-22T08:10:57.908Z",
+      "updatedAt": "2026-11-22T08:10:58.525Z",
+      "eventId": "pageview_1795335057898_ff0qx2g",
+      "eventName": "PageView",
+      "orderId": "",
+      "eventSource": "browser_forwarded",
+      "eventSourceUrl": "http://localhost:3000/",
+      "status": "failed",
+      "matching": {
+        "hasFbp": false,
+        "hasFbc": false,
+        "fbcSource": "none",
+        "hasIp": false,
+        "hasUserAgent": true,
+        "hasPhone": false,
+        "hasEmail": false,
+        "hasCity": false,
+        "hasCountry": false,
+        "hasExternalId": false,
+        "presentParameters": [
+          "client_user_agent"
+        ],
+        "missingParameters": [
+          "fbp",
+          "fbc",
+          "client_ip_address",
+          "ph",
+          "em",
+          "ct",
+          "country"
+        ]
+      },
+      "request": {
+        "endpoint": "https://graph.facebook.com/v19.0/META_PIXEL_ID/events",
+        "method": "POST",
+        "eventCount": 1,
+        "payload": {
+          "data": [
+            {
+              "event_name": "PageView",
+              "event_time": 1795335057,
+              "event_id": "pageview_1795335057898_ff0qx2g",
+              "event_source_url": "http://localhost:3000/",
+              "action_source": "website",
+              "user_data": {
+                "client_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
+              }
+            }
+          ]
+        }
+      },
+      "attempts": 1,
+      "expiresAt": "2026-11-29T08:10:57.908Z",
+      "response": {
+        "httpStatus": 401,
+        "httpStatusText": "Unauthorized",
+        "eventsReceived": 0,
+        "messages": [],
+        "fbtraceId": "A-Z5irecvgNySfeK28IZH0P",
+        "errorCode": 190,
+        "errorMessage": "Invalid OAuth access token - Cannot parse access token",
+        "rawBody": "{\"error\":{\"message\":\"Invalid OAuth access token - Cannot parse access token\",\"type\":\"OAuthException\",\"code\":190,\"fbtrace_id\":\"A-Z5irecvgNySfeK28IZH0P\"}}",
+        "metaResponseBody": {
+          "error": {
+            "message": "Invalid OAuth access token - Cannot parse access token",
+            "type": "OAuthException",
+            "code": 190,
+            "fbtrace_id": "A-Z5irecvgNySfeK28IZH0P"
+          }
+        },
+        "responseParseStatus": "success",
+        "parseError": null
+      },
+      "durationMs": 617,
+      "completedAt": "2026-11-22T08:10:58.525Z"
+    },
+    {
+      "_id": "log_1795334940170_5t4e4",
+      "createdAt": "2026-11-22T08:09:00.170Z",
+      "updatedAt": "2026-11-22T08:09:01.481Z",
+      "eventId": "pageview_1795334940110_s79epzd",
+      "eventName": "PageView",
+      "orderId": "",
+      "eventSource": "browser_forwarded",
+      "eventSourceUrl": "http://localhost:3000/",
+      "status": "failed",
+      "matching": {
+        "hasFbp": false,
+        "hasFbc": false,
+        "fbcSource": "none",
+        "hasIp": false,
+        "hasUserAgent": true,
+        "hasPhone": false,
+        "hasEmail": false,
+        "hasCity": false,
+        "hasCountry": false,
+        "hasExternalId": false,
+        "presentParameters": [
+          "client_user_agent"
+        ],
+        "missingParameters": [
+          "fbp",
+          "fbc",
+          "client_ip_address",
+          "ph",
+          "em",
+          "ct",
+          "country"
+        ]
+      },
+      "request": {
+        "endpoint": "https://graph.facebook.com/v19.0/META_PIXEL_ID/events",
+        "method": "POST",
+        "eventCount": 1,
+        "payload": {
+          "data": [
+            {
+              "event_name": "PageView",
+              "event_time": 1795334940,
+              "event_id": "pageview_1795334940110_s79epzd",
+              "event_source_url": "http://localhost:3000/",
+              "action_source": "website",
+              "user_data": {
+                "client_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
+              }
+            }
+          ]
+        }
+      },
+      "attempts": 1,
+      "expiresAt": "2026-11-29T08:09:00.170Z",
+      "response": {
+        "httpStatus": 401,
+        "httpStatusText": "Unauthorized",
+        "eventsReceived": 0,
+        "messages": [],
+        "fbtraceId": "A2mF9bqk7rR_5wfhU2TjHrq",
+        "errorCode": 190,
+        "errorMessage": "Invalid OAuth access token - Cannot parse access token",
+        "rawBody": "{\"error\":{\"message\":\"Invalid OAuth access token - Cannot parse access token\",\"type\":\"OAuthException\",\"code\":190,\"fbtrace_id\":\"A2mF9bqk7rR_5wfhU2TjHrq\"}}",
+        "metaResponseBody": {
+          "error": {
+            "message": "Invalid OAuth access token - Cannot parse access token",
+            "type": "OAuthException",
+            "code": 190,
+            "fbtrace_id": "A2mF9bqk7rR_5wfhU2TjHrq"
+          }
+        },
+        "responseParseStatus": "success",
+        "parseError": null
+      },
+      "durationMs": 1311,
+      "completedAt": "2026-11-22T08:09:01.481Z"
+    },
+    {
+      "_id": "log_1795334889819_iel9i",
+      "createdAt": "2026-11-22T08:08:09.819Z",
+      "updatedAt": "2026-11-22T08:08:10.359Z",
+      "eventId": "pageview_1795334889773_t818c4r",
+      "eventName": "PageView",
+      "orderId": "",
+      "eventSource": "browser_forwarded",
+      "eventSourceUrl": "http://localhost:3000/",
+      "status": "failed",
+      "matching": {
+        "hasFbp": false,
+        "hasFbc": false,
+        "fbcSource": "none",
+        "hasIp": false,
+        "hasUserAgent": true,
+        "hasPhone": false,
+        "hasEmail": false,
+        "hasCity": false,
+        "hasCountry": false,
+        "hasExternalId": false,
+        "presentParameters": [
+          "client_user_agent"
+        ],
+        "missingParameters": [
+          "fbp",
+          "fbc",
+          "client_ip_address",
+          "ph",
+          "em",
+          "ct",
+          "country"
+        ]
+      },
+      "request": {
+        "endpoint": "https://graph.facebook.com/v19.0/META_PIXEL_ID/events",
+        "method": "POST",
+        "eventCount": 1,
+        "payload": {
+          "data": [
+            {
+              "event_name": "PageView",
+              "event_time": 1795334889,
+              "event_id": "pageview_1795334889773_t818c4r",
+              "event_source_url": "http://localhost:3000/",
+              "action_source": "website",
+              "user_data": {
+                "client_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
+              }
+            }
+          ]
+        }
+      },
+      "attempts": 1,
+      "expiresAt": "2026-11-29T08:08:09.819Z",
+      "response": {
+        "httpStatus": 401,
+        "httpStatusText": "Unauthorized",
+        "eventsReceived": 0,
+        "messages": [],
+        "fbtraceId": "AM4vDuZZeQNiQfmEqaRGBVI",
+        "errorCode": 190,
+        "errorMessage": "Invalid OAuth access token - Cannot parse access token",
+        "rawBody": "{\"error\":{\"message\":\"Invalid OAuth access token - Cannot parse access token\",\"type\":\"OAuthException\",\"code\":190,\"fbtrace_id\":\"AM4vDuZZeQNiQfmEqaRGBVI\"}}",
+        "metaResponseBody": {
+          "error": {
+            "message": "Invalid OAuth access token - Cannot parse access token",
+            "type": "OAuthException",
+            "code": 190,
+            "fbtrace_id": "AM4vDuZZeQNiQfmEqaRGBVI"
+          }
+        },
+        "responseParseStatus": "success",
+        "parseError": null
+      },
+      "durationMs": 540,
+      "completedAt": "2026-11-22T08:08:10.359Z"
+    },
+    {
+      "_id": "log_1795334884561_hzaoc",
+      "createdAt": "2026-11-22T08:08:04.561Z",
+      "updatedAt": "2026-11-22T08:08:04.868Z",
+      "eventId": "pageview_1795334884538_8acifs3",
+      "eventName": "PageView",
+      "orderId": "",
+      "eventSource": "browser_forwarded",
+      "eventSourceUrl": "http://localhost:3000/",
+      "status": "failed",
+      "matching": {
+        "hasFbp": false,
+        "hasFbc": false,
+        "fbcSource": "none",
+        "hasIp": false,
+        "hasUserAgent": true,
+        "hasPhone": false,
+        "hasEmail": false,
+        "hasCity": false,
+        "hasCountry": false,
+        "hasExternalId": false,
+        "presentParameters": [
+          "client_user_agent"
+        ],
+        "missingParameters": [
+          "fbp",
+          "fbc",
+          "client_ip_address",
+          "ph",
+          "em",
+          "ct",
+          "country"
+        ]
+      },
+      "request": {
+        "endpoint": "https://graph.facebook.com/v19.0/META_PIXEL_ID/events",
+        "method": "POST",
+        "eventCount": 1,
+        "payload": {
+          "data": [
+            {
+              "event_name": "PageView",
+              "event_time": 1795334884,
+              "event_id": "pageview_1795334884538_8acifs3",
+              "event_source_url": "http://localhost:3000/",
+              "action_source": "website",
+              "user_data": {
+                "client_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
+              }
+            }
+          ]
+        }
+      },
+      "attempts": 1,
+      "expiresAt": "2026-11-29T08:08:04.561Z",
+      "response": {
+        "httpStatus": 401,
+        "httpStatusText": "Unauthorized",
+        "eventsReceived": 0,
+        "messages": [],
+        "fbtraceId": "A4V-gynEG1F4lvZ4IA4v81K",
+        "errorCode": 190,
+        "errorMessage": "Invalid OAuth access token - Cannot parse access token",
+        "rawBody": "{\"error\":{\"message\":\"Invalid OAuth access token - Cannot parse access token\",\"type\":\"OAuthException\",\"code\":190,\"fbtrace_id\":\"A4V-gynEG1F4lvZ4IA4v81K\"}}",
+        "metaResponseBody": {
+          "error": {
+            "message": "Invalid OAuth access token - Cannot parse access token",
+            "type": "OAuthException",
+            "code": 190,
+            "fbtrace_id": "A4V-gynEG1F4lvZ4IA4v81K"
+          }
+        },
+        "responseParseStatus": "success",
+        "parseError": null
+      },
+      "durationMs": 307,
+      "completedAt": "2026-11-22T08:08:04.868Z"
+    },
+    {
+      "_id": "log_1795334883608_1ysl0",
+      "createdAt": "2026-11-22T08:08:03.608Z",
+      "updatedAt": "2026-11-22T08:08:03.927Z",
+      "eventId": "pageview_1795334883607_tm5cs4y",
+      "eventName": "PageView",
+      "orderId": "",
+      "eventSource": "browser_forwarded",
+      "eventSourceUrl": "http://localhost:3000/shop",
+      "status": "failed",
+      "matching": {
+        "hasFbp": false,
+        "hasFbc": false,
+        "fbcSource": "none",
+        "hasIp": false,
+        "hasUserAgent": true,
+        "hasPhone": false,
+        "hasEmail": false,
+        "hasCity": false,
+        "hasCountry": false,
+        "hasExternalId": false,
+        "presentParameters": [
+          "client_user_agent"
+        ],
+        "missingParameters": [
+          "fbp",
+          "fbc",
+          "client_ip_address",
+          "ph",
+          "em",
+          "ct",
+          "country"
+        ]
+      },
+      "request": {
+        "endpoint": "https://graph.facebook.com/v19.0/META_PIXEL_ID/events",
+        "method": "POST",
+        "eventCount": 1,
+        "payload": {
+          "data": [
+            {
+              "event_name": "PageView",
+              "event_time": 1795334883,
+              "event_id": "pageview_1795334883607_tm5cs4y",
+              "event_source_url": "http://localhost:3000/shop",
+              "action_source": "website",
+              "user_data": {
+                "client_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
+              }
+            }
+          ]
+        }
+      },
+      "attempts": 1,
+      "expiresAt": "2026-11-29T08:08:03.608Z",
+      "response": {
+        "httpStatus": 401,
+        "httpStatusText": "Unauthorized",
+        "eventsReceived": 0,
+        "messages": [],
+        "fbtraceId": "AGn5BU6q5hze8i3c0IioZma",
+        "errorCode": 190,
+        "errorMessage": "Invalid OAuth access token - Cannot parse access token",
+        "rawBody": "{\"error\":{\"message\":\"Invalid OAuth access token - Cannot parse access token\",\"type\":\"OAuthException\",\"code\":190,\"fbtrace_id\":\"AGn5BU6q5hze8i3c0IioZma\"}}",
+        "metaResponseBody": {
+          "error": {
+            "message": "Invalid OAuth access token - Cannot parse access token",
+            "type": "OAuthException",
+            "code": 190,
+            "fbtrace_id": "AGn5BU6q5hze8i3c0IioZma"
+          }
+        },
+        "responseParseStatus": "success",
+        "parseError": null
+      },
+      "durationMs": 318,
+      "completedAt": "2026-11-22T08:08:03.927Z"
+    },
+    {
+      "_id": "log_1795334840739_wb33z",
+      "createdAt": "2026-11-22T08:07:20.739Z",
+      "updatedAt": "2026-11-22T08:07:21.045Z",
+      "eventId": "pageview_1795334840739_n07tnor",
+      "eventName": "PageView",
+      "orderId": "",
+      "eventSource": "browser_forwarded",
+      "eventSourceUrl": "http://localhost:3000/",
+      "status": "failed",
+      "matching": {
+        "hasFbp": false,
+        "hasFbc": false,
+        "fbcSource": "none",
+        "hasIp": false,
+        "hasUserAgent": true,
+        "hasPhone": false,
+        "hasEmail": false,
+        "hasCity": false,
+        "hasCountry": false,
+        "hasExternalId": false,
+        "presentParameters": [
+          "client_user_agent"
+        ],
+        "missingParameters": [
+          "fbp",
+          "fbc",
+          "client_ip_address",
+          "ph",
+          "em",
+          "ct",
+          "country"
+        ]
+      },
+      "request": {
+        "endpoint": "https://graph.facebook.com/v19.0/META_PIXEL_ID/events",
+        "method": "POST",
+        "eventCount": 1,
+        "payload": {
+          "data": [
+            {
+              "event_name": "PageView",
+              "event_time": 1795334840,
+              "event_id": "pageview_1795334840739_n07tnor",
+              "event_source_url": "http://localhost:3000/",
+              "action_source": "website",
+              "user_data": {
+                "client_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
+              }
+            }
+          ]
+        }
+      },
+      "attempts": 1,
+      "expiresAt": "2026-11-29T08:07:20.739Z",
+      "response": {
+        "httpStatus": 401,
+        "httpStatusText": "Unauthorized",
+        "eventsReceived": 0,
+        "messages": [],
+        "fbtraceId": "A5Zy8D5KrFiz-cbT87p3hlR",
+        "errorCode": 190,
+        "errorMessage": "Invalid OAuth access token - Cannot parse access token",
+        "rawBody": "{\"error\":{\"message\":\"Invalid OAuth access token - Cannot parse access token\",\"type\":\"OAuthException\",\"code\":190,\"fbtrace_id\":\"A5Zy8D5KrFiz-cbT87p3hlR\"}}",
+        "metaResponseBody": {
+          "error": {
+            "message": "Invalid OAuth access token - Cannot parse access token",
+            "type": "OAuthException",
+            "code": 190,
+            "fbtrace_id": "A5Zy8D5KrFiz-cbT87p3hlR"
+          }
+        },
+        "responseParseStatus": "success",
+        "parseError": null
+      },
+      "durationMs": 306,
+      "completedAt": "2026-11-22T08:07:21.045Z"
+    },
+    {
+      "_id": "log_1795334816198_0x6v1",
+      "createdAt": "2026-11-22T08:06:56.198Z",
+      "updatedAt": "2026-11-22T08:06:56.509Z",
+      "eventId": "pageview_1795334816192_98xg2ut",
+      "eventName": "PageView",
+      "orderId": "",
+      "eventSource": "browser_forwarded",
+      "eventSourceUrl": "http://localhost:3000/",
+      "status": "failed",
+      "matching": {
+        "hasFbp": false,
+        "hasFbc": false,
+        "fbcSource": "none",
+        "hasIp": false,
+        "hasUserAgent": true,
+        "hasPhone": false,
+        "hasEmail": false,
+        "hasCity": false,
+        "hasCountry": false,
+        "hasExternalId": false,
+        "presentParameters": [
+          "client_user_agent"
+        ],
+        "missingParameters": [
+          "fbp",
+          "fbc",
+          "client_ip_address",
+          "ph",
+          "em",
+          "ct",
+          "country"
+        ]
+      },
+      "request": {
+        "endpoint": "https://graph.facebook.com/v19.0/META_PIXEL_ID/events",
+        "method": "POST",
+        "eventCount": 1,
+        "payload": {
+          "data": [
+            {
+              "event_name": "PageView",
+              "event_time": 1795334816,
+              "event_id": "pageview_1795334816192_98xg2ut",
+              "event_source_url": "http://localhost:3000/",
+              "action_source": "website",
+              "user_data": {
+                "client_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
+              }
+            }
+          ]
+        }
+      },
+      "attempts": 1,
+      "expiresAt": "2026-11-29T08:06:56.198Z",
+      "response": {
+        "httpStatus": 401,
+        "httpStatusText": "Unauthorized",
+        "eventsReceived": 0,
+        "messages": [],
+        "fbtraceId": "AQCWXhX6cHWLMxkD3-2C4-3",
+        "errorCode": 190,
+        "errorMessage": "Invalid OAuth access token - Cannot parse access token",
+        "rawBody": "{\"error\":{\"message\":\"Invalid OAuth access token - Cannot parse access token\",\"type\":\"OAuthException\",\"code\":190,\"fbtrace_id\":\"AQCWXhX6cHWLMxkD3-2C4-3\"}}",
+        "metaResponseBody": {
+          "error": {
+            "message": "Invalid OAuth access token - Cannot parse access token",
+            "type": "OAuthException",
+            "code": 190,
+            "fbtrace_id": "AQCWXhX6cHWLMxkD3-2C4-3"
+          }
+        },
+        "responseParseStatus": "success",
+        "parseError": null
+      },
+      "durationMs": 310,
+      "completedAt": "2026-11-22T08:06:56.509Z"
+    },
+    {
+      "_id": "log_1795334778090_pt0yx",
+      "createdAt": "2026-11-22T08:06:18.090Z",
+      "updatedAt": "2026-11-22T08:06:18.429Z",
+      "eventId": "pageview_1795334778039_fgx5jso",
+      "eventName": "PageView",
+      "orderId": "",
+      "eventSource": "browser_forwarded",
+      "eventSourceUrl": "http://localhost:3000/",
+      "status": "failed",
+      "matching": {
+        "hasFbp": false,
+        "hasFbc": false,
+        "fbcSource": "none",
+        "hasIp": false,
+        "hasUserAgent": true,
+        "hasPhone": false,
+        "hasEmail": false,
+        "hasCity": false,
+        "hasCountry": false,
+        "hasExternalId": false,
+        "presentParameters": [
+          "client_user_agent"
+        ],
+        "missingParameters": [
+          "fbp",
+          "fbc",
+          "client_ip_address",
+          "ph",
+          "em",
+          "ct",
+          "country"
+        ]
+      },
+      "request": {
+        "endpoint": "https://graph.facebook.com/v19.0/META_PIXEL_ID/events",
+        "method": "POST",
+        "eventCount": 1,
+        "payload": {
+          "data": [
+            {
+              "event_name": "PageView",
+              "event_time": 1795334778,
+              "event_id": "pageview_1795334778039_fgx5jso",
+              "event_source_url": "http://localhost:3000/",
+              "action_source": "website",
+              "user_data": {
+                "client_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
+              }
+            }
+          ]
+        }
+      },
+      "attempts": 1,
+      "expiresAt": "2026-11-29T08:06:18.090Z",
+      "response": {
+        "httpStatus": 401,
+        "httpStatusText": "Unauthorized",
+        "eventsReceived": 0,
+        "messages": [],
+        "fbtraceId": "Ak2niLpexpmQN78rFFuppnR",
+        "errorCode": 190,
+        "errorMessage": "Invalid OAuth access token - Cannot parse access token",
+        "rawBody": "{\"error\":{\"message\":\"Invalid OAuth access token - Cannot parse access token\",\"type\":\"OAuthException\",\"code\":190,\"fbtrace_id\":\"Ak2niLpexpmQN78rFFuppnR\"}}",
+        "metaResponseBody": {
+          "error": {
+            "message": "Invalid OAuth access token - Cannot parse access token",
+            "type": "OAuthException",
+            "code": 190,
+            "fbtrace_id": "Ak2niLpexpmQN78rFFuppnR"
+          }
+        },
+        "responseParseStatus": "success",
+        "parseError": null
+      },
+      "durationMs": 339,
+      "completedAt": "2026-11-22T08:06:18.429Z"
+    },
+    {
+      "_id": "log_1795334706350_fggej",
+      "createdAt": "2026-11-22T08:05:06.350Z",
+      "updatedAt": "2026-11-22T08:05:06.664Z",
+      "eventId": "pageview_1795334706346_yp3n488",
+      "eventName": "PageView",
+      "orderId": "",
+      "eventSource": "browser_forwarded",
+      "eventSourceUrl": "http://localhost:3000/",
+      "status": "failed",
+      "matching": {
+        "hasFbp": false,
+        "hasFbc": false,
+        "fbcSource": "none",
+        "hasIp": false,
+        "hasUserAgent": true,
+        "hasPhone": false,
+        "hasEmail": false,
+        "hasCity": false,
+        "hasCountry": false,
+        "hasExternalId": false,
+        "presentParameters": [
+          "client_user_agent"
+        ],
+        "missingParameters": [
+          "fbp",
+          "fbc",
+          "client_ip_address",
+          "ph",
+          "em",
+          "ct",
+          "country"
+        ]
+      },
+      "request": {
+        "endpoint": "https://graph.facebook.com/v19.0/META_PIXEL_ID/events",
+        "method": "POST",
+        "eventCount": 1,
+        "payload": {
+          "data": [
+            {
+              "event_name": "PageView",
+              "event_time": 1795334706,
+              "event_id": "pageview_1795334706346_yp3n488",
+              "event_source_url": "http://localhost:3000/",
+              "action_source": "website",
+              "user_data": {
+                "client_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
+              }
+            }
+          ]
+        }
+      },
+      "attempts": 1,
+      "expiresAt": "2026-11-29T08:05:06.350Z",
+      "response": {
+        "httpStatus": 401,
+        "httpStatusText": "Unauthorized",
+        "eventsReceived": 0,
+        "messages": [],
+        "fbtraceId": "A-qsulV6pCdCrSuxl_IAmzL",
+        "errorCode": 190,
+        "errorMessage": "Invalid OAuth access token - Cannot parse access token",
+        "rawBody": "{\"error\":{\"message\":\"Invalid OAuth access token - Cannot parse access token\",\"type\":\"OAuthException\",\"code\":190,\"fbtrace_id\":\"A-qsulV6pCdCrSuxl_IAmzL\"}}",
+        "metaResponseBody": {
+          "error": {
+            "message": "Invalid OAuth access token - Cannot parse access token",
+            "type": "OAuthException",
+            "code": 190,
+            "fbtrace_id": "A-qsulV6pCdCrSuxl_IAmzL"
+          }
+        },
+        "responseParseStatus": "success",
+        "parseError": null
+      },
+      "durationMs": 313,
+      "completedAt": "2026-11-22T08:05:06.664Z"
+    },
+    {
+      "_id": "log_1795334593449_7ph45",
+      "createdAt": "2026-11-22T08:03:13.449Z",
+      "updatedAt": "2026-11-22T08:03:13.762Z",
+      "eventId": "pageview_1795334593450_9z0z506",
+      "eventName": "PageView",
+      "orderId": "",
+      "eventSource": "browser_forwarded",
+      "eventSourceUrl": "http://localhost:3000/",
+      "status": "failed",
+      "matching": {
+        "hasFbp": false,
+        "hasFbc": false,
+        "fbcSource": "none",
+        "hasIp": false,
+        "hasUserAgent": true,
+        "hasPhone": false,
+        "hasEmail": false,
+        "hasCity": false,
+        "hasCountry": false,
+        "hasExternalId": false,
+        "presentParameters": [
+          "client_user_agent"
+        ],
+        "missingParameters": [
+          "fbp",
+          "fbc",
+          "client_ip_address",
+          "ph",
+          "em",
+          "ct",
+          "country"
+        ]
+      },
+      "request": {
+        "endpoint": "https://graph.facebook.com/v19.0/META_PIXEL_ID/events",
+        "method": "POST",
+        "eventCount": 1,
+        "payload": {
+          "data": [
+            {
+              "event_name": "PageView",
+              "event_time": 1795334593,
+              "event_id": "pageview_1795334593450_9z0z506",
+              "event_source_url": "http://localhost:3000/",
+              "action_source": "website",
+              "user_data": {
+                "client_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
+              }
+            }
+          ]
+        }
+      },
+      "attempts": 1,
+      "expiresAt": "2026-11-29T08:03:13.449Z",
+      "response": {
+        "httpStatus": 401,
+        "httpStatusText": "Unauthorized",
+        "eventsReceived": 0,
+        "messages": [],
+        "fbtraceId": "A2M3qjL5d__Va3UKWTx_XHO",
+        "errorCode": 190,
+        "errorMessage": "Invalid OAuth access token - Cannot parse access token",
+        "rawBody": "{\"error\":{\"message\":\"Invalid OAuth access token - Cannot parse access token\",\"type\":\"OAuthException\",\"code\":190,\"fbtrace_id\":\"A2M3qjL5d__Va3UKWTx_XHO\"}}",
+        "metaResponseBody": {
+          "error": {
+            "message": "Invalid OAuth access token - Cannot parse access token",
+            "type": "OAuthException",
+            "code": 190,
+            "fbtrace_id": "A2M3qjL5d__Va3UKWTx_XHO"
+          }
+        },
+        "responseParseStatus": "success",
+        "parseError": null
+      },
+      "durationMs": 313,
+      "completedAt": "2026-11-22T08:03:13.762Z"
+    },
+    {
+      "_id": "log_1795334576749_gb5yt",
+      "createdAt": "2026-11-22T08:02:56.749Z",
+      "updatedAt": "2026-11-22T08:02:56.989Z",
+      "eventId": "pageview_1795334576747_45xzkd7",
+      "eventName": "PageView",
+      "orderId": "",
+      "eventSource": "browser_forwarded",
+      "eventSourceUrl": "http://localhost:3000/",
+      "status": "failed",
+      "matching": {
+        "hasFbp": false,
+        "hasFbc": false,
+        "fbcSource": "none",
+        "hasIp": false,
+        "hasUserAgent": true,
+        "hasPhone": false,
+        "hasEmail": false,
+        "hasCity": false,
+        "hasCountry": false,
+        "hasExternalId": false,
+        "presentParameters": [
+          "client_user_agent"
+        ],
+        "missingParameters": [
+          "fbp",
+          "fbc",
+          "client_ip_address",
+          "ph",
+          "em",
+          "ct",
+          "country"
+        ]
+      },
+      "request": {
+        "endpoint": "https://graph.facebook.com/v19.0/META_PIXEL_ID/events",
+        "method": "POST",
+        "eventCount": 1,
+        "payload": {
+          "data": [
+            {
+              "event_name": "PageView",
+              "event_time": 1795334576,
+              "event_id": "pageview_1795334576747_45xzkd7",
+              "event_source_url": "http://localhost:3000/",
+              "action_source": "website",
+              "user_data": {
+                "client_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
+              }
+            }
+          ]
+        }
+      },
+      "attempts": 1,
+      "expiresAt": "2026-11-29T08:02:56.749Z",
+      "response": {
+        "httpStatus": 401,
+        "httpStatusText": "Unauthorized",
+        "eventsReceived": 0,
+        "messages": [],
+        "fbtraceId": "AUpc4Ov0Pv8kRZo1DCuV7s2",
+        "errorCode": 190,
+        "errorMessage": "Invalid OAuth access token - Cannot parse access token",
+        "rawBody": "{\"error\":{\"message\":\"Invalid OAuth access token - Cannot parse access token\",\"type\":\"OAuthException\",\"code\":190,\"fbtrace_id\":\"AUpc4Ov0Pv8kRZo1DCuV7s2\"}}",
+        "metaResponseBody": {
+          "error": {
+            "message": "Invalid OAuth access token - Cannot parse access token",
+            "type": "OAuthException",
+            "code": 190,
+            "fbtrace_id": "AUpc4Ov0Pv8kRZo1DCuV7s2"
+          }
+        },
+        "responseParseStatus": "success",
+        "parseError": null
+      },
+      "durationMs": 240,
+      "completedAt": "2026-11-22T08:02:56.989Z"
+    },
+    {
+      "_id": "log_1795334575766_rpzuo",
+      "createdAt": "2026-11-22T08:02:55.766Z",
+      "updatedAt": "2026-11-22T08:02:56.007Z",
+      "eventId": "pageview_1795334575764_hl2hfvg",
+      "eventName": "PageView",
+      "orderId": "",
+      "eventSource": "browser_forwarded",
+      "eventSourceUrl": "http://localhost:3000/",
+      "status": "failed",
+      "matching": {
+        "hasFbp": false,
+        "hasFbc": false,
+        "fbcSource": "none",
+        "hasIp": false,
+        "hasUserAgent": true,
+        "hasPhone": false,
+        "hasEmail": false,
+        "hasCity": false,
+        "hasCountry": false,
+        "hasExternalId": false,
+        "presentParameters": [
+          "client_user_agent"
+        ],
+        "missingParameters": [
+          "fbp",
+          "fbc",
+          "client_ip_address",
+          "ph",
+          "em",
+          "ct",
+          "country"
+        ]
+      },
+      "request": {
+        "endpoint": "https://graph.facebook.com/v19.0/META_PIXEL_ID/events",
+        "method": "POST",
+        "eventCount": 1,
+        "payload": {
+          "data": [
+            {
+              "event_name": "PageView",
+              "event_time": 1795334575,
+              "event_id": "pageview_1795334575764_hl2hfvg",
+              "event_source_url": "http://localhost:3000/",
+              "action_source": "website",
+              "user_data": {
+                "client_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
+              }
+            }
+          ]
+        }
+      },
+      "attempts": 1,
+      "expiresAt": "2026-11-29T08:02:55.766Z",
+      "response": {
+        "httpStatus": 401,
+        "httpStatusText": "Unauthorized",
+        "eventsReceived": 0,
+        "messages": [],
+        "fbtraceId": "AwdTnBJ8m7eA5FwEloZdKy3",
+        "errorCode": 190,
+        "errorMessage": "Invalid OAuth access token - Cannot parse access token",
+        "rawBody": "{\"error\":{\"message\":\"Invalid OAuth access token - Cannot parse access token\",\"type\":\"OAuthException\",\"code\":190,\"fbtrace_id\":\"AwdTnBJ8m7eA5FwEloZdKy3\"}}",
+        "metaResponseBody": {
+          "error": {
+            "message": "Invalid OAuth access token - Cannot parse access token",
+            "type": "OAuthException",
+            "code": 190,
+            "fbtrace_id": "AwdTnBJ8m7eA5FwEloZdKy3"
+          }
+        },
+        "responseParseStatus": "success",
+        "parseError": null
+      },
+      "durationMs": 241,
+      "completedAt": "2026-11-22T08:02:56.007Z"
+    },
+    {
+      "_id": "log_1795334574720_7vaoq",
+      "createdAt": "2026-11-22T08:02:54.720Z",
+      "updatedAt": "2026-11-22T08:02:54.988Z",
+      "eventId": "pageview_1795334574719_qolo9or",
+      "eventName": "PageView",
+      "orderId": "",
+      "eventSource": "browser_forwarded",
+      "eventSourceUrl": "http://localhost:3000/",
+      "status": "failed",
+      "matching": {
+        "hasFbp": false,
+        "hasFbc": false,
+        "fbcSource": "none",
+        "hasIp": false,
+        "hasUserAgent": true,
+        "hasPhone": false,
+        "hasEmail": false,
+        "hasCity": false,
+        "hasCountry": false,
+        "hasExternalId": false,
+        "presentParameters": [
+          "client_user_agent"
+        ],
+        "missingParameters": [
+          "fbp",
+          "fbc",
+          "client_ip_address",
+          "ph",
+          "em",
+          "ct",
+          "country"
+        ]
+      },
+      "request": {
+        "endpoint": "https://graph.facebook.com/v19.0/META_PIXEL_ID/events",
+        "method": "POST",
+        "eventCount": 1,
+        "payload": {
+          "data": [
+            {
+              "event_name": "PageView",
+              "event_time": 1795334574,
+              "event_id": "pageview_1795334574719_qolo9or",
+              "event_source_url": "http://localhost:3000/",
+              "action_source": "website",
+              "user_data": {
+                "client_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
+              }
+            }
+          ]
+        }
+      },
+      "attempts": 1,
+      "expiresAt": "2026-11-29T08:02:54.720Z",
+      "response": {
+        "httpStatus": 401,
+        "httpStatusText": "Unauthorized",
+        "eventsReceived": 0,
+        "messages": [],
+        "fbtraceId": "ABXjIEyoEjtdhC8gH5-uio7",
+        "errorCode": 190,
+        "errorMessage": "Invalid OAuth access token - Cannot parse access token",
+        "rawBody": "{\"error\":{\"message\":\"Invalid OAuth access token - Cannot parse access token\",\"type\":\"OAuthException\",\"code\":190,\"fbtrace_id\":\"ABXjIEyoEjtdhC8gH5-uio7\"}}",
+        "metaResponseBody": {
+          "error": {
+            "message": "Invalid OAuth access token - Cannot parse access token",
+            "type": "OAuthException",
+            "code": 190,
+            "fbtrace_id": "ABXjIEyoEjtdhC8gH5-uio7"
+          }
+        },
+        "responseParseStatus": "success",
+        "parseError": null
+      },
+      "durationMs": 267,
+      "completedAt": "2026-11-22T08:02:54.988Z"
+    },
+    {
+      "_id": "log_1795334573719_7e00m",
+      "createdAt": "2026-11-22T08:02:53.719Z",
+      "updatedAt": "2026-11-22T08:02:53.990Z",
+      "eventId": "pageview_1795334573719_oz9dpmg",
+      "eventName": "PageView",
+      "orderId": "",
+      "eventSource": "browser_forwarded",
+      "eventSourceUrl": "http://localhost:3000/",
+      "status": "failed",
+      "matching": {
+        "hasFbp": false,
+        "hasFbc": false,
+        "fbcSource": "none",
+        "hasIp": false,
+        "hasUserAgent": true,
+        "hasPhone": false,
+        "hasEmail": false,
+        "hasCity": false,
+        "hasCountry": false,
+        "hasExternalId": false,
+        "presentParameters": [
+          "client_user_agent"
+        ],
+        "missingParameters": [
+          "fbp",
+          "fbc",
+          "client_ip_address",
+          "ph",
+          "em",
+          "ct",
+          "country"
+        ]
+      },
+      "request": {
+        "endpoint": "https://graph.facebook.com/v19.0/META_PIXEL_ID/events",
+        "method": "POST",
+        "eventCount": 1,
+        "payload": {
+          "data": [
+            {
+              "event_name": "PageView",
+              "event_time": 1795334573,
+              "event_id": "pageview_1795334573719_oz9dpmg",
+              "event_source_url": "http://localhost:3000/",
+              "action_source": "website",
+              "user_data": {
+                "client_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
+              }
+            }
+          ]
+        }
+      },
+      "attempts": 1,
+      "expiresAt": "2026-11-29T08:02:53.719Z",
+      "response": {
+        "httpStatus": 401,
+        "httpStatusText": "Unauthorized",
+        "eventsReceived": 0,
+        "messages": [],
+        "fbtraceId": "A8SAwIcroAKuWeos0V3evNI",
+        "errorCode": 190,
+        "errorMessage": "Invalid OAuth access token - Cannot parse access token",
+        "rawBody": "{\"error\":{\"message\":\"Invalid OAuth access token - Cannot parse access token\",\"type\":\"OAuthException\",\"code\":190,\"fbtrace_id\":\"A8SAwIcroAKuWeos0V3evNI\"}}",
+        "metaResponseBody": {
+          "error": {
+            "message": "Invalid OAuth access token - Cannot parse access token",
+            "type": "OAuthException",
+            "code": 190,
+            "fbtrace_id": "A8SAwIcroAKuWeos0V3evNI"
+          }
+        },
+        "responseParseStatus": "success",
+        "parseError": null
+      },
+      "durationMs": 271,
+      "completedAt": "2026-11-22T08:02:53.990Z"
+    },
+    {
+      "_id": "log_1795334572343_l1rdx",
+      "createdAt": "2026-11-22T08:02:52.343Z",
+      "updatedAt": "2026-11-22T08:02:52.622Z",
+      "eventId": "pageview_1795334572343_glbl0zc",
+      "eventName": "PageView",
+      "orderId": "",
+      "eventSource": "browser_forwarded",
+      "eventSourceUrl": "http://localhost:3000/",
+      "status": "failed",
+      "matching": {
+        "hasFbp": false,
+        "hasFbc": false,
+        "fbcSource": "none",
+        "hasIp": false,
+        "hasUserAgent": true,
+        "hasPhone": false,
+        "hasEmail": false,
+        "hasCity": false,
+        "hasCountry": false,
+        "hasExternalId": false,
+        "presentParameters": [
+          "client_user_agent"
+        ],
+        "missingParameters": [
+          "fbp",
+          "fbc",
+          "client_ip_address",
+          "ph",
+          "em",
+          "ct",
+          "country"
+        ]
+      },
+      "request": {
+        "endpoint": "https://graph.facebook.com/v19.0/META_PIXEL_ID/events",
+        "method": "POST",
+        "eventCount": 1,
+        "payload": {
+          "data": [
+            {
+              "event_name": "PageView",
+              "event_time": 1795334572,
+              "event_id": "pageview_1795334572343_glbl0zc",
+              "event_source_url": "http://localhost:3000/",
+              "action_source": "website",
+              "user_data": {
+                "client_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
+              }
+            }
+          ]
+        }
+      },
+      "attempts": 1,
+      "expiresAt": "2026-11-29T08:02:52.343Z",
+      "response": {
+        "httpStatus": 401,
+        "httpStatusText": "Unauthorized",
+        "eventsReceived": 0,
+        "messages": [],
+        "fbtraceId": "A8mZENKm8W96RLVlltx9HNI",
+        "errorCode": 190,
+        "errorMessage": "Invalid OAuth access token - Cannot parse access token",
+        "rawBody": "{\"error\":{\"message\":\"Invalid OAuth access token - Cannot parse access token\",\"type\":\"OAuthException\",\"code\":190,\"fbtrace_id\":\"A8mZENKm8W96RLVlltx9HNI\"}}",
+        "metaResponseBody": {
+          "error": {
+            "message": "Invalid OAuth access token - Cannot parse access token",
+            "type": "OAuthException",
+            "code": 190,
+            "fbtrace_id": "A8mZENKm8W96RLVlltx9HNI"
+          }
+        },
+        "responseParseStatus": "success",
+        "parseError": null
+      },
+      "durationMs": 279,
+      "completedAt": "2026-11-22T08:02:52.622Z"
+    },
+    {
+      "_id": "log_1795334564906_60r1i",
+      "createdAt": "2026-11-22T08:02:44.906Z",
+      "updatedAt": "2026-11-22T08:02:45.197Z",
+      "eventId": "pageview_1795334564906_bhssta2",
+      "eventName": "PageView",
+      "orderId": "",
+      "eventSource": "browser_forwarded",
+      "eventSourceUrl": "http://localhost:3000/",
+      "status": "failed",
+      "matching": {
+        "hasFbp": false,
+        "hasFbc": false,
+        "fbcSource": "none",
+        "hasIp": false,
+        "hasUserAgent": true,
+        "hasPhone": false,
+        "hasEmail": false,
+        "hasCity": false,
+        "hasCountry": false,
+        "hasExternalId": false,
+        "presentParameters": [
+          "client_user_agent"
+        ],
+        "missingParameters": [
+          "fbp",
+          "fbc",
+          "client_ip_address",
+          "ph",
+          "em",
+          "ct",
+          "country"
+        ]
+      },
+      "request": {
+        "endpoint": "https://graph.facebook.com/v19.0/META_PIXEL_ID/events",
+        "method": "POST",
+        "eventCount": 1,
+        "payload": {
+          "data": [
+            {
+              "event_name": "PageView",
+              "event_time": 1795334564,
+              "event_id": "pageview_1795334564906_bhssta2",
+              "event_source_url": "http://localhost:3000/",
+              "action_source": "website",
+              "user_data": {
+                "client_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
+              }
+            }
+          ]
+        }
+      },
+      "attempts": 1,
+      "expiresAt": "2026-11-29T08:02:44.906Z",
+      "response": {
+        "httpStatus": 401,
+        "httpStatusText": "Unauthorized",
+        "eventsReceived": 0,
+        "messages": [],
+        "fbtraceId": "AGA4JquZfo5_F_ALRwydG_D",
+        "errorCode": 190,
+        "errorMessage": "Invalid OAuth access token - Cannot parse access token",
+        "rawBody": "{\"error\":{\"message\":\"Invalid OAuth access token - Cannot parse access token\",\"type\":\"OAuthException\",\"code\":190,\"fbtrace_id\":\"AGA4JquZfo5_F_ALRwydG_D\"}}",
+        "metaResponseBody": {
+          "error": {
+            "message": "Invalid OAuth access token - Cannot parse access token",
+            "type": "OAuthException",
+            "code": 190,
+            "fbtrace_id": "AGA4JquZfo5_F_ALRwydG_D"
+          }
+        },
+        "responseParseStatus": "success",
+        "parseError": null
+      },
+      "durationMs": 291,
+      "completedAt": "2026-11-22T08:02:45.197Z"
+    },
+    {
+      "_id": "log_1795334561973_ycw1k",
+      "createdAt": "2026-11-22T08:02:41.973Z",
+      "updatedAt": "2026-11-22T08:02:42.332Z",
+      "eventId": "pageview_1795334561973_kojolpz",
+      "eventName": "PageView",
+      "orderId": "",
+      "eventSource": "browser_forwarded",
+      "eventSourceUrl": "http://localhost:3000/",
+      "status": "failed",
+      "matching": {
+        "hasFbp": false,
+        "hasFbc": false,
+        "fbcSource": "none",
+        "hasIp": false,
+        "hasUserAgent": true,
+        "hasPhone": false,
+        "hasEmail": false,
+        "hasCity": false,
+        "hasCountry": false,
+        "hasExternalId": false,
+        "presentParameters": [
+          "client_user_agent"
+        ],
+        "missingParameters": [
+          "fbp",
+          "fbc",
+          "client_ip_address",
+          "ph",
+          "em",
+          "ct",
+          "country"
+        ]
+      },
+      "request": {
+        "endpoint": "https://graph.facebook.com/v19.0/META_PIXEL_ID/events",
+        "method": "POST",
+        "eventCount": 1,
+        "payload": {
+          "data": [
+            {
+              "event_name": "PageView",
+              "event_time": 1795334561,
+              "event_id": "pageview_1795334561973_kojolpz",
+              "event_source_url": "http://localhost:3000/",
+              "action_source": "website",
+              "user_data": {
+                "client_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
+              }
+            }
+          ]
+        }
+      },
+      "attempts": 1,
+      "expiresAt": "2026-11-29T08:02:41.973Z",
+      "response": {
+        "httpStatus": 401,
+        "httpStatusText": "Unauthorized",
+        "eventsReceived": 0,
+        "messages": [],
+        "fbtraceId": "ANFitTy8KhA1FfEhJF58vb6",
+        "errorCode": 190,
+        "errorMessage": "Invalid OAuth access token - Cannot parse access token",
+        "rawBody": "{\"error\":{\"message\":\"Invalid OAuth access token - Cannot parse access token\",\"type\":\"OAuthException\",\"code\":190,\"fbtrace_id\":\"ANFitTy8KhA1FfEhJF58vb6\"}}",
+        "metaResponseBody": {
+          "error": {
+            "message": "Invalid OAuth access token - Cannot parse access token",
+            "type": "OAuthException",
+            "code": 190,
+            "fbtrace_id": "ANFitTy8KhA1FfEhJF58vb6"
+          }
+        },
+        "responseParseStatus": "success",
+        "parseError": null
+      },
+      "durationMs": 359,
+      "completedAt": "2026-11-22T08:02:42.332Z"
+    },
+    {
+      "_id": "log_1795334493075_bf7ez",
+      "createdAt": "2026-11-22T08:01:33.075Z",
+      "updatedAt": "2026-11-22T08:01:34.459Z",
+      "eventId": "pageview_1795334493073_abxl0i4",
+      "eventName": "PageView",
+      "orderId": "",
+      "eventSource": "browser_forwarded",
+      "eventSourceUrl": "http://localhost:3000/",
+      "status": "failed",
+      "matching": {
+        "hasFbp": false,
+        "hasFbc": false,
+        "fbcSource": "none",
+        "hasIp": false,
+        "hasUserAgent": true,
+        "hasPhone": false,
+        "hasEmail": false,
+        "hasCity": false,
+        "hasCountry": false,
+        "hasExternalId": false,
+        "presentParameters": [
+          "client_user_agent"
+        ],
+        "missingParameters": [
+          "fbp",
+          "fbc",
+          "client_ip_address",
+          "ph",
+          "em",
+          "ct",
+          "country"
+        ]
+      },
+      "request": {
+        "endpoint": "https://graph.facebook.com/v19.0/META_PIXEL_ID/events",
+        "method": "POST",
+        "eventCount": 1,
+        "payload": {
+          "data": [
+            {
+              "event_name": "PageView",
+              "event_time": 1795334493,
+              "event_id": "pageview_1795334493073_abxl0i4",
+              "event_source_url": "http://localhost:3000/",
+              "action_source": "website",
+              "user_data": {
+                "client_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
+              }
+            }
+          ]
+        }
+      },
+      "attempts": 1,
+      "expiresAt": "2026-11-29T08:01:33.075Z",
+      "response": {
+        "httpStatus": 401,
+        "httpStatusText": "Unauthorized",
+        "eventsReceived": 0,
+        "messages": [],
+        "fbtraceId": "AutPXnIxFv8yWy0HxlbXTfF",
+        "errorCode": 190,
+        "errorMessage": "Invalid OAuth access token - Cannot parse access token",
+        "rawBody": "{\"error\":{\"message\":\"Invalid OAuth access token - Cannot parse access token\",\"type\":\"OAuthException\",\"code\":190,\"fbtrace_id\":\"AutPXnIxFv8yWy0HxlbXTfF\"}}",
+        "metaResponseBody": {
+          "error": {
+            "message": "Invalid OAuth access token - Cannot parse access token",
+            "type": "OAuthException",
+            "code": 190,
+            "fbtrace_id": "AutPXnIxFv8yWy0HxlbXTfF"
+          }
+        },
+        "responseParseStatus": "success",
+        "parseError": null
+      },
+      "durationMs": 1384,
+      "completedAt": "2026-11-22T08:01:34.459Z"
+    },
+    {
+      "_id": "log_1795334412085_n9tz8",
+      "createdAt": "2026-11-22T08:00:12.085Z",
+      "updatedAt": "2026-11-22T08:00:12.534Z",
+      "eventId": "pageview_1795334412080_lia53hh",
+      "eventName": "PageView",
+      "orderId": "",
+      "eventSource": "browser_forwarded",
+      "eventSourceUrl": "http://localhost:3000/",
+      "status": "failed",
+      "matching": {
+        "hasFbp": false,
+        "hasFbc": false,
+        "fbcSource": "none",
+        "hasIp": false,
+        "hasUserAgent": true,
+        "hasPhone": false,
+        "hasEmail": false,
+        "hasCity": false,
+        "hasCountry": false,
+        "hasExternalId": false,
+        "presentParameters": [
+          "client_user_agent"
+        ],
+        "missingParameters": [
+          "fbp",
+          "fbc",
+          "client_ip_address",
+          "ph",
+          "em",
+          "ct",
+          "country"
+        ]
+      },
+      "request": {
+        "endpoint": "https://graph.facebook.com/v19.0/META_PIXEL_ID/events",
+        "method": "POST",
+        "eventCount": 1,
+        "payload": {
+          "data": [
+            {
+              "event_name": "PageView",
+              "event_time": 1795334412,
+              "event_id": "pageview_1795334412080_lia53hh",
+              "event_source_url": "http://localhost:3000/",
+              "action_source": "website",
+              "user_data": {
+                "client_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
+              }
+            }
+          ]
+        }
+      },
+      "attempts": 1,
+      "expiresAt": "2026-11-29T08:00:12.085Z",
+      "response": {
+        "httpStatus": 401,
+        "httpStatusText": "Unauthorized",
+        "eventsReceived": 0,
+        "messages": [],
+        "fbtraceId": "AV3zyZNslD1yCUV3KDNeEMP",
+        "errorCode": 190,
+        "errorMessage": "Invalid OAuth access token - Cannot parse access token",
+        "rawBody": "{\"error\":{\"message\":\"Invalid OAuth access token - Cannot parse access token\",\"type\":\"OAuthException\",\"code\":190,\"fbtrace_id\":\"AV3zyZNslD1yCUV3KDNeEMP\"}}",
+        "metaResponseBody": {
+          "error": {
+            "message": "Invalid OAuth access token - Cannot parse access token",
+            "type": "OAuthException",
+            "code": 190,
+            "fbtrace_id": "AV3zyZNslD1yCUV3KDNeEMP"
+          }
+        },
+        "responseParseStatus": "success",
+        "parseError": null
+      },
+      "durationMs": 449,
+      "completedAt": "2026-11-22T08:00:12.534Z"
+    },
+    {
+      "_id": "log_1795334260733_2r4ka",
+      "createdAt": "2026-11-22T07:57:40.733Z",
+      "updatedAt": "2026-11-22T07:57:41.199Z",
+      "eventId": "pageview_1795334260696_267r5c3",
+      "eventName": "PageView",
+      "orderId": "",
+      "eventSource": "browser_forwarded",
+      "eventSourceUrl": "http://172.27.112.1:3000/",
+      "status": "failed",
+      "matching": {
+        "hasFbp": false,
+        "hasFbc": false,
+        "fbcSource": "none",
+        "hasIp": false,
+        "hasUserAgent": true,
+        "hasPhone": false,
+        "hasEmail": false,
+        "hasCity": false,
+        "hasCountry": false,
+        "hasExternalId": false,
+        "presentParameters": [
+          "client_user_agent"
+        ],
+        "missingParameters": [
+          "fbp",
+          "fbc",
+          "client_ip_address",
+          "ph",
+          "em",
+          "ct",
+          "country"
+        ]
+      },
+      "request": {
+        "endpoint": "https://graph.facebook.com/v19.0/META_PIXEL_ID/events",
+        "method": "POST",
+        "eventCount": 1,
+        "payload": {
+          "data": [
+            {
+              "event_name": "PageView",
+              "event_time": 1795334260,
+              "event_id": "pageview_1795334260696_267r5c3",
+              "event_source_url": "http://172.27.112.1:3000/",
+              "action_source": "website",
+              "user_data": {
+                "client_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
+              }
+            }
+          ]
+        }
+      },
+      "attempts": 1,
+      "expiresAt": "2026-11-29T07:57:40.733Z",
+      "response": {
+        "httpStatus": 401,
+        "httpStatusText": "Unauthorized",
+        "eventsReceived": 0,
+        "messages": [],
+        "fbtraceId": "AYj__4N-zb-Sqn4H1S9HWLr",
+        "errorCode": 190,
+        "errorMessage": "Invalid OAuth access token - Cannot parse access token",
+        "rawBody": "{\"error\":{\"message\":\"Invalid OAuth access token - Cannot parse access token\",\"type\":\"OAuthException\",\"code\":190,\"fbtrace_id\":\"AYj__4N-zb-Sqn4H1S9HWLr\"}}",
+        "metaResponseBody": {
+          "error": {
+            "message": "Invalid OAuth access token - Cannot parse access token",
+            "type": "OAuthException",
+            "code": 190,
+            "fbtrace_id": "AYj__4N-zb-Sqn4H1S9HWLr"
+          }
+        },
+        "responseParseStatus": "success",
+        "parseError": null
+      },
+      "durationMs": 464,
+      "completedAt": "2026-11-22T07:57:41.199Z"
+    },
     {
       "_id": "log_1795310703090_n5rh9",
       "createdAt": "2026-11-22T01:25:03.090Z",

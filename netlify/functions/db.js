@@ -11,7 +11,33 @@ const dataModuleDir = typeof __dirname === 'string'
   ? __dirname
   : path.dirname(fileURLToPath(import.meta.url));
 
-// Helper to resolve the storage file paths across local dev, Netlify functions, and production build
+// Helper to resolve all data storage file paths across local dev, Netlify functions, and production build
+function getAllDataFilePaths() {
+  const possiblePaths = [
+    // 1. Root public/data (Customer storefront static data served by Vite/dist)
+    path.resolve(process.cwd(), 'public', 'data', 'website-data.json'),
+    path.resolve(dataModuleDir, '..', '..', 'public', 'data', 'website-data.json'),
+
+    // 2. Netlify Functions data (Admin panel read/write backend store)
+    path.resolve(dataModuleDir, 'data', 'website-data.json'),
+    path.resolve(process.cwd(), 'netlify', 'functions', 'data', 'website-data.json'),
+
+    // 3. Dist data (Production build output, if dist directory exists)
+    path.resolve(process.cwd(), 'dist', 'data', 'website-data.json'),
+    path.resolve(dataModuleDir, '..', '..', 'dist', 'data', 'website-data.json')
+  ];
+
+  // Return unique absolute normalized paths
+  const unique = [];
+  for (const p of possiblePaths) {
+    const norm = path.normalize(p);
+    if (!unique.includes(norm)) {
+      unique.push(norm);
+    }
+  }
+  return unique;
+}
+
 function resolveDataFilePaths() {
   const candidates = [
     path.resolve(dataModuleDir, 'data', 'website-data.json'),
@@ -30,8 +56,6 @@ function resolveDataFilePaths() {
       break;
     }
   }
-
-  const primaryDir = path.dirname(primaryPath);
 
   // Also support dist directory in production if it exists
   const distCandidates = [
@@ -151,21 +175,42 @@ class LocalJsonStore {
   }
 
   loadFromDisk() {
-    try {
-      if (fs.existsSync(this.filePath)) {
-        const raw = fs.readFileSync(this.filePath, 'utf8');
-        const parsed = JSON.parse(raw);
-        // Ensure all collections are arrays
-        if (!Array.isArray(parsed.categories)) parsed.categories = [];
-        if (!Array.isArray(parsed.products)) parsed.products = [];
-        if (!Array.isArray(parsed.orders)) parsed.orders = [];
-        if (!Array.isArray(parsed.admins)) parsed.admins = [];
-        if (!Array.isArray(parsed.metaEventLogs)) parsed.metaEventLogs = [];
-        return parsed;
+    const candidatePaths = getAllDataFilePaths();
+    let bestData = null;
+    let highestVersion = -1;
+    let latestTime = 0;
+    let bestPath = null;
+
+    for (const p of candidatePaths) {
+      try {
+        if (fs.existsSync(p)) {
+          const raw = fs.readFileSync(p, 'utf8');
+          const parsed = JSON.parse(raw);
+          const ver = typeof parsed.version === 'number' ? parsed.version : 0;
+          const time = parsed.updatedAt ? new Date(parsed.updatedAt).getTime() : 0;
+
+          if (bestData === null || ver > highestVersion || (ver === highestVersion && time > latestTime)) {
+            bestData = parsed;
+            highestVersion = ver;
+            latestTime = time;
+            bestPath = p;
+          }
+        }
+      } catch (e) {
+        // Continue checking other candidates
       }
-    } catch (e) {
-      console.warn(`Failed to read data from ${this.filePath}:`, e.message);
     }
+
+    if (bestData) {
+      if (!Array.isArray(bestData.categories)) bestData.categories = [];
+      if (!Array.isArray(bestData.products)) bestData.products = [];
+      if (!Array.isArray(bestData.orders)) bestData.orders = [];
+      if (!Array.isArray(bestData.admins)) bestData.admins = [];
+      if (!Array.isArray(bestData.metaEventLogs)) bestData.metaEventLogs = [];
+      if (bestPath) this.filePath = bestPath;
+      return bestData;
+    }
+
     return JSON.parse(JSON.stringify(defaultWebsiteData));
   }
 
@@ -173,26 +218,30 @@ class LocalJsonStore {
     try {
       this.data.updatedAt = new Date().toISOString();
       const content = JSON.stringify(this.data, null, 2);
+      const targetPaths = getAllDataFilePaths();
 
-      // 1. Ensure directory exists
-      const dir = path.dirname(this.filePath);
-      if (!fs.existsSync(dir)) {
-        fs.mkdirSync(dir, { recursive: true });
-      }
+      for (const targetPath of targetPaths) {
+        try {
+          const isDist = targetPath.toLowerCase().includes('dist');
+          const targetDir = path.dirname(targetPath);
+          const parentDir = path.dirname(targetDir);
 
-      // 2. Write primary file
-      fs.writeFileSync(this.filePath, content, 'utf8');
+          // For dist, only write if dist directory exists (e.g. production build)
+          if (isDist && !fs.existsSync(parentDir)) {
+            continue;
+          }
 
-      // 3. Also mirror to dist if dist exists (production build sync)
-      if (this.distPath) {
-        const distDir = path.dirname(this.distPath);
-        if (fs.existsSync(path.dirname(distDir))) {
-          if (!fs.existsSync(distDir)) fs.mkdirSync(distDir, { recursive: true });
-          fs.writeFileSync(this.distPath, content, 'utf8');
+          if (!fs.existsSync(targetDir)) {
+            fs.mkdirSync(targetDir, { recursive: true });
+          }
+
+          fs.writeFileSync(targetPath, content, 'utf8');
+        } catch (writeErr) {
+          // Gracefully continue on read-only environments
         }
       }
     } catch (e) {
-      console.error(`Error saving data to ${this.filePath}:`, e);
+      console.error('Error saving data to disk:', e);
     }
   }
 

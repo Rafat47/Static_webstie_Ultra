@@ -60,6 +60,17 @@ const getCachedOrFetch = async (cacheKey, fetchFn, ttlMs = DEFAULT_TTL_MS, force
 };
 
 export const clearApiCache = (keyPrefix = '') => {
+  if (typeof window !== 'undefined') {
+    try {
+      if (window.sessionStorage) {
+        window.sessionStorage.removeItem('hair_shurokkha_website_data_cache');
+      }
+      window.dispatchEvent(new CustomEvent('website-data-invalidated', { detail: { keyPrefix } }));
+    } catch (e) {
+      // Non-blocking browser storage/event handling
+    }
+  }
+
   if (!keyPrefix) {
     apiCache.clear();
   } else {
@@ -80,8 +91,12 @@ export const api = {
     return getCachedOrFetch('website-data', async () => {
       // 1. First attempt to load directly from local JSON file (/data/website-data.json)
       try {
-        const localRes = await axios.get('/data/website-data.json', {
-          headers: { 'Cache-Control': 'no-cache' }
+        const query = force ? `?t=${Date.now()}` : '';
+        const localRes = await axios.get(`/data/website-data.json${query}`, {
+          headers: {
+            'Cache-Control': 'no-cache, no-store, must-revalidate',
+            'Pragma': 'no-cache'
+          }
         });
         if (localRes.data && (localRes.data.categories || localRes.data.products || localRes.data.siteSettings)) {
           const payload = JSON.parse(JSON.stringify(localRes.data));

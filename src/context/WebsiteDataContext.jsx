@@ -72,6 +72,19 @@ export function WebsiteDataProvider({ children }) {
     // Capture any Facebook attribution cookies or UTM query params immediately
     captureAttribution();
     fetchWebsiteData();
+
+    // Listen for data invalidation events triggered by admin updates
+    const handleInvalidation = () => {
+      fetchWebsiteData(true);
+    };
+    if (typeof window !== 'undefined') {
+      window.addEventListener('website-data-invalidated', handleInvalidation);
+    }
+    return () => {
+      if (typeof window !== 'undefined') {
+        window.removeEventListener('website-data-invalidated', handleInvalidation);
+      }
+    };
   }, [fetchWebsiteData]);
 
   // Derived state (memoized helpers for instant storefront access)
