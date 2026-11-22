@@ -35,6 +35,14 @@ app.use(cors());
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
+// URL Rewriter: Ensures routes work seamlessly both locally and under Netlify Functions redirect
+app.use((req, res, next) => {
+  if (req.url.startsWith('/.netlify/functions/api')) {
+    req.url = req.url.replace('/.netlify/functions/api', '/api');
+  }
+  next();
+});
+
 const JWT_SECRET = process.env.JWT_SECRET || 'super_secret_haircare_jwt_key_min_32_characters_long_2026';
 
 // Helper: Sanitize public website data - ensure sensitive server credentials/tokens are never exposed
@@ -471,19 +479,25 @@ app.post('/api/admin/login', async (req, res) => {
       return res.status(400).json({ success: false, message: 'Username and password required' });
     }
 
-    const envUser = process.env.ADMIN_USERNAME || 'admin';
-    const envPass = process.env.ADMIN_PASSWORD || 'Admin@HairCare2026';
+    const cleanUser = String(username).trim().toLowerCase();
+    const cleanPass = String(password).trim();
 
-    const adminRecord = await localJsonStore.getAdminByUsername(username);
+    const envUser = (process.env.ADMIN_USERNAME || 'admin').trim().toLowerCase();
+    const envPass = (process.env.ADMIN_PASSWORD || 'Admin@HairCare2026').trim();
+
+    const adminRecord = await localJsonStore.getAdminByUsername(cleanUser);
     let isMatch = false;
 
     if (adminRecord && adminRecord.password) {
       if (adminRecord.password.startsWith('$2')) {
-        isMatch = await bcrypt.compare(password, adminRecord.password);
+        isMatch = await bcrypt.compare(cleanPass, adminRecord.password);
       } else {
-        isMatch = (password === adminRecord.password);
+        isMatch = (cleanPass === adminRecord.password);
       }
-    } else if (username === envUser && password === envPass) {
+    }
+
+    // Direct fallback: If DB hash failed or doesn't match, verify against ENV credentials
+    if (!isMatch && cleanUser === envUser && cleanPass === envPass) {
       isMatch = true;
     }
 

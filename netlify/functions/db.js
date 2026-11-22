@@ -425,8 +425,10 @@ class LocalJsonStore {
   }
 
   async getAdminByUsername(username) {
+    if (!username) return null;
+    const clean = String(username).trim().toLowerCase();
     const admins = this.data.admins || [];
-    return admins.find(a => a.username === username) || null;
+    return admins.find(a => a.username?.toLowerCase() === clean) || null;
   }
 
   // --- Meta CAPI Event Logs ---

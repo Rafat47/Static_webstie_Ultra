@@ -125,7 +125,7 @@
   },
   "hero": {
     "badge": "100% Authentic Guaranteed",
-    "title": "Science-Backed Hair Restoration & Scalp Wellness",
+    "title": "Science-Backed Scalp Restoration BD",
     "subtitle": "Reactivate dormant hair follicles, increase scalp blood microcirculation, and reclaim thicker hair with dermatologically proven Minoxidil 5% and micro-needling systems.",
     "primaryBtnText": "Shop Now",
     "primaryBtnLink": "/shop",
@@ -215,7 +215,7 @@
     {
       "_id": "prod_1795285533548",
       "createdAt": "2026-11-21T18:25:33.548Z",
-      "updatedAt": "2026-11-21T18:25:33.548Z",
+      "updatedAt": "2026-11-22T01:12:44.018Z",
       "name": "Kirkland Minoxidil 5% Combo with Derma Roller – 4 Bottle Pack (120 Days Supply)",
       "title": "Kirkland Minoxidil 5% Combo with Derma Roller – 4 Bottle Pack (120 Days Supply)",
       "slug": "kirkland-minoxidil-5-combo-with-derma-roller-4-bottle-pack-120-days-supply",
@@ -227,7 +227,7 @@
       "category": "Combo Packages",
       "regularPrice": 5230,
       "salePrice": 3310,
-      "stock": 50,
+      "stock": 48,
       "isFeatured": true,
       "isActive": true,
       "productType": "minoxidil",
@@ -510,7 +510,7 @@
       "category": "Minoxidil",
       "regularPrice": 1250,
       "salePrice": 830,
-      "stock": 39,
+      "stock": 37,
       "isFeatured": true,
       "isActive": true,
       "productType": "minoxidil",
@@ -520,7 +520,7 @@
       "specifications": [],
       "carouselOrder": 0,
       "createdAt": "2026-11-20T18:37:07.958Z",
-      "updatedAt": "2026-11-21T23:58:44.902Z",
+      "updatedAt": "2026-11-22T01:12:44.846Z",
       "displayOrder": 0
     },
     {
@@ -802,9 +802,130 @@
     "whatsappNumber": "+8801356813069",
     "address": "Sonirakra, Dhonia, Dhaka 1236"
   },
-  "updatedAt": "2026-11-22T00:34:34.006Z",
-  "version": 176,
+  "updatedAt": "2026-11-22T01:12:45.141Z",
+  "version": 179,
   "orders": [
+    {
+      "_id": "ord_1795309964854",
+      "createdAt": "2026-11-22T01:12:44.854Z",
+      "updatedAt": "2026-11-22T01:12:45.046Z",
+      "statusHistory": [
+        {
+          "status": "Pending",
+          "timestamp": "2026-11-22T01:12:44.854Z",
+          "note": "Order placed by customer via Cash on Delivery",
+          "updatedBy": "System"
+        },
+        {
+          "status": "Confirmed",
+          "timestamp": "2026-11-22T01:12:45.046Z",
+          "note": "Customer confirmed via phone call",
+          "updatedBy": "admin"
+        }
+      ],
+      "orderId": "HAIR-2611-Z79E",
+      "orderNumber": "HAIR-2611-Z79E",
+      "customer": {
+        "fullName": "Shakib Al Hasan",
+        "phoneNumber": "01712345678",
+        "district": "Dhaka",
+        "deliveryArea": "inside_dhaka",
+        "address": "House 12, Road 4, Banani, Dhaka",
+        "notes": ""
+      },
+      "items": [
+        {
+          "productId": "prod_1795199827958",
+          "productName": "Kirkland Minoxidil 5% Extra Strength – Topical Hair Regrowth Solution (60ml)",
+          "slug": "original-kirkland-5-60ml",
+          "category": "Minoxidil",
+          "image": "https://res.cloudinary.com/wvd1wcrw/image/upload/v1795255189/imresizer-resize-image-Picsart-AiImageEnhancer.webp",
+          "unitPrice": 830,
+          "quantity": 2,
+          "itemTotal": 1660
+        }
+      ],
+      "subtotal": 1660,
+      "discount": 0,
+      "deliveryCharge": 70,
+      "finalTotal": 1730,
+      "paymentMethod": "COD",
+      "orderStatus": "Confirmed",
+      "attribution": {
+        "fbp": "",
+        "fbc": "",
+        "fbcSource": "none",
+        "fbclid": "test_fbclid_12345",
+        "utmSource": "facebook",
+        "utmMedium": "",
+        "utmCampaign": "winter_minoxidil_sale",
+        "utmContent": "",
+        "utmTerm": "",
+        "landingPage": "",
+        "referrer": "",
+        "userAgent": "node",
+        "ip": ""
+      },
+      "metaEventId": "order_HAIR-2611-Z79E",
+      "internalNotes": "Steadfast Courier Booking #987654"
+    },
+    {
+      "_id": "ord_1795309964025",
+      "createdAt": "2026-11-22T01:12:44.025Z",
+      "updatedAt": "2026-11-22T01:12:44.025Z",
+      "statusHistory": [
+        {
+          "status": "Pending",
+          "timestamp": "2026-11-22T01:12:44.024Z",
+          "note": "Order placed by customer via Cash on Delivery",
+          "updatedBy": "System"
+        }
+      ],
+      "orderId": "HAIR-2611-QPZV",
+      "orderNumber": "HAIR-2611-QPZV",
+      "customer": {
+        "fullName": "Mahmudullah Riyad",
+        "phoneNumber": "01912345678",
+        "district": "Dhaka",
+        "deliveryArea": "inside_dhaka",
+        "address": "Uttara Sector 7, Dhaka",
+        "notes": ""
+      },
+      "items": [
+        {
+          "productId": "prod_1795285533548",
+          "productName": "Kirkland Minoxidil 5% Combo with Derma Roller – 4 Bottle Pack (120 Days Supply)",
+          "slug": "kirkland-minoxidil-5-combo-with-derma-roller-4-bottle-pack-120-days-supply",
+          "category": "Combo Packages",
+          "image": "https://res.cloudinary.com/wvd1wcrw/image/upload/v1795285043/Kirkland_Minoxidil_and_Derma_Roller_Set.png",
+          "unitPrice": 3310,
+          "quantity": 2,
+          "itemTotal": 6620
+        }
+      ],
+      "subtotal": 6620,
+      "discount": 0,
+      "deliveryCharge": 70,
+      "finalTotal": 6690,
+      "paymentMethod": "COD",
+      "orderStatus": "Pending",
+      "attribution": {
+        "fbp": "",
+        "fbc": "",
+        "fbcSource": "none",
+        "fbclid": "",
+        "utmSource": "",
+        "utmMedium": "",
+        "utmCampaign": "",
+        "utmContent": "",
+        "utmTerm": "",
+        "landingPage": "",
+        "referrer": "",
+        "userAgent": "node",
+        "ip": ""
+      },
+      "metaEventId": "order_HAIR-2611-QPZV"
+    },
     {
       "_id": "ord_1795305524921",
       "createdAt": "2026-11-21T23:58:44.921Z",
@@ -2067,6 +2188,266 @@
     }
   ],
   "metaEventLogs": [
+    {
+      "_id": "log_1795309964863_1v3f0",
+      "createdAt": "2026-11-22T01:12:44.863Z",
+      "updatedAt": "2026-11-22T01:12:44.863Z",
+      "eventId": "order_HAIR-2611-Z79E",
+      "eventName": "Purchase",
+      "orderId": "HAIR-2611-Z79E",
+      "eventSource": "server_order",
+      "eventSourceUrl": "",
+      "status": "pending",
+      "matching": {
+        "hasFbp": false,
+        "hasFbc": false,
+        "fbcSource": "none",
+        "hasIp": false,
+        "hasUserAgent": true,
+        "hasPhone": true,
+        "hasEmail": false,
+        "hasCity": true,
+        "hasCountry": true,
+        "hasExternalId": false,
+        "presentParameters": [
+          "client_user_agent",
+          "ph",
+          "ct",
+          "country"
+        ],
+        "missingParameters": [
+          "fbp",
+          "fbc",
+          "client_ip_address",
+          "em"
+        ]
+      },
+      "request": {
+        "endpoint": "https://graph.facebook.com/v19.0/META_PIXEL_ID/events",
+        "method": "POST",
+        "eventCount": 1,
+        "payload": {
+          "data": [
+            {
+              "event_name": "Purchase",
+              "event_time": 1795309964,
+              "event_id": "order_HAIR-2611-Z79E",
+              "event_source_url": "",
+              "action_source": "website",
+              "user_data": {
+                "ph": [
+                  "c327520f85b0c6058fed05dfc0a63d8755f325b6ea1b550824f4a8e380d75de1"
+                ],
+                "fn": [
+                  "cbab2c1879445f5aecacda9dbad7fe2854010052f42aa4f5130e4749081e399f"
+                ],
+                "ln": [
+                  "a08ba4513b24fbf2aae9aeb9902e49c4f8c85d5833d9040ad9b67336b4fece43"
+                ],
+                "ct": [
+                  "de90643718108ec9a93cc6905f2b976297505a8abeac37b747132877fb32fb8d"
+                ],
+                "country": [
+                  "5e657ff6158d3e2a6d23e2a523917a2305acee9423365e268695c4b7b8919f4c"
+                ],
+                "client_user_agent": "node"
+              },
+              "custom_data": {
+                "currency": "BDT",
+                "value": 1730,
+                "order_id": "HAIR-2611-Z79E",
+                "content_name": "Order Purchase",
+                "content_type": "product",
+                "content_category": "Minoxidil",
+                "content_categories": [
+                  "Minoxidil"
+                ],
+                "contents": [
+                  {
+                    "id": "prod_1795199827958",
+                    "quantity": 2,
+                    "item_price": 830,
+                    "category": "Minoxidil"
+                  }
+                ],
+                "num_items": 2
+              }
+            }
+          ]
+        }
+      },
+      "attempts": 1,
+      "expiresAt": "2026-11-29T01:12:44.863Z"
+    },
+    {
+      "_id": "log_1795309964033_pwc3u",
+      "createdAt": "2026-11-22T01:12:44.033Z",
+      "updatedAt": "2026-11-22T01:12:44.033Z",
+      "eventId": "order_HAIR-2611-QPZV",
+      "eventName": "Purchase",
+      "orderId": "HAIR-2611-QPZV",
+      "eventSource": "server_order",
+      "eventSourceUrl": "",
+      "status": "pending",
+      "matching": {
+        "hasFbp": false,
+        "hasFbc": false,
+        "fbcSource": "none",
+        "hasIp": false,
+        "hasUserAgent": true,
+        "hasPhone": true,
+        "hasEmail": false,
+        "hasCity": true,
+        "hasCountry": true,
+        "hasExternalId": false,
+        "presentParameters": [
+          "client_user_agent",
+          "ph",
+          "ct",
+          "country"
+        ],
+        "missingParameters": [
+          "fbp",
+          "fbc",
+          "client_ip_address",
+          "em"
+        ]
+      },
+      "request": {
+        "endpoint": "https://graph.facebook.com/v19.0/META_PIXEL_ID/events",
+        "method": "POST",
+        "eventCount": 1,
+        "payload": {
+          "data": [
+            {
+              "event_name": "Purchase",
+              "event_time": 1795309964,
+              "event_id": "order_HAIR-2611-QPZV",
+              "event_source_url": "",
+              "action_source": "website",
+              "user_data": {
+                "ph": [
+                  "c691a4f4c402c6e7bed334ae7229352cd05305726eafb1dcad79dc11116934df"
+                ],
+                "fn": [
+                  "f2496823a2085fadab36f1ea49768a02dbafa543d653a5a3bd418cb4d8337425"
+                ],
+                "ln": [
+                  "0fe257c0bbde2ee686f7a06ec88c5ba0720ff723c56cded2ae25e1f55a12cd43"
+                ],
+                "ct": [
+                  "de90643718108ec9a93cc6905f2b976297505a8abeac37b747132877fb32fb8d"
+                ],
+                "country": [
+                  "5e657ff6158d3e2a6d23e2a523917a2305acee9423365e268695c4b7b8919f4c"
+                ],
+                "client_user_agent": "node"
+              },
+              "custom_data": {
+                "currency": "BDT",
+                "value": 6690,
+                "order_id": "HAIR-2611-QPZV",
+                "content_name": "Order Purchase",
+                "content_type": "product",
+                "content_category": "Combo Packages",
+                "content_categories": [
+                  "Combo Packages"
+                ],
+                "contents": [
+                  {
+                    "id": "prod_1795285533548",
+                    "quantity": 2,
+                    "item_price": 3310,
+                    "category": "Combo Packages"
+                  }
+                ],
+                "num_items": 2
+              }
+            }
+          ]
+        }
+      },
+      "attempts": 1,
+      "expiresAt": "2026-11-29T01:12:44.033Z"
+    },
+    {
+      "_id": "log_1795309725183_ahslk",
+      "createdAt": "2026-11-22T01:08:45.183Z",
+      "updatedAt": "2026-11-22T01:08:45.518Z",
+      "eventId": "pageview_1795309725178_7lo4e1f",
+      "eventName": "PageView",
+      "orderId": "",
+      "eventSource": "browser_forwarded",
+      "eventSourceUrl": "http://localhost:3000/",
+      "status": "failed",
+      "matching": {
+        "hasFbp": false,
+        "hasFbc": false,
+        "fbcSource": "none",
+        "hasIp": false,
+        "hasUserAgent": true,
+        "hasPhone": false,
+        "hasEmail": false,
+        "hasCity": false,
+        "hasCountry": false,
+        "hasExternalId": false,
+        "presentParameters": [
+          "client_user_agent"
+        ],
+        "missingParameters": [
+          "fbp",
+          "fbc",
+          "client_ip_address",
+          "ph",
+          "em",
+          "ct",
+          "country"
+        ]
+      },
+      "request": {
+        "endpoint": "https://graph.facebook.com/v19.0/META_PIXEL_ID/events",
+        "method": "POST",
+        "eventCount": 1,
+        "payload": {
+          "data": [
+            {
+              "event_name": "PageView",
+              "event_time": 1795309725,
+              "event_id": "pageview_1795309725178_7lo4e1f",
+              "event_source_url": "http://localhost:3000/",
+              "action_source": "website",
+              "user_data": {
+                "client_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
+              }
+            }
+          ]
+        }
+      },
+      "attempts": 1,
+      "expiresAt": "2026-11-29T01:08:45.183Z",
+      "response": {
+        "httpStatus": 401,
+        "httpStatusText": "Unauthorized",
+        "eventsReceived": 0,
+        "messages": [],
+        "fbtraceId": "A7hDkBEpRnY-GZibzjCoX5A",
+        "errorCode": 190,
+        "errorMessage": "Invalid OAuth access token - Cannot parse access token",
+        "rawBody": "{\"error\":{\"message\":\"Invalid OAuth access token - Cannot parse access token\",\"type\":\"OAuthException\",\"code\":190,\"fbtrace_id\":\"A7hDkBEpRnY-GZibzjCoX5A\"}}",
+        "metaResponseBody": {
+          "error": {
+            "message": "Invalid OAuth access token - Cannot parse access token",
+            "type": "OAuthException",
+            "code": 190,
+            "fbtrace_id": "A7hDkBEpRnY-GZibzjCoX5A"
+          }
+        },
+        "responseParseStatus": "success",
+        "parseError": null
+      },
+      "durationMs": 335,
+      "completedAt": "2026-11-22T01:08:45.518Z"
+    },
     {
       "_id": "log_1795307673740_1pi06",
       "createdAt": "2026-11-22T00:34:33.740Z",
