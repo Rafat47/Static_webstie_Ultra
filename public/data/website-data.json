@@ -35,6 +35,17 @@
       "updatedAt": "2026-11-21T18:28:05.957Z"
     },
     {
+      "_id": "6b0072b8ca8f2dea4a890e17",
+      "name": "Scalp Care & Accessories",
+      "slug": "scalp-care",
+      "description": "Silicone scalp massagers, sanitizing sprays, and precision calibrated droppers.",
+      "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTcwOPBl8_JgtCSo5g5PTLol3RQlsYRb2YU-LSn0prrCw&s=10",
+      "isActive": true,
+      "displayOrder": 3,
+      "createdAt": "2026-11-20T16:18:00.640Z",
+      "updatedAt": "2026-11-22T08:40:36.797Z"
+    },
+    {
       "_id": "cat_1795204139933",
       "name": "Scalp care Oil",
       "slug": "scalp-care-oil",
@@ -44,17 +55,6 @@
       "displayOrder": 5,
       "createdAt": "2026-11-20T19:48:59.933Z",
       "updatedAt": "2026-11-22T08:40:31.018Z"
-    },
-    {
-      "_id": "6b0072b8ca8f2dea4a890e17",
-      "name": "Scalp Care & Accessories",
-      "slug": "scalp-care",
-      "description": "Silicone scalp massagers, sanitizing sprays, and precision calibrated droppers.",
-      "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTcwOPBl8_JgtCSo5g5PTLol3RQlsYRb2YU-LSn0prrCw&s=10",
-      "isActive": true,
-      "displayOrder": 54,
-      "createdAt": "2026-11-20T16:18:00.640Z",
-      "updatedAt": "2026-11-22T08:40:36.797Z"
     }
   ],
   "deliverySettings": {
@@ -125,7 +125,7 @@
   },
   "hero": {
     "badge": "100% Authentic Guaranteed",
-    "title": "Science-Backed Hair Restoration & Scalp Wellness",
+    "title": "Science-Backed Scalp Restoration BD",
     "subtitle": "Reactivate dormant hair follicles, increase scalp blood microcirculation, and reclaim thicker hair with dermatologically proven Minoxidil 5% and micro-needling systems.",
     "primaryBtnText": "Shop Now",
     "primaryBtnLink": "/shop",
@@ -355,7 +355,7 @@
       "category": "Minoxidil",
       "regularPrice": 3750,
       "salePrice": 2490,
-      "stock": 47,
+      "stock": 46,
       "isFeatured": true,
       "isActive": true,
       "productType": "minoxidil",
@@ -394,7 +394,7 @@
       ],
       "carouselOrder": 4,
       "createdAt": "2026-11-20T16:18:01.045Z",
-      "updatedAt": "2026-11-21T23:58:44.915Z",
+      "updatedAt": "2026-11-22T13:30:00.225Z",
       "displayOrder": 4
     },
     {
@@ -510,7 +510,7 @@
       "category": "Minoxidil",
       "regularPrice": 1250,
       "salePrice": 830,
-      "stock": 27,
+      "stock": 23,
       "isFeatured": true,
       "isActive": true,
       "productType": "minoxidil",
@@ -520,7 +520,7 @@
       "specifications": [],
       "carouselOrder": 0,
       "createdAt": "2026-11-20T18:37:07.958Z",
-      "updatedAt": "2026-11-22T09:17:40.196Z",
+      "updatedAt": "2026-11-22T13:16:01.666Z",
       "displayOrder": 0
     },
     {
@@ -588,7 +588,7 @@
       "category": "Minoxidil",
       "regularPrice": 2500,
       "salePrice": 1600,
-      "stock": 48,
+      "stock": 47,
       "isFeatured": true,
       "isActive": true,
       "productType": "minoxidil",
@@ -599,7 +599,7 @@
       "displayOrder": 2,
       "carouselOrder": 2,
       "createdAt": "2026-11-21T10:57:37.132Z",
-      "updatedAt": "2026-11-21T23:58:44.908Z"
+      "updatedAt": "2026-11-22T13:25:52.570Z"
     }
   ],
   "sections": {
@@ -802,6 +802,6 @@
     "whatsappNumber": "+8801356813069",
     "address": "Sonirakra, Dhonia, Dhaka 1236"
   },
-  "updatedAt": "2026-11-22T09:17:41.465Z",
-  "version": 204
+  "updatedAt": "2026-11-22T13:30:00.770Z",
+  "version": 208
 }
