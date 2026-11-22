@@ -110,7 +110,7 @@ export default function CategoryCarousel({ categories = [] }) {
                 {/* Pure Rectangular Image Box - 100% Image Filled, Zero Text Inside */}
                 <div className="w-full h-44 lg:h-48 rounded-xl overflow-hidden border border-gray-200 group-hover/card:border-brand-dark transition-all shadow-2xs group-hover/card:shadow-subtle bg-gray-50">
                   <img
-                    src={cat.image || 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=500&auto=format&fit=crop&q=80'}
+                    src={cat.image || ''}
                     alt={cat.name}
                     draggable="false"
                     className="w-full h-full object-cover object-center group-hover/card:scale-104 transition-transform duration-300 pointer-events-none"
@@ -156,7 +156,7 @@ export default function CategoryCarousel({ categories = [] }) {
                 >
                   <div className="w-full h-32 rounded-lg overflow-hidden border border-gray-200 active:border-brand-dark bg-gray-50 shadow-2xs">
                     <img
-                      src={cat.image || 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=350&auto=format&fit=crop&q=80'}
+                      src={cat.image || ''}
                       alt={cat.name}
                       draggable="false"
                       className="w-full h-full object-cover object-center pointer-events-none"
@@ -184,7 +184,7 @@ export default function CategoryCarousel({ categories = [] }) {
                 >
                   <div className="w-full h-28 rounded-lg overflow-hidden border border-gray-200 active:border-brand-dark bg-gray-50 shadow-2xs">
                     <img
-                      src={cat.image || 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=350&auto=format&fit=crop&q=80'}
+                      src={cat.image || ''}
                       alt={cat.name}
                       draggable="false"
                       className="w-full h-full object-cover object-center pointer-events-none"

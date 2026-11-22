@@ -134,7 +134,7 @@ async function runFbpFbcTests() {
     assert.strictEqual(attr1.fbcSource, 'none');
 
     await sendMetaCapiEvent({
-      pixelId: '1722516656187525',
+      pixelId: process.env.META_PIXEL_ID,
       accessToken: 'test_token',
       eventName: 'PageView',
       eventId: 's1_pageview_001',
@@ -168,7 +168,7 @@ async function runFbpFbcTests() {
     assert.ok(document.cookie.includes('_fbc='), '_fbc cookie must be set on document.cookie');
 
     await sendMetaCapiEvent({
-      pixelId: '1722516656187525',
+      pixelId: process.env.META_PIXEL_ID,
       accessToken: 'test_token',
       eventName: 'PageView',
       eventId: 's2_pageview_002',
@@ -196,7 +196,7 @@ async function runFbpFbcTests() {
     assert.strictEqual(attr3.fbp, existingFbp, 'Must capture real _fbp cookie');
 
     await sendMetaCapiEvent({
-      pixelId: '1722516656187525',
+      pixelId: process.env.META_PIXEL_ID,
       accessToken: 'test_token',
       eventName: 'PageView',
       eventId: 's3_pageview_003',
@@ -225,7 +225,7 @@ async function runFbpFbcTests() {
     assert.strictEqual(attr4.fbcSource, 'fbc_cookie');
 
     await sendMetaCapiEvent({
-      pixelId: '1722516656187525',
+      pixelId: process.env.META_PIXEL_ID,
       accessToken: 'test_token',
       eventName: 'PageView',
       eventId: 's4_pageview_004',
@@ -273,7 +273,7 @@ async function runFbpFbcTests() {
     // =========================================================================
     console.log('\n[Scenario 6] AddToCart and InitiateCheckout events include FBP and FBC');
     await sendMetaCapiEvent({
-      pixelId: '1722516656187525',
+      pixelId: process.env.META_PIXEL_ID,
       accessToken: 'test_token',
       eventName: 'AddToCart',
       eventId: 's6_cart_001',
@@ -296,7 +296,7 @@ async function runFbpFbcTests() {
 
     // InitiateCheckout with phone if filled
     await sendMetaCapiEvent({
-      pixelId: '1722516656187525',
+      pixelId: process.env.META_PIXEL_ID,
       accessToken: 'test_token',
       eventName: 'InitiateCheckout',
       eventId: 's6_checkout_002',
@@ -357,7 +357,7 @@ async function runFbpFbcTests() {
     };
 
     const purchaseRes = await sendMetaCapiEvent({
-      pixelId: '1722516656187525',
+      pixelId: process.env.META_PIXEL_ID,
       accessToken: 'test_token',
       eventName: 'Purchase',
       eventId: 's8_purchase_order_9999',
@@ -400,7 +400,7 @@ async function runFbpFbcTests() {
     setupBrowserEnv('https://hairshurokkha.com/');
 
     await sendMetaCapiEvent({
-      pixelId: '1722516656187525',
+      pixelId: process.env.META_PIXEL_ID,
       accessToken: 'test_token',
       eventName: 'PageView',
       eventId: 's9_pageview_no_fbp_fbc',
@@ -435,7 +435,7 @@ async function runFbpFbcTests() {
     assert.strictEqual(attr10.fbp, undefined);
 
     await sendMetaCapiEvent({
-      pixelId: '1722516656187525',
+      pixelId: process.env.META_PIXEL_ID,
       accessToken: 'test_token',
       eventName: 'PageView',
       eventId: 's10_adblock_001',

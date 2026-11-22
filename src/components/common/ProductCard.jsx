@@ -44,7 +44,7 @@ export default function ProductCard({ product }) {
       {/* Product Image Stage */}
       <Link to={`/product/${product.slug}`} className="relative block aspect-square bg-gray-50 overflow-hidden">
         <img
-          src={product.images?.[0] || 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=600&auto=format&fit=crop&q=80'}
+          src={product.images?.[0] || ''}
           alt={product.name}
           loading="lazy"
           className="w-full h-full object-cover object-center group-hover:scale-102 transition-transform duration-300"

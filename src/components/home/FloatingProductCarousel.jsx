@@ -114,7 +114,7 @@ export default function FloatingProductCarousel({ products = [] }) {
               <div className="relative p-1 rounded-full bg-gradient-to-tr from-brand-accent via-blue-400 to-indigo-500 group-hover:scale-105 group-hover:shadow-float transition-all duration-300">
                 <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full overflow-hidden bg-white border-2 border-white shadow-inner flex items-center justify-center">
                   <img
-                    src={product.images?.[0] || 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=200&auto=format&fit=crop&q=80'}
+                    src={product.images?.[0] || ''}
                     alt={product.name}
                     draggable="false"
                     className="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-300 pointer-events-none"

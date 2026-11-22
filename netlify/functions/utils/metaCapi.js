@@ -1,6 +1,6 @@
 import crypto from 'crypto';
 import axios from 'axios';
-import MetaEventLog from '../models/MetaEventLog.js';
+import { localJsonStore } from '../db.js';
 
 // Helper to hash normalized values with SHA-256
 export function hashValue(value) {
@@ -94,24 +94,9 @@ export function sanitizeUserDataForLog(userData = {}) {
   return sanitized;
 }
 
-// Bounded storage protection: ensure metaEventLogs collection never exceeds 5000 records
+// Bounded storage protection: localJsonStore already enforces 5000 max logs
 async function enforceStorageCap() {
-  try {
-    const MAX_LOG_RECORDS = 5000;
-    const count = await MetaEventLog.countDocuments();
-    if (count > MAX_LOG_RECORDS) {
-      const excess = count - MAX_LOG_RECORDS;
-      // Delete the oldest excess records
-      const oldestLogs = await MetaEventLog.find()
-        .sort({ createdAt: 1 })
-        .limit(excess)
-        .select('_id');
-      const idsToDelete = oldestLogs.map(l => l._id);
-      await MetaEventLog.deleteMany({ _id: { $in: idsToDelete } });
-    }
-  } catch (e) {
-    // Non-blocking background safeguard
-  }
+  // Handled automatically in localJsonStore
 }
 
 /**
@@ -314,7 +299,7 @@ export async function sendMetaCapiEvent({
       };
       if (finalTestCode) sanitizedPayload.test_event_code = finalTestCode;
 
-      logRecord = await MetaEventLog.create({
+      logRecord = await localJsonStore.addMetaLog({
         eventId,
         eventName,
         orderId: orderId || customData?.order_id || '',
@@ -323,7 +308,7 @@ export async function sendMetaCapiEvent({
         status: 'pending',
         matching: matchingDiagnostics,
         request: {
-          endpoint: `https://graph.facebook.com/v19.0/${finalPixelId}/events`,
+          endpoint: `https://graph.facebook.com/v19.0/META_PIXEL_ID/events`,
           method: 'POST',
           eventCount: 1,
           payload: sanitizedPayload
@@ -414,7 +399,7 @@ export async function sendMetaCapiEvent({
         };
         logRecord.durationMs = durationMs;
         logRecord.completedAt = new Date();
-        await logRecord.save();
+        await localJsonStore.updateMetaLog(logRecord._id, logRecord);
 
         // 1 in 20 requests runs storage cap check
         if (Math.random() < 0.05) {
@@ -473,7 +458,7 @@ export async function sendMetaCapiEvent({
         };
         logRecord.durationMs = durationMs;
         logRecord.completedAt = new Date();
-        await logRecord.save();
+        await localJsonStore.updateMetaLog(logRecord._id, logRecord);
       } catch (logUpdateErr) {
         console.warn('[Meta CAPI Log Error] Failed to update error log:', logUpdateErr.message);
       }
@@ -494,7 +479,7 @@ export async function sendMetaCapiEvent({
  * Retries a previously failed or timed-out CAPI event using its exact original eventId
  */
 export async function retryMetaCapiEvent(logId) {
-  const logRecord = await MetaEventLog.findById(logId);
+  const logRecord = await localJsonStore.getMetaLogById(logId);
   if (!logRecord) {
     return { success: false, message: 'Log record not found' };
   }
@@ -535,7 +520,7 @@ export async function retryMetaCapiEvent(logId) {
 
   logRecord.attempts = (logRecord.attempts || 1) + 1;
   logRecord.status = 'retrying';
-  await logRecord.save();
+  await localJsonStore.updateMetaLog(logRecord._id, logRecord);
 
   try {
     const response = await fetch(url, {
@@ -605,7 +590,7 @@ export async function retryMetaCapiEvent(logId) {
     };
     logRecord.durationMs = durationMs;
     logRecord.completedAt = new Date();
-    await logRecord.save();
+    await localJsonStore.updateMetaLog(logRecord._id, logRecord);
 
     return {
       success: status !== 'failed',
@@ -638,7 +623,7 @@ export async function retryMetaCapiEvent(logId) {
     };
     logRecord.durationMs = durationMs;
     logRecord.completedAt = new Date();
-    await logRecord.save();
+    await localJsonStore.updateMetaLog(logRecord._id, logRecord);
 
     return { success: false, status: finalStatus, error: networkError.message, logRecord };
   }

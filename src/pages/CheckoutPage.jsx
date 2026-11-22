@@ -410,7 +410,7 @@ export default function CheckoutPage() {
                 return (
                   <div key={itemId} className="py-3.5 flex gap-3 items-center">
                     <img
-                      src={item.image || 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=100&auto=format&fit=crop&q=80'}
+                      src={item.image || ''}
                       alt={item.productName}
                       className="w-14 h-14 object-cover border border-brand-border bg-gray-50 flex-shrink-0 rounded-md"
                     />

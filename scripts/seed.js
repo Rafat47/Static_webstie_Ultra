@@ -1,73 +1,58 @@
-import mongoose from 'mongoose';
+import fs from 'fs';
+import path from 'path';
 import bcrypt from 'bcryptjs';
 import dotenv from 'dotenv';
+import { fileURLToPath } from 'url';
+
 dotenv.config();
 
-import {
-  defaultWebsiteConfig,
-  defaultCategories,
-  defaultProducts,
-  defaultWebsiteData
-} from '../netlify/functions/db.js';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const rootDir = path.resolve(__dirname, '..');
 
-import WebsiteData from '../netlify/functions/models/WebsiteData.js';
-import Admin from '../netlify/functions/models/Admin.js';
+import { localJsonStore, defaultWebsiteData } from '../netlify/functions/db.js';
 
-async function seedDatabase() {
-  const uri = process.env.MONGODB_URI;
+async function seedLocalData() {
+  console.log('====================================================');
+  console.log('🚀 SEEDING & VERIFYING LOCAL JSON STORAGE');
+  console.log('====================================================');
 
-  if (!uri || uri.includes('example.mongodb.net') || uri.trim() === '') {
-    console.error('❌ MONGODB_URI is not configured in .env');
-    console.log('Please provide a valid MongoDB Atlas connection string in your .env file before seeding.');
-    process.exit(1);
+  const data = await localJsonStore.getWebsiteData();
+  console.log(`📁 File location: ${localJsonStore.filePath}`);
+
+  // 1. Verify / ensure categories & products
+  console.log(` - Categories: ${data.categories?.length || 0}`);
+  console.log(` - Products: ${data.products?.length || 0}`);
+  console.log(` - Orders: ${data.orders?.length || 0}`);
+
+  // 2. Ensure Admin account exists in local store
+  const username = process.env.ADMIN_USERNAME || 'admin';
+  const password = process.env.ADMIN_PASSWORD || 'Admin@HairCare2026';
+
+  let admins = data.admins || [];
+  let existingAdmin = admins.find(a => a.username === username);
+
+  if (!existingAdmin) {
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+    const newAdmin = {
+      _id: `admin_${Date.now()}`,
+      username,
+      password: hashedPassword,
+      name: 'Store Administrator',
+      role: 'superadmin',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    };
+    admins.push(newAdmin);
+    data.admins = admins;
+    localJsonStore.saveToDisk();
+    console.log(`✅ Admin account "${username}" created in local JSON.`);
+  } else {
+    console.log(`ℹ️  Admin account "${username}" already verified in local JSON.`);
   }
 
-  console.log('🔄 Connecting to MongoDB Atlas...');
-  try {
-    await mongoose.connect(uri);
-    console.log('✅ Connected to MongoDB.');
-
-    // 1. Seed Consolidated Website Data Document (_id: 'main' in 'website_data')
-    console.log('📝 Seeding Consolidated website_data document...');
-    const existingWebsiteData = await WebsiteData.findById('main');
-    if (!existingWebsiteData) {
-      await WebsiteData.create(defaultWebsiteData);
-      console.log('✅ website_data primary document seeded with default config, categories, and products.');
-    } else {
-      console.log(`ℹ️  website_data already exists (version ${existingWebsiteData.version}, ${existingWebsiteData.products?.length || 0} products). Preserving existing data.`);
-    }
-
-    // 2. Seed Admin in modular 'admins' collection
-    const username = process.env.ADMIN_USERNAME || 'admin';
-    const password = process.env.ADMIN_PASSWORD || 'Admin@HairCare2026';
-    console.log(`🔐 Verifying Admin account (${username})...`);
-
-    const existingAdmin = await Admin.findOne({ username });
-    if (!existingAdmin) {
-      const salt = await bcrypt.genSalt(10);
-      const hashedPassword = await bcrypt.hash(password, salt);
-      await Admin.create({
-        username,
-        password: hashedPassword,
-        name: 'Store Administrator',
-        role: 'superadmin'
-      });
-      console.log('✅ Admin account configured successfully.');
-    } else {
-      console.log(`ℹ️  Admin account "${username}" already exists. Preserving.`);
-    }
-
-    console.log('\n🎉 Database Seeding / Verification Complete!');
-    console.log(`Public Content Collection: website_data (_id: "main")`);
-    console.log(`Admin Authentication Collection: admins`);
-    console.log(`Admin Username: ${username}`);
-
-    await mongoose.disconnect();
-    process.exit(0);
-  } catch (err) {
-    console.error('❌ Database seeding failed:', err.message);
-    process.exit(1);
-  }
+  console.log('\n🎉 Local JSON verification & seeding complete!');
 }
 
-seedDatabase();
+seedLocalData().catch(console.error);

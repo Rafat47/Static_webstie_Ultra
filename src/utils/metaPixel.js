@@ -256,10 +256,18 @@ export const metaEvents = {
 
   viewContent: (product) => {
     if (!product) return;
+    const cat = product.category || 'Hair Care';
     trackMetaEvent('ViewContent', {
       content_name: product.name,
-      content_category: product.category,
+      content_category: cat,
+      content_categories: [cat],
       content_ids: [String(product._id || product.slug)],
+      contents: [{
+        id: String(product._id || product.slug),
+        quantity: 1,
+        item_price: product.salePrice || 0,
+        category: cat
+      }],
       content_type: 'product',
       value: product.salePrice,
       currency: 'BDT'
@@ -270,26 +278,54 @@ export const metaEvents = {
     if (!query || !query.trim()) return;
     trackMetaEvent('Search', {
       search_string: query.trim(),
-      content_category: 'Hair Care'
+      content_category: 'Hair Care',
+      content_categories: ['Hair Care']
     });
   },
 
   addToCart: (product, quantity = 1) => {
     if (!product) return;
+    const items = Array.isArray(product) ? product : [product];
+    const categories = [...new Set(items.map(i => i.category || i.content_category).filter(Boolean))];
+    const contentCategory = categories.length > 0 ? categories.join(', ') : 'Hair Care';
+    const contentIds = items.map(i => String(i._id || i.productId || i.slug));
+    const totalValue = items.reduce((acc, i) => acc + ((i.salePrice || i.unitPrice || 0) * (i.quantity || quantity || 1)), 0);
+    const totalQty = items.reduce((acc, i) => acc + (i.quantity || quantity || 1), 0);
+
     trackMetaEvent('AddToCart', {
-      content_name: product.name,
-      content_ids: [String(product._id || product.slug)],
+      content_name: items.length === 1 ? (items[0].name || items[0].productName || 'Product') : 'Cart Items',
+      content_category: contentCategory,
+      content_categories: categories.length > 0 ? categories : ['Hair Care'],
+      content_ids: contentIds,
+      contents: items.map(i => ({
+        id: String(i._id || i.productId || i.slug),
+        quantity: i.quantity || quantity || 1,
+        item_price: i.salePrice || i.unitPrice || 0,
+        category: i.category || i.content_category || 'Hair Care'
+      })),
       content_type: 'product',
-      value: (product.salePrice || 0) * quantity,
+      value: totalValue,
       currency: 'BDT',
-      quantity
+      quantity: totalQty
     });
   },
 
   initiateCheckout: (cartItems, subtotal, userData = {}) => {
     if (!cartItems || cartItems.length === 0) return;
+    const categories = [...new Set(cartItems.map(item => item.category || item.content_category).filter(Boolean))];
+    const contentCategory = categories.length > 0 ? categories.join(', ') : 'Hair Care';
+
     trackMetaEvent('InitiateCheckout', {
+      content_name: 'Cart Checkout',
+      content_category: contentCategory,
+      content_categories: categories.length > 0 ? categories : ['Hair Care'],
       content_ids: cartItems.map(item => String(item.productId || item.slug || item._id)),
+      contents: cartItems.map(item => ({
+        id: String(item.productId || item.slug || item._id),
+        quantity: item.quantity || 1,
+        item_price: item.unitPrice || item.salePrice || 0,
+        category: item.category || item.content_category || 'Hair Care'
+      })),
       content_type: 'product',
       num_items: cartItems.reduce((acc, item) => acc + (item.quantity || 1), 0),
       value: subtotal,
@@ -310,6 +346,10 @@ export const metaEvents = {
     const eventId = order.metaEventId || `order_${order.orderId}`;
     const attribution = captureAttribution();
 
+    const items = order.items || [];
+    const categories = [...new Set(items.map(i => i.category || i.content_category).filter(Boolean))];
+    const contentCategory = categories.length > 0 ? categories.join(', ') : 'Hair Care';
+
     // Fire browser pixel with identical eventID for deduplication.
     // Skip forwarding to /api/meta/events because the server order route already sent CAPI Purchase.
     trackMetaEvent(
@@ -317,8 +357,16 @@ export const metaEvents = {
       {
         content_name: 'Order Purchase',
         content_type: 'product',
-        content_ids: (order.items || []).map(i => String(i.productId || i.slug)),
-        num_items: (order.items || []).reduce((acc, i) => acc + (i.quantity || 1), 0),
+        content_category: contentCategory,
+        content_categories: categories.length > 0 ? categories : ['Hair Care'],
+        content_ids: items.map(i => String(i.productId || i.slug)),
+        contents: items.map(i => ({
+          id: String(i.productId || i.slug),
+          quantity: i.quantity || 1,
+          item_price: i.unitPrice || 0,
+          category: i.category || i.content_category || 'Hair Care'
+        })),
+        num_items: items.reduce((acc, i) => acc + (i.quantity || 1), 0),
         value: order.finalTotal,
         currency: 'BDT',
         order_id: order.orderId

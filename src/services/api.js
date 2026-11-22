@@ -75,9 +75,28 @@ export const api = {
   // Public Cache Utilities
   clearCache: clearApiCache,
 
-  // Centralized Public Website Data API (Consolidated ONE fetch & ONE DB read)
+  // Centralized Public Website Data API (Consolidated ONE fetch backed by local JSON)
   getWebsiteData: async (force = false) => {
     return getCachedOrFetch('website-data', async () => {
+      // 1. First attempt to load directly from local JSON file (/data/website-data.json)
+      try {
+        const localRes = await axios.get('/data/website-data.json', {
+          headers: { 'Cache-Control': 'no-cache' }
+        });
+        if (localRes.data && (localRes.data.categories || localRes.data.products || localRes.data.siteSettings)) {
+          const payload = JSON.parse(JSON.stringify(localRes.data));
+          if (!payload.metaSettings) payload.metaSettings = {};
+          payload.metaSettings.pixelId = import.meta.env?.VITE_META_PIXEL_ID || process.env?.META_PIXEL_ID || payload.metaSettings.pixelId || '';
+          return {
+            success: true,
+            version: payload.version || 1,
+            updatedAt: payload.updatedAt,
+            data: payload
+          };
+        }
+      } catch (err) {
+        // Fallback to /api/website-data if static file isn't directly reachable
+      }
       const res = await apiClient.get('/website-data');
       return res.data;
     }, 5 * 60 * 1000, force);
@@ -256,6 +275,11 @@ export const api = {
   },
 
   // Admin Meta CAPI Logs
+  verifyMetaConnection: async () => {
+    const res = await apiClient.get('/admin/meta/verify-connection');
+    return res.data;
+  },
+
   getAdminMetaLogs: async (params = {}) => {
     const res = await apiClient.get('/admin/meta/logs', { params });
     return res.data;

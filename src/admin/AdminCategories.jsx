@@ -272,7 +272,7 @@ export default function AdminCategories() {
                   type="text"
                   value={formData.image}
                   onChange={(e) => setFormData({ ...formData, image: e.target.value })}
-                  placeholder="https://images.unsplash.com/..."
+                  placeholder="https://example.com/category.webp"
                   className="w-full px-3.5 py-2 rounded-xl border border-gray-200 font-mono text-xs"
                 />
                 <p className="text-[11px] text-gray-500 mt-1">

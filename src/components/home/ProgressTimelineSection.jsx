@@ -40,18 +40,26 @@ export default function ProgressTimelineSection() {
               key={idx}
               className="bg-white rounded-lg border border-gray-200 overflow-hidden shadow-2xs hover:border-brand-dark transition-all flex flex-col justify-between group"
             >
-              {/* Image Preview */}
-              <div className="relative aspect-4/3 overflow-hidden bg-gray-50 border-b border-gray-100">
-                <img
-                  src={stage.image || 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&auto=format&fit=crop&q=80'}
-                  alt={stage.title}
-                  loading="lazy"
-                  className="w-full h-full object-cover group-hover:scale-103 transition-transform duration-300"
-                />
-                <div className="absolute top-2.5 left-2.5 bg-brand-dark text-white text-[11px] font-bold px-2 py-0.5 rounded shadow-xs">
-                  {stage.period || stage.stage}
+              {/* Image Preview if provided in JSON */}
+              {stage.image ? (
+                <div className="relative aspect-4/3 overflow-hidden bg-gray-50 border-b border-gray-100">
+                  <img
+                    src={stage.image}
+                    alt={stage.title}
+                    loading="lazy"
+                    className="w-full h-full object-cover group-hover:scale-103 transition-transform duration-300"
+                  />
+                  <div className="absolute top-2.5 left-2.5 bg-brand-dark text-white text-[11px] font-bold px-2 py-0.5 rounded shadow-xs">
+                    {stage.period || stage.stage}
+                  </div>
                 </div>
-              </div>
+              ) : (
+                <div className="p-3 bg-gray-50 border-b border-gray-100 flex items-center justify-between">
+                  <div className="bg-brand-dark text-white text-[11px] font-bold px-2 py-0.5 rounded shadow-xs">
+                    {stage.period || stage.stage}
+                  </div>
+                </div>
+              )}
 
               {/* Text Content */}
               <div className="p-4 sm:p-5 flex-1 flex flex-col justify-between space-y-3">

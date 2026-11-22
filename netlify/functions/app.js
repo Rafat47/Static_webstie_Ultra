@@ -3,24 +3,18 @@ import cors from 'cors';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import dotenv from 'dotenv';
+import axios from 'axios';
 import { v2 as cloudinary } from 'cloudinary';
 
 import {
   connectToDatabase,
-  memoryStore,
+  localJsonStore,
   defaultWebsiteConfig,
   defaultCategories,
   defaultProducts,
   defaultWebsiteData
 } from './db.js';
 
-import WebsiteData from './models/WebsiteData.js';
-import WebsiteConfig from './models/WebsiteConfig.js';
-import Product from './models/Product.js';
-import Category from './models/Category.js';
-import Order from './models/Order.js';
-import Admin from './models/Admin.js';
-import MetaEventLog from './models/MetaEventLog.js';
 import { sendMetaCapiEvent, retryMetaCapiEvent, extractClientIp } from './utils/metaCapi.js';
 
 dotenv.config();
@@ -43,19 +37,17 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
 const JWT_SECRET = process.env.JWT_SECRET || 'super_secret_haircare_jwt_key_min_32_characters_long_2026';
 
-// Helper: Ensure DB connection and determine if MongoDB or memory store should be used
-async function getDbStatus() {
-  const status = await connectToDatabase();
-  return status;
-}
-
 // Helper: Sanitize public website data - ensure sensitive server credentials/tokens are never exposed
 function sanitizePublicWebsiteData(doc) {
   if (!doc) return null;
-  const obj = doc.toObject ? doc.toObject() : JSON.parse(JSON.stringify(doc));
+  const obj = JSON.parse(JSON.stringify(doc));
   if (obj.metaSettings) {
     delete obj.metaSettings.capiAccessToken;
   }
+  // Do not expose internal admin records or full customer orders in public site payload
+  delete obj.admins;
+  delete obj.orders;
+  delete obj.metaEventLogs;
   return obj;
 }
 
@@ -89,32 +81,20 @@ const requireAdmin = async (req, res, next) => {
 
 // Health check / API status
 app.get('/api/health', async (req, res) => {
-  const dbStatus = await getDbStatus();
+  const dbStatus = await connectToDatabase();
   res.json({
     status: 'ok',
     timestamp: new Date().toISOString(),
     databaseMode: dbStatus.mode,
+    storageFile: dbStatus.filePath,
     version: '1.0.0'
   });
 });
 
-// GET /api/website-data - Retrieve complete consolidated public website dataset in ONE request & ONE DB read
+// GET /api/website-data - Retrieve complete consolidated public website dataset in ONE request from local JSON
 app.get('/api/website-data', async (req, res) => {
   try {
-    const dbStatus = await getDbStatus();
-    let websiteData = null;
-
-    if (dbStatus.isConnected) {
-      websiteData = await WebsiteData.findById('main').lean();
-      if (!websiteData) {
-        // Auto-seed if document not yet created
-        const created = await WebsiteData.create(defaultWebsiteData);
-        websiteData = created.toObject ? created.toObject() : created;
-      }
-    } else {
-      websiteData = await memoryStore.getWebsiteData();
-    }
-
+    const websiteData = await localJsonStore.getWebsiteData();
     const version = websiteData.version || 1;
     const updatedAtTime = new Date(websiteData.updatedAt || Date.now()).getTime();
     const etag = `W/"${version}-${updatedAtTime}"`;
@@ -130,6 +110,9 @@ app.get('/api/website-data', async (req, res) => {
     }
 
     const sanitized = sanitizePublicWebsiteData(websiteData);
+    if (!sanitized.metaSettings) sanitized.metaSettings = {};
+    sanitized.metaSettings.pixelId = process.env.META_PIXEL_ID || '';
+
     return res.json({
       success: true,
       version,
@@ -146,21 +129,14 @@ app.get('/api/website-data', async (req, res) => {
   }
 });
 
-// GET /api/site-config - Retrieve full website configuration for public rendering (backed by website_data)
+// GET /api/site-config - Retrieve full website configuration for public rendering (backed by local JSON)
 app.get('/api/site-config', async (req, res) => {
   try {
     res.set('Cache-Control', 'public, max-age=60, s-maxage=120, stale-while-revalidate=300');
-    const dbStatus = await getDbStatus();
-    let websiteData = null;
-    if (dbStatus.isConnected) {
-      websiteData = await WebsiteData.findById('main').lean();
-      if (!websiteData) {
-        websiteData = await WebsiteData.create(defaultWebsiteData);
-      }
-    } else {
-      websiteData = await memoryStore.getWebsiteData();
-    }
+    const websiteData = await localJsonStore.getWebsiteConfig();
     const sanitized = sanitizePublicWebsiteData(websiteData);
+    if (!sanitized.metaSettings) sanitized.metaSettings = {};
+    sanitized.metaSettings.pixelId = process.env.META_PIXEL_ID || '';
     return res.json({ success: true, data: sanitized });
   } catch (err) {
     console.error('Error fetching site config:', err);
@@ -168,19 +144,14 @@ app.get('/api/site-config', async (req, res) => {
   }
 });
 
-// GET /api/categories - Retrieve active product categories (backed by website_data)
+// GET /api/categories - Retrieve active product categories (backed by local JSON)
 app.get('/api/categories', async (req, res) => {
   try {
     res.set('Cache-Control', 'public, max-age=60, s-maxage=120, stale-while-revalidate=300');
-    const dbStatus = await getDbStatus();
-    let categories = [];
-    if (dbStatus.isConnected) {
-      const doc = await WebsiteData.findById('main', { categories: 1 }).lean();
-      categories = (doc && doc.categories) || defaultWebsiteData.categories;
-    } else {
-      categories = await memoryStore.getCategories();
-    }
-    const active = categories.filter(c => c.isActive !== false).sort((a, b) => (a.displayOrder || 0) - (b.displayOrder || 0));
+    const categories = await localJsonStore.getCategories();
+    const active = categories
+      .filter(c => c.isActive !== false)
+      .sort((a, b) => (Number(a.displayOrder) || 0) - (Number(b.displayOrder) || 0));
     return res.json({ success: true, data: active });
   } catch (err) {
     console.error('Error fetching categories:', err);
@@ -188,20 +159,12 @@ app.get('/api/categories', async (req, res) => {
   }
 });
 
-// GET /api/products - Retrieve products with search, category filtering & sorting (backed by website_data)
+// GET /api/products - Retrieve products with search, category filtering & sorting (backed by local JSON)
 app.get('/api/products', async (req, res) => {
   try {
     res.set('Cache-Control', 'public, max-age=60, s-maxage=120, stale-while-revalidate=300');
     const { category, search, featured, sort } = req.query;
-    const dbStatus = await getDbStatus();
-    let allProducts = [];
-
-    if (dbStatus.isConnected) {
-      const doc = await WebsiteData.findById('main', { products: 1 }).lean();
-      allProducts = (doc && doc.products) || defaultWebsiteData.products;
-    } else {
-      allProducts = (await memoryStore.getWebsiteData())?.products || [];
-    }
+    let allProducts = await localJsonStore.getProducts();
 
     let filtered = allProducts.filter(p => p.isActive !== false);
 
@@ -222,7 +185,7 @@ app.get('/api/products', async (req, res) => {
 
     if (sort === 'price-low') filtered.sort((a, b) => a.salePrice - b.salePrice);
     else if (sort === 'price-high') filtered.sort((a, b) => b.salePrice - a.salePrice);
-    else if (sort === 'newest') filtered.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+    else if (sort === 'newest') filtered.sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
     else filtered.sort((a, b) => (a.carouselOrder || 0) - (b.carouselOrder || 0));
 
     return res.json({ success: true, data: filtered, count: filtered.length });
@@ -232,22 +195,12 @@ app.get('/api/products', async (req, res) => {
   }
 });
 
-// GET /api/products/:slug - Retrieve single product details (backed by website_data)
+// GET /api/products/:slug - Retrieve single product details (backed by local JSON)
 app.get('/api/products/:slug', async (req, res) => {
   try {
     res.set('Cache-Control', 'public, max-age=60, s-maxage=120, stale-while-revalidate=300');
     const { slug } = req.params;
-    const dbStatus = await getDbStatus();
-    let allProducts = [];
-
-    if (dbStatus.isConnected) {
-      const doc = await WebsiteData.findById('main', { products: 1 }).lean();
-      allProducts = (doc && doc.products) || defaultWebsiteData.products;
-    } else {
-      allProducts = (await memoryStore.getWebsiteData())?.products || [];
-    }
-
-    const product = allProducts.find(p => p.slug === slug || String(p._id) === slug);
+    const product = await localJsonStore.getProductBySlug(slug);
 
     if (!product) {
       return res.status(404).json({ success: false, message: 'Product not found' });
@@ -260,7 +213,7 @@ app.get('/api/products/:slug', async (req, res) => {
   }
 });
 
-// POST /api/orders - Public Order Creation with Server-Side Price & Stock Verification against website_data
+// POST /api/orders - Public Order Creation with Server-Side Price & Stock Verification against local JSON
 app.post('/api/orders', async (req, res) => {
   try {
     const { customer, items, attribution, metaEventId } = req.body;
@@ -279,19 +232,8 @@ app.post('/api/orders', async (req, res) => {
       });
     }
 
-    const dbStatus = await getDbStatus();
-
-    // 1. Fetch current delivery fee settings & product stock from centralized website_data
-    let websiteData = null;
-    if (dbStatus.isConnected) {
-      websiteData = await WebsiteData.findById('main');
-      if (!websiteData) {
-        websiteData = await WebsiteData.create(defaultWebsiteData);
-      }
-    } else {
-      websiteData = await memoryStore.getWebsiteData();
-    }
-
+    // 1. Fetch current delivery fee settings & product stock from centralized local JSON
+    const websiteData = await localJsonStore.getWebsiteData();
     const deliverySettings = websiteData.deliverySettings || defaultWebsiteConfig.deliverySettings;
     const siteMeta = websiteData.metaSettings || defaultWebsiteConfig.metaSettings;
     const availableProducts = websiteData.products || [];
@@ -300,7 +242,7 @@ app.post('/api/orders', async (req, res) => {
       ? (deliverySettings.insideDhakaFee ?? 70)
       : (deliverySettings.outsideDhakaFee ?? 130);
 
-    // 2. Fetch official product details from website_data and calculate verified subtotal
+    // 2. Fetch official product details from local JSON and calculate verified subtotal
     let verifiedItems = [];
     let calculatedSubtotal = 0;
 
@@ -324,32 +266,21 @@ app.post('/api/orders', async (req, res) => {
 
       const resolvedName = productDoc.name || productDoc.title || item.productName || 'Product';
       const resolvedSlug = productDoc.slug || item.slug || resolvedName.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+      const resolvedCategory = productDoc.category || item.category || 'Hair Care';
 
       verifiedItems.push({
         productId: String(productDoc._id || resolvedSlug),
         productName: resolvedName,
         slug: resolvedSlug,
+        category: resolvedCategory,
         image: productDoc.images?.[0] || '',
         unitPrice: verifiedUnitPrice,
         quantity: requestedQty,
         itemTotal: itemTotal
       });
 
-      // Safely decrement stock in website_data document
-      if (dbStatus.isConnected && productDoc.stock > 0) {
-        await WebsiteData.updateOne(
-          { _id: 'main' },
-          {
-            $inc: { 'products.$[elem].stock': -requestedQty },
-            $set: { updatedAt: new Date() }
-          },
-          {
-            arrayFilters: [{ $or: [{ 'elem._id': productDoc._id }, { 'elem.slug': productDoc.slug }] }]
-          }
-        );
-      } else if (!dbStatus.isConnected && productDoc.stock > 0) {
-        productDoc.stock -= requestedQty;
-      }
+      // Safely decrement stock in local store
+      await localJsonStore.decrementStock(productDoc.slug || productDoc._id, requestedQty);
     }
 
     const discount = 0;
@@ -381,7 +312,7 @@ app.post('/api/orders', async (req, res) => {
       statusHistory: [
         {
           status: 'Pending',
-          timestamp: new Date(),
+          timestamp: new Date().toISOString(),
           note: 'Order placed by customer via Cash on Delivery',
           updatedBy: 'System'
         }
@@ -404,19 +335,14 @@ app.post('/api/orders', async (req, res) => {
       metaEventId: metaEventId || `order_${orderId}`
     };
 
-    let createdOrder = null;
-    if (dbStatus.isConnected) {
-      createdOrder = await Order.create(orderPayload);
-    } else {
-      createdOrder = await memoryStore.addOrder(orderPayload);
-    }
+    const createdOrder = await localJsonStore.addOrder(orderPayload);
 
     // 4. Trigger Server-Side Meta Conversions API (CAPI) Purchase Event
     const isCapiActive = siteMeta?.isCapiEnabled !== false;
     if (isCapiActive) {
       sendMetaCapiEvent({
-        pixelId: siteMeta?.pixelId || process.env.META_PIXEL_ID,
-        accessToken: siteMeta?.capiAccessToken || process.env.META_CAPI_ACCESS_TOKEN,
+        pixelId: process.env.META_PIXEL_ID,
+        accessToken: process.env.META_CAPI_ACCESS_TOKEN,
         testEventCode: siteMeta?.testEventCode || process.env.META_TEST_EVENT_CODE,
         isLoggingEnabled: siteMeta?.isLoggingEnabled !== false,
         logRetentionDays: siteMeta?.logRetentionDays || 7,
@@ -440,11 +366,15 @@ app.post('/api/orders', async (req, res) => {
           currency: 'BDT',
           value: finalTotal,
           order_id: orderId,
+          content_name: 'Order Purchase',
           content_type: 'product',
+          content_category: ([...new Set(verifiedItems.map(i => i.category).filter(Boolean))].join(', ') || 'Hair Care'),
+          content_categories: [...new Set(verifiedItems.map(i => i.category).filter(Boolean))],
           contents: verifiedItems.map(i => ({
             id: i.productId || i.slug,
             quantity: i.quantity,
-            item_price: i.unitPrice
+            item_price: i.unitPrice,
+            category: i.category || 'Hair Care'
           })),
           num_items: verifiedItems.reduce((acc, i) => acc + i.quantity, 0)
         },
@@ -471,14 +401,7 @@ app.post('/api/orders', async (req, res) => {
 app.get('/api/orders/:orderId', async (req, res) => {
   try {
     const { orderId } = req.params;
-    const dbStatus = await getDbStatus();
-
-    let order = null;
-    if (dbStatus.isConnected) {
-      order = await Order.findOne({ orderId });
-    } else {
-      order = await memoryStore.getOrderById(orderId);
-    }
+    const order = await localJsonStore.getOrderById(orderId);
 
     if (!order) {
       return res.status(404).json({ success: false, message: 'Order not found' });
@@ -501,28 +424,20 @@ app.post('/api/meta/events', async (req, res) => {
     }
 
     // Deduplication guard: Purchase events are dispatched directly by the server order creation.
-    // Prevent redundant secondary server dispatch from browser forwarder
     if (eventName === 'Purchase') {
       return res.json({ success: true, message: 'Purchase event already handled on server order creation' });
     }
 
-    const dbStatus = await getDbStatus();
-    let siteMeta = defaultWebsiteConfig.metaSettings;
-    if (dbStatus.isConnected) {
-      const cfg = await WebsiteConfig.findById('main');
-      if (cfg && cfg.metaSettings) siteMeta = cfg.metaSettings;
-    } else {
-      const cfg = await memoryStore.getWebsiteConfig();
-      if (cfg && cfg.metaSettings) siteMeta = cfg.metaSettings;
-    }
+    const cfg = await localJsonStore.getWebsiteConfig();
+    const siteMeta = cfg?.metaSettings || defaultWebsiteConfig.metaSettings;
 
     if (siteMeta?.isCapiEnabled === false) {
       return res.json({ success: true, message: 'CAPI is disabled in settings' });
     }
 
     const result = await sendMetaCapiEvent({
-      pixelId: siteMeta?.pixelId || process.env.META_PIXEL_ID,
-      accessToken: siteMeta?.capiAccessToken || process.env.META_CAPI_ACCESS_TOKEN,
+      pixelId: process.env.META_PIXEL_ID,
+      accessToken: process.env.META_CAPI_ACCESS_TOKEN,
       testEventCode: siteMeta?.testEventCode || process.env.META_TEST_EVENT_CODE,
       isLoggingEnabled: siteMeta?.isLoggingEnabled !== false,
       logRetentionDays: siteMeta?.logRetentionDays || 7,
@@ -559,47 +474,28 @@ app.post('/api/admin/login', async (req, res) => {
     const envUser = process.env.ADMIN_USERNAME || 'admin';
     const envPass = process.env.ADMIN_PASSWORD || 'Admin@HairCare2026';
 
-    const dbStatus = await getDbStatus();
-    let adminRecord = null;
-
-    if (dbStatus.isConnected) {
-      adminRecord = await Admin.findOne({ username });
-      if (!adminRecord && username === envUser) {
-        // Auto-initialize default admin in MongoDB if not exists
-        const salt = await bcrypt.genSalt(10);
-        const hashedPassword = await bcrypt.hash(envPass, salt);
-        adminRecord = await Admin.create({
-          username: envUser,
-          password: hashedPassword,
-          name: 'Store Administrator',
-          role: 'superadmin'
-        });
-      }
-    }
-
+    const adminRecord = await localJsonStore.getAdminByUsername(username);
     let isMatch = false;
 
-    if (adminRecord) {
-      isMatch = await adminRecord.comparePassword(password);
-    } else {
-      // Memory store / fallback validation against env
-      if (username === envUser && password === envPass) {
-        isMatch = true;
-        adminRecord = {
-          _id: 'admin_1',
-          username: envUser,
-          name: 'Store Administrator',
-          role: 'superadmin'
-        };
+    if (adminRecord && adminRecord.password) {
+      if (adminRecord.password.startsWith('$2')) {
+        isMatch = await bcrypt.compare(password, adminRecord.password);
+      } else {
+        isMatch = (password === adminRecord.password);
       }
+    } else if (username === envUser && password === envPass) {
+      isMatch = true;
     }
 
     if (!isMatch) {
       return res.status(401).json({ success: false, message: 'Invalid admin credentials' });
     }
 
+    const adminId = adminRecord?._id || 'admin_1';
+    const adminRole = adminRecord?.role || 'superadmin';
+
     const token = jwt.sign(
-      { id: adminRecord._id, username: adminRecord.username, role: adminRecord.role },
+      { id: adminId, username: adminRecord?.username || envUser, role: adminRole },
       JWT_SECRET,
       { expiresIn: '7d' }
     );
@@ -609,10 +505,10 @@ app.post('/api/admin/login', async (req, res) => {
       message: 'Login successful',
       token,
       admin: {
-        id: adminRecord._id,
-        username: adminRecord.username,
-        name: adminRecord.name || 'Store Administrator',
-        role: adminRecord.role || 'admin'
+        id: adminId,
+        username: adminRecord?.username || envUser,
+        name: adminRecord?.name || 'Store Administrator',
+        role: adminRole
       }
     });
   } catch (err) {
@@ -629,18 +525,8 @@ app.get('/api/admin/me', requireAdmin, async (req, res) => {
 // GET /api/admin/dashboard - Comprehensive Analytics & KPIs
 app.get('/api/admin/dashboard', requireAdmin, async (req, res) => {
   try {
-    const dbStatus = await getDbStatus();
-    let orders = [];
-    let products = [];
-
-    if (dbStatus.isConnected) {
-      orders = await Order.find().sort({ createdAt: -1 });
-      const wDoc = await WebsiteData.findById('main', { products: 1 }).lean();
-      products = (wDoc && wDoc.products) || [];
-    } else {
-      orders = await memoryStore.getOrders();
-      products = (await memoryStore.getWebsiteData())?.products || [];
-    }
+    const orders = await localJsonStore.getOrders();
+    const products = await localJsonStore.getProducts();
 
     const totalOrders = orders.length;
     const pendingOrders = orders.filter(o => o.orderStatus === 'Pending').length;
@@ -683,7 +569,7 @@ app.get('/api/admin/dashboard', requireAdmin, async (req, res) => {
         },
         topSelling,
         recentOrders: orders.slice(0, 8),
-        databaseMode: dbStatus.mode
+        databaseMode: 'local_json'
       }
     });
   } catch (err) {
@@ -693,20 +579,13 @@ app.get('/api/admin/dashboard', requireAdmin, async (req, res) => {
 });
 
 // =========================================================================
-// 3. ADMIN PRODUCT MANAGEMENT (Backed by website_data document)
+// 3. ADMIN PRODUCT MANAGEMENT (Backed by local JSON store)
 // =========================================================================
 
 app.get('/api/admin/products', requireAdmin, async (req, res) => {
   try {
-    const dbStatus = await getDbStatus();
-    let products = [];
-    if (dbStatus.isConnected) {
-      const wDoc = await WebsiteData.findById('main', { products: 1 }).lean();
-      products = (wDoc && wDoc.products) || [];
-      products.sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
-    } else {
-      products = (await memoryStore.getWebsiteData())?.products || [];
-    }
+    const products = await localJsonStore.getProducts();
+    products.sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
     return res.json({ success: true, data: products });
   } catch (err) {
     return res.status(500).json({ success: false, message: err.message });
@@ -733,7 +612,7 @@ app.post('/api/admin/products', requireAdmin, async (req, res) => {
       slug: generatedSlug || `product-${Date.now()}`,
       shortDescription: shortDescription || '',
       description: description || '',
-      images: Array.isArray(images) && images.length > 0 ? images : ['https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=800&auto=format&fit=crop&q=80'],
+      images: Array.isArray(images) ? images : [],
       category: category.trim(),
       regularPrice: Number(regularPrice),
       salePrice: Number(salePrice),
@@ -747,32 +626,12 @@ app.post('/api/admin/products', requireAdmin, async (req, res) => {
       specifications: Array.isArray(specifications) ? specifications : [],
       displayOrder: Number(displayOrder || 0),
       carouselOrder: Number(displayOrder || 0),
-      createdAt: new Date(),
-      updatedAt: new Date()
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
     };
 
-    const dbStatus = await getDbStatus();
-
-    if (dbStatus.isConnected) {
-      // Check for duplicate slug inside website_data
-      const current = await WebsiteData.findById('main');
-      if (current && current.products?.some(p => p.slug === productPayload.slug)) {
-        productPayload.slug = `${productPayload.slug}-${Date.now().toString().slice(-4)}`;
-      }
-      await WebsiteData.updateOne(
-        { _id: 'main' },
-        {
-          $push: { products: productPayload },
-          $inc: { version: 1 },
-          $set: { updatedAt: new Date() }
-        },
-        { upsert: true }
-      );
-    } else {
-      await memoryStore.addProduct(productPayload);
-    }
-
-    return res.status(201).json({ success: true, message: 'Product created successfully', data: productPayload });
+    const created = await localJsonStore.addProduct(productPayload);
+    return res.status(201).json({ success: true, message: 'Product created successfully', data: created });
   } catch (err) {
     console.error('Error creating product:', err);
     return res.status(500).json({ success: false, message: err.message });
@@ -794,41 +653,11 @@ app.put('/api/admin/products/:id', requireAdmin, async (req, res) => {
       updateData.carouselOrder = updateData.displayOrder;
     }
 
-    const dbStatus = await getDbStatus();
-
-    if (dbStatus.isConnected) {
-      const updateSet = {};
-      for (const [key, val] of Object.entries(updateData)) {
-        updateSet[`products.$[elem].${key}`] = val;
-      }
-      updateSet['products.$[elem].updatedAt'] = new Date();
-      updateSet['updatedAt'] = new Date();
-
-      const updated = await WebsiteData.findOneAndUpdate(
-        { _id: 'main' },
-        {
-          $set: updateSet,
-          $inc: { version: 1 }
-        },
-        {
-          arrayFilters: [{ $or: [{ 'elem._id': id }, { 'elem.slug': id }] }],
-          returnDocument: 'after'
-        }
-      );
-
-      if (!updated) {
-        return res.status(404).json({ success: false, message: 'Product not found' });
-      }
-
-      const product = updated.products?.find(p => p._id === id || p.slug === id);
-      return res.json({ success: true, message: 'Product updated successfully', data: product });
-    } else {
-      const updated = await memoryStore.updateProduct(id, updateData);
-      if (!updated) {
-        return res.status(404).json({ success: false, message: 'Product not found' });
-      }
-      return res.json({ success: true, message: 'Product updated successfully', data: updated });
+    const updated = await localJsonStore.updateProduct(id, updateData);
+    if (!updated) {
+      return res.status(404).json({ success: false, message: 'Product not found' });
     }
+    return res.json({ success: true, message: 'Product updated successfully', data: updated });
   } catch (err) {
     return res.status(500).json({ success: false, message: err.message });
   }
@@ -837,21 +666,7 @@ app.put('/api/admin/products/:id', requireAdmin, async (req, res) => {
 app.delete('/api/admin/products/:id', requireAdmin, async (req, res) => {
   try {
     const { id } = req.params;
-    const dbStatus = await getDbStatus();
-
-    if (dbStatus.isConnected) {
-      await WebsiteData.updateOne(
-        { _id: 'main' },
-        {
-          $pull: { products: { $or: [{ _id: id }, { slug: id }] } },
-          $inc: { version: 1 },
-          $set: { updatedAt: new Date() }
-        }
-      );
-    } else {
-      await memoryStore.deleteProduct(id);
-    }
-
+    await localJsonStore.deleteProduct(id);
     return res.json({ success: true, message: 'Product deleted successfully' });
   } catch (err) {
     return res.status(500).json({ success: false, message: err.message });
@@ -859,20 +674,13 @@ app.delete('/api/admin/products/:id', requireAdmin, async (req, res) => {
 });
 
 // =========================================================================
-// 4. ADMIN CATEGORY MANAGEMENT (Backed by website_data document)
+// 4. ADMIN CATEGORY MANAGEMENT (Backed by local JSON store)
 // =========================================================================
 
 app.get('/api/admin/categories', requireAdmin, async (req, res) => {
   try {
-    const dbStatus = await getDbStatus();
-    let categories = [];
-    if (dbStatus.isConnected) {
-      const wDoc = await WebsiteData.findById('main', { categories: 1 }).lean();
-      categories = (wDoc && wDoc.categories) || [];
-      categories.sort((a, b) => (a.displayOrder || 0) - (b.displayOrder || 0));
-    } else {
-      categories = await memoryStore.getCategories();
-    }
+    const categories = await localJsonStore.getCategories();
+    categories.sort((a, b) => (Number(a.displayOrder) || 0) - (Number(b.displayOrder) || 0));
     return res.json({ success: true, data: categories });
   } catch (err) {
     return res.status(500).json({ success: false, message: err.message });
@@ -898,27 +706,12 @@ app.post('/api/admin/categories', requireAdmin, async (req, res) => {
       image: image || '',
       isActive: isActive !== false,
       displayOrder: Number(displayOrder || 0),
-      createdAt: new Date(),
-      updatedAt: new Date()
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
     };
 
-    const dbStatus = await getDbStatus();
-
-    if (dbStatus.isConnected) {
-      await WebsiteData.updateOne(
-        { _id: 'main' },
-        {
-          $push: { categories: catPayload },
-          $inc: { version: 1 },
-          $set: { updatedAt: new Date() }
-        },
-        { upsert: true }
-      );
-    } else {
-      await memoryStore.addCategory(catPayload);
-    }
-
-    return res.status(201).json({ success: true, message: 'Category created', data: catPayload });
+    const created = await localJsonStore.addCategory(catPayload);
+    return res.status(201).json({ success: true, message: 'Category created', data: created });
   } catch (err) {
     return res.status(500).json({ success: false, message: err.message });
   }
@@ -934,38 +727,11 @@ app.put('/api/admin/categories/:id', requireAdmin, async (req, res) => {
       updateData.displayOrder = Number(updateData.displayOrder || 0);
     }
 
-    const dbStatus = await getDbStatus();
-
-    if (dbStatus.isConnected) {
-      const updateSet = {};
-      for (const [key, val] of Object.entries(updateData)) {
-        updateSet[`categories.$[elem].${key}`] = val;
-      }
-      updateSet['categories.$[elem].updatedAt'] = new Date();
-      updateSet['updatedAt'] = new Date();
-
-      const updated = await WebsiteData.findOneAndUpdate(
-        { _id: 'main' },
-        {
-          $set: updateSet,
-          $inc: { version: 1 }
-        },
-        {
-          arrayFilters: [{ $or: [{ 'elem._id': id }, { 'elem.slug': id }] }],
-          returnDocument: 'after'
-        }
-      );
-
-      if (!updated) {
-        return res.status(404).json({ success: false, message: 'Category not found' });
-      }
-
-      const category = updated.categories?.find(c => c._id === id || c.slug === id);
-      return res.json({ success: true, message: 'Category updated', data: category });
-    } else {
-      const updated = await memoryStore.updateCategory(id, updateData);
-      return res.json({ success: true, message: 'Category updated', data: updated });
+    const updated = await localJsonStore.updateCategory(id, updateData);
+    if (!updated) {
+      return res.status(404).json({ success: false, message: 'Category not found' });
     }
+    return res.json({ success: true, message: 'Category updated', data: updated });
   } catch (err) {
     return res.status(500).json({ success: false, message: err.message });
   }
@@ -974,21 +740,7 @@ app.put('/api/admin/categories/:id', requireAdmin, async (req, res) => {
 app.delete('/api/admin/categories/:id', requireAdmin, async (req, res) => {
   try {
     const { id } = req.params;
-    const dbStatus = await getDbStatus();
-
-    if (dbStatus.isConnected) {
-      await WebsiteData.updateOne(
-        { _id: 'main' },
-        {
-          $pull: { categories: { $or: [{ _id: id }, { slug: id }] } },
-          $inc: { version: 1 },
-          $set: { updatedAt: new Date() }
-        }
-      );
-    } else {
-      await memoryStore.deleteCategory(id);
-    }
-
+    await localJsonStore.deleteCategory(id);
     return res.json({ success: true, message: 'Category deleted' });
   } catch (err) {
     return res.status(500).json({ success: false, message: err.message });
@@ -996,33 +748,13 @@ app.delete('/api/admin/categories/:id', requireAdmin, async (req, res) => {
 });
 
 // =========================================================================
-// 5. ADMIN ORDER MANAGEMENT
+// 5. ADMIN ORDER MANAGEMENT (Backed by local JSON store)
 // =========================================================================
 
 app.get('/api/admin/orders', requireAdmin, async (req, res) => {
   try {
     const { status, search } = req.query;
-    const dbStatus = await getDbStatus();
-
-    let orders = [];
-
-    if (dbStatus.isConnected) {
-      const query = {};
-      if (status && status !== 'All') {
-        query.orderStatus = status;
-      }
-      if (search) {
-        query.$or = [
-          { orderId: { $regex: search, $options: 'i' } },
-          { 'customer.fullName': { $regex: search, $options: 'i' } },
-          { 'customer.phoneNumber': { $regex: search, $options: 'i' } }
-        ];
-      }
-      orders = await Order.find(query).sort({ createdAt: -1 });
-    } else {
-      orders = await memoryStore.getOrders({ status: status === 'All' ? undefined : status, search });
-    }
-
+    const orders = await localJsonStore.getOrders({ status: status === 'All' ? undefined : status, search });
     return res.json({ success: true, data: orders, count: orders.length });
   } catch (err) {
     return res.status(500).json({ success: false, message: err.message });
@@ -1032,14 +764,7 @@ app.get('/api/admin/orders', requireAdmin, async (req, res) => {
 app.get('/api/admin/orders/:id', requireAdmin, async (req, res) => {
   try {
     const { id } = req.params;
-    const dbStatus = await getDbStatus();
-
-    let order = null;
-    if (dbStatus.isConnected) {
-      order = await Order.findOne({ $or: [{ orderId: id }, { _id: id.match(/^[0-9a-fA-F]{24}$/) ? id : null }] });
-    } else {
-      order = await memoryStore.getOrderById(id);
-    }
+    const order = await localJsonStore.getOrderById(id);
 
     if (!order) {
       return res.status(404).json({ success: false, message: 'Order not found' });
@@ -1065,32 +790,9 @@ app.put('/api/admin/orders/:id/status', requireAdmin, async (req, res) => {
       return res.status(400).json({ success: false, message: 'Invalid status code' });
     }
 
-    const dbStatus = await getDbStatus();
-    let updatedOrder = null;
-
-    if (dbStatus.isConnected) {
-      const order = await Order.findOne({ $or: [{ orderId: id }, { _id: id.match(/^[0-9a-fA-F]{24}$/) ? id : null }] });
-      if (!order) {
-        return res.status(404).json({ success: false, message: 'Order not found' });
-      }
-
-      order.orderStatus = status;
-      if (internalNotes !== undefined) {
-        order.internalNotes = internalNotes;
-      }
-      order.statusHistory.push({
-        status,
-        timestamp: new Date(),
-        note: note || `Status changed to ${status}`,
-        updatedBy: req.admin?.username || 'Admin'
-      });
-
-      updatedOrder = await order.save();
-    } else {
-      updatedOrder = await memoryStore.updateOrderStatus(id, status, note, req.admin?.username);
-      if (updatedOrder && internalNotes !== undefined) {
-        updatedOrder.internalNotes = internalNotes;
-      }
+    const updatedOrder = await localJsonStore.updateOrderStatus(id, status, note, req.admin?.username || 'Admin', internalNotes);
+    if (!updatedOrder) {
+      return res.status(404).json({ success: false, message: 'Order not found' });
     }
 
     return res.json({ success: true, message: `Order status updated to ${status}`, data: updatedOrder });
@@ -1102,22 +804,7 @@ app.put('/api/admin/orders/:id/status', requireAdmin, async (req, res) => {
 app.delete('/api/admin/orders/:id', requireAdmin, async (req, res) => {
   try {
     const { id } = req.params;
-    const dbStatus = await getDbStatus();
-
-    if (dbStatus.isConnected) {
-      const deleted = await Order.findOneAndDelete({
-        $or: [
-          { orderId: id },
-          { _id: id.match(/^[0-9a-fA-F]{24}$/) ? id : null }
-        ]
-      });
-      if (!deleted) {
-        return res.status(404).json({ success: false, message: 'Order not found' });
-      }
-    } else {
-      await memoryStore.deleteOrder(id);
-    }
-
+    await localJsonStore.deleteOrder(id);
     return res.json({ success: true, message: `Order #${id} deleted successfully` });
   } catch (err) {
     return res.status(500).json({ success: false, message: err.message });
@@ -1142,16 +829,8 @@ app.post('/api/admin/orders', requireAdmin, async (req, res) => {
       });
     }
 
-    const dbStatus = await getDbStatus();
-
-    let deliverySettings = defaultWebsiteConfig.deliverySettings;
-    if (dbStatus.isConnected) {
-      const cfg = await WebsiteConfig.findById('main');
-      if (cfg && cfg.deliverySettings) deliverySettings = cfg.deliverySettings;
-    } else {
-      const cfg = await memoryStore.getWebsiteConfig();
-      if (cfg && cfg.deliverySettings) deliverySettings = cfg.deliverySettings;
-    }
+    const cfg = await localJsonStore.getWebsiteConfig();
+    const deliverySettings = cfg?.deliverySettings || defaultWebsiteConfig.deliverySettings;
 
     const deliveryFee = customer.deliveryArea === 'inside_dhaka'
       ? (deliverySettings.insideDhakaFee ?? 70)
@@ -1161,18 +840,7 @@ app.post('/api/admin/orders', requireAdmin, async (req, res) => {
     let calculatedSubtotal = 0;
 
     for (const item of items) {
-      let productDoc = null;
-      if (dbStatus.isConnected) {
-        productDoc = await Product.findOne({
-          $or: [
-            { slug: item.slug || item.productId },
-            { _id: item.productId?.match(/^[0-9a-fA-F]{24}$/) ? item.productId : null }
-          ]
-        });
-      } else {
-        productDoc = await memoryStore.getProductBySlug(item.slug || item.productId);
-      }
-
+      const productDoc = await localJsonStore.getProductBySlug(item.slug || item.productId);
       const unitPrice = item.unitPrice !== undefined ? Number(item.unitPrice) : (productDoc ? productDoc.salePrice : 0);
       const productName = item.productName || (productDoc ? productDoc.name : 'Custom Hair Care Product');
       const resolvedSlug = item.slug || (productDoc ? productDoc.slug : '') || '';
@@ -1182,9 +850,10 @@ app.post('/api/admin/orders', requireAdmin, async (req, res) => {
       calculatedSubtotal += unitPrice * quantity;
 
       verifiedItems.push({
-        productId: productDoc ? productDoc._id.toString() : (item.productId || resolvedSlug || 'manual-item'),
+        productId: productDoc ? String(productDoc._id) : (item.productId || resolvedSlug || 'manual-item'),
         slug: resolvedSlug,
         productName,
+        category: item.category || (productDoc ? productDoc.category : 'Hair Care') || 'Hair Care',
         quantity,
         unitPrice,
         itemTotal: unitPrice * quantity,
@@ -1216,7 +885,7 @@ app.post('/api/admin/orders', requireAdmin, async (req, res) => {
       statusHistory: [
         {
           status: orderStatus,
-          timestamp: new Date(),
+          timestamp: new Date().toISOString(),
           note: 'Order manually created via Admin Panel',
           updatedBy: req.admin?.username || 'Admin'
         }
@@ -1227,12 +896,7 @@ app.post('/api/admin/orders', requireAdmin, async (req, res) => {
       }
     };
 
-    let createdOrder = null;
-    if (dbStatus.isConnected) {
-      createdOrder = await Order.create(orderPayload);
-    } else {
-      createdOrder = await memoryStore.addOrder(orderPayload);
-    }
+    const createdOrder = await localJsonStore.addOrder(orderPayload);
 
     return res.status(201).json({
       success: true,
@@ -1246,24 +910,17 @@ app.post('/api/admin/orders', requireAdmin, async (req, res) => {
 });
 
 // =========================================================================
-// 6. ADMIN CENTRALIZED WEBSITE DATA & CMS CONFIGURATION
+// 6. ADMIN CENTRALIZED WEBSITE DATA & CMS CONFIGURATION (Backed by local JSON)
 // =========================================================================
 
-// GET /api/admin/website-data - Full document read for Admin CMS / Content Management
+// GET /api/admin/website-data - Full document read for Admin CMS
 app.get('/api/admin/website-data', requireAdmin, async (req, res) => {
   try {
-    const dbStatus = await getDbStatus();
-    let data = null;
-    if (dbStatus.isConnected) {
-      data = await WebsiteData.findById('main');
-      if (!data) {
-        data = await WebsiteData.create(defaultWebsiteData);
-      }
-    } else {
-      data = await memoryStore.getWebsiteData();
-    }
-    const obj = data.toObject ? data.toObject() : data;
-    return res.json({ success: true, version: obj.version || 1, data: obj });
+    const data = await localJsonStore.getWebsiteData();
+    const cloned = JSON.parse(JSON.stringify(data));
+    if (!cloned.metaSettings) cloned.metaSettings = {};
+    cloned.metaSettings.pixelId = process.env.META_PIXEL_ID || '';
+    return res.json({ success: true, version: cloned.version || 1, data: cloned });
   } catch (err) {
     return res.status(500).json({ success: false, message: err.message });
   }
@@ -1275,49 +932,21 @@ app.put('/api/admin/website-data', requireAdmin, async (req, res) => {
     const { version, expectedVersion, ...updateData } = req.body;
     delete updateData._id;
 
-    const reqVersion = typeof version === 'number' ? version : (typeof expectedVersion === 'number' ? expectedVersion : null);
-    const dbStatus = await getDbStatus();
-
-    if (dbStatus.isConnected) {
-      const current = await WebsiteData.findById('main');
-      if (!current) {
-        return res.status(404).json({ success: false, message: 'Website data document not found' });
-      }
-
-      if (reqVersion !== null && current.version !== reqVersion) {
-        return res.status(409).json({
-          success: false,
-          conflict: true,
-          message: `Concurrency conflict: Document has been modified by another admin (expected version ${reqVersion}, current version ${current.version}). Please reload.`,
-          currentVersion: current.version
-        });
-      }
-
-      // Atomic update and version increment
-      const updated = await WebsiteData.findByIdAndUpdate(
-        'main',
-        {
-          $set: { ...updateData, updatedAt: new Date() },
-          $inc: { version: 1 }
-        },
-        { returnDocument: 'after', upsert: true }
-      );
-
-      return res.json({
-        success: true,
-        message: 'Website data updated successfully',
-        version: updated.version,
-        data: updated
-      });
-    } else {
-      const updated = await memoryStore.updateWebsiteData(updateData, reqVersion);
-      return res.json({
-        success: true,
-        message: 'Website data updated successfully (in memory)',
-        version: updated.version,
-        data: updated
-      });
+    // Remove any accidental secret tokens from updateData so they are never saved to disk
+    if (updateData.metaSettings) {
+      delete updateData.metaSettings.capiAccessToken;
+      delete updateData.metaSettings.pixelId;
     }
+
+    const reqVersion = typeof version === 'number' ? version : (typeof expectedVersion === 'number' ? expectedVersion : null);
+    const updated = await localJsonStore.updateWebsiteData(updateData, reqVersion);
+
+    return res.json({
+      success: true,
+      message: 'Website data updated successfully (saved to local JSON)',
+      version: updated.version,
+      data: updated
+    });
   } catch (err) {
     if (err.conflict) {
       return res.status(409).json({
@@ -1334,17 +963,13 @@ app.put('/api/admin/website-data', requireAdmin, async (req, res) => {
 
 app.get('/api/admin/site-config', requireAdmin, async (req, res) => {
   try {
-    const dbStatus = await getDbStatus();
-    if (dbStatus.isConnected) {
-      let config = await WebsiteData.findById('main');
-      if (!config) {
-        config = await WebsiteData.create(defaultWebsiteData);
-      }
-      return res.json({ success: true, data: config });
-    } else {
-      const config = await memoryStore.getWebsiteData();
-      return res.json({ success: true, data: config });
-    }
+    const config = await localJsonStore.getWebsiteConfig();
+    const cloned = JSON.parse(JSON.stringify(config));
+    if (!cloned.metaSettings) cloned.metaSettings = {};
+    cloned.metaSettings.pixelId = process.env.META_PIXEL_ID || '';
+    cloned.metaSettings.isCapiConfigured = Boolean(process.env.META_CAPI_ACCESS_TOKEN);
+    cloned.metaSettings.isPixelConfigured = Boolean(process.env.META_PIXEL_ID);
+    return res.json({ success: true, data: cloned });
   } catch (err) {
     return res.status(500).json({ success: false, message: err.message });
   }
@@ -1355,21 +980,12 @@ app.put('/api/admin/site-config', requireAdmin, async (req, res) => {
     const updateData = { ...req.body };
     delete updateData._id;
 
-    const dbStatus = await getDbStatus();
-    let savedConfig = null;
-
-    if (dbStatus.isConnected) {
-      savedConfig = await WebsiteData.findByIdAndUpdate(
-        'main',
-        {
-          $set: { ...updateData, updatedAt: new Date() },
-          $inc: { version: 1 }
-        },
-        { returnDocument: 'after', upsert: true }
-      );
-    } else {
-      savedConfig = await memoryStore.updateWebsiteConfig(updateData);
+    if (updateData.metaSettings) {
+      delete updateData.metaSettings.capiAccessToken;
+      delete updateData.metaSettings.pixelId;
     }
+
+    const savedConfig = await localJsonStore.updateWebsiteConfig(updateData);
 
     return res.json({
       success: true,
@@ -1421,15 +1037,71 @@ app.post('/api/upload', requireAdmin, async (req, res) => {
 });
 
 // =========================================================================
-// 8. ADMIN META CAPI EVENT LOGS MANAGEMENT
+// 8. ADMIN META CAPI EVENT LOGS MANAGEMENT (Backed by local JSON store)
 // =========================================================================
+
+// GET /api/admin/meta/verify-connection - Test Meta Graph API connection with .env credentials
+app.get('/api/admin/meta/verify-connection', requireAdmin, async (req, res) => {
+  try {
+    const pixelId = process.env.META_PIXEL_ID;
+    let token = process.env.META_CAPI_ACCESS_TOKEN;
+
+    if (!pixelId) {
+      return res.json({
+        success: false,
+        connected: false,
+        message: 'META_PIXEL_ID is not configured in .env'
+      });
+    }
+
+    if (!token) {
+      return res.json({
+        success: false,
+        connected: false,
+        message: 'META_CAPI_ACCESS_TOKEN is not configured in .env'
+      });
+    }
+
+    token = token.trim();
+    if (token.startsWith('aEAA')) {
+      token = token.substring(1);
+    }
+
+    const graphRes = await axios.get(`https://graph.facebook.com/v19.0/${pixelId.trim()}`, {
+      params: {
+        fields: 'id,name',
+        access_token: token
+      },
+      timeout: 8000
+    });
+
+    return res.json({
+      success: true,
+      connected: true,
+      datasetName: graphRes.data?.name || 'Meta Dataset / Pixel',
+      pixelId: graphRes.data?.id || pixelId,
+      message: 'Successfully connected and verified with Meta Graph API!'
+    });
+  } catch (err) {
+    const metaError = err.response?.data?.error;
+    const errorMessage = metaError
+      ? `${metaError.message} (Code: ${metaError.code}${metaError.error_subcode ? `, Subcode: ${metaError.error_subcode}` : ''})`
+      : err.message;
+
+    return res.json({
+      success: false,
+      connected: false,
+      message: errorMessage,
+      fbtrace_id: metaError?.fbtrace_id
+    });
+  }
+});
 
 // GET /api/admin/meta/logs - Paginated logs with search & filters
 app.get('/api/admin/meta/logs', requireAdmin, async (req, res) => {
   try {
     const page = Math.max(1, parseInt(req.query.page) || 1);
     const limit = Math.min(100, Math.max(1, parseInt(req.query.limit) || 20));
-    const skip = (page - 1) * limit;
 
     const filter = {};
     if (req.query.eventName && req.query.eventName !== 'ALL') {
@@ -1439,50 +1111,16 @@ app.get('/api/admin/meta/logs', requireAdmin, async (req, res) => {
       filter.status = req.query.status;
     }
     if (req.query.search) {
-      const s = req.query.search.trim();
-      filter.$or = [
-        { eventId: { $regex: s, $options: 'i' } },
-        { orderId: { $regex: s, $options: 'i' } }
-      ];
+      filter.search = req.query.search.trim();
     }
     if (req.query.orderId) {
-      filter.orderId = { $regex: req.query.orderId.trim(), $options: 'i' };
+      filter.orderId = req.query.orderId.trim();
     }
     if (req.query.eventId) {
-      filter.eventId = { $regex: req.query.eventId.trim(), $options: 'i' };
+      filter.eventId = req.query.eventId.trim();
     }
 
-    const [logs, totalCount, stats] = await Promise.all([
-      MetaEventLog.find(filter)
-        .sort({ createdAt: -1 })
-        .skip(skip)
-        .limit(limit)
-        .select('-request.payload.user_data.em -request.payload.user_data.ph'),
-      MetaEventLog.countDocuments(filter),
-      MetaEventLog.aggregate([
-        {
-          $group: {
-            _id: '$status',
-            count: { $sum: 1 }
-          }
-        }
-      ])
-    ]);
-
-    const statusCounts = {
-      total: totalCount,
-      success: 0,
-      partial_success: 0,
-      failed: 0,
-      pending: 0,
-      timeout: 0,
-      invalid_payload: 0
-    };
-    stats.forEach(st => {
-      if (statusCounts[st._id] !== undefined) {
-        statusCounts[st._id] = st.count;
-      }
-    });
+    const { logs, totalCount, stats } = await localJsonStore.getMetaLogs(filter, page, limit);
 
     return res.json({
       success: true,
@@ -1491,9 +1129,9 @@ app.get('/api/admin/meta/logs', requireAdmin, async (req, res) => {
         page,
         limit,
         totalCount,
-        totalPages: Math.ceil(totalCount / limit)
+        totalPages: Math.ceil(totalCount / limit) || 1
       },
-      stats: statusCounts
+      stats
     });
   } catch (err) {
     console.error('Error fetching Meta CAPI logs:', err);
@@ -1504,7 +1142,7 @@ app.get('/api/admin/meta/logs', requireAdmin, async (req, res) => {
 // GET /api/admin/meta/logs/:id - Full individual log inspection
 app.get('/api/admin/meta/logs/:id', requireAdmin, async (req, res) => {
   try {
-    const log = await MetaEventLog.findById(req.params.id);
+    const log = await localJsonStore.getMetaLogById(req.params.id);
     if (!log) {
       return res.status(404).json({ success: false, message: 'Log record not found' });
     }
@@ -1531,13 +1169,11 @@ app.post('/api/admin/meta/logs/:id/retry', requireAdmin, async (req, res) => {
 app.delete('/api/admin/meta/logs', requireAdmin, async (req, res) => {
   try {
     const { olderThanDays } = req.query;
-    let deleteFilter = {};
+    const filter = {};
     if (olderThanDays) {
-      const days = parseInt(olderThanDays) || 0;
-      const cutoff = new Date(Date.now() - days * 24 * 60 * 60 * 1000);
-      deleteFilter = { createdAt: { $lt: cutoff } };
+      filter.olderThanDays = parseInt(olderThanDays) || 0;
     }
-    const result = await MetaEventLog.deleteMany(deleteFilter);
+    const result = await localJsonStore.deleteMetaLogs(filter);
     return res.json({
       success: true,
       message: `Successfully deleted ${result.deletedCount} log records`,
@@ -1549,4 +1185,3 @@ app.delete('/api/admin/meta/logs', requireAdmin, async (req, res) => {
 });
 
 export default app;
-

@@ -127,7 +127,7 @@ export default function ProductDetailPage() {
 
   const images = product.images && product.images.length > 0
     ? product.images
-    : ['https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=800&auto=format&fit=crop&q=80'];
+    : [];
 
   const discountPercent = calculateDiscount(product.regularPrice, product.salePrice);
   const isOutOfStock = product.stock <= 0;

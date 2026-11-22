@@ -7,7 +7,13 @@ export function CartProvider({ children }) {
   const [cartItems, setCartItems] = useState(() => {
     try {
       const saved = localStorage.getItem('regrow_cart');
-      return saved ? JSON.parse(saved) : [];
+      if (!saved) return [];
+      const parsed = JSON.parse(saved);
+      if (!Array.isArray(parsed)) return [];
+      return parsed.map(item => ({
+        ...item,
+        category: item.category || 'Hair Care'
+      }));
     } catch (e) {
       return [];
     }
@@ -37,6 +43,9 @@ export function CartProvider({ children }) {
         // Check stock boundary if available
         const maxStock = product.stock > 0 ? product.stock : 999;
         updated[existingIdx].quantity = Math.min(newQty, maxStock);
+        if (!updated[existingIdx].category || updated[existingIdx].category === 'Hair Care') {
+          if (product.category) updated[existingIdx].category = product.category;
+        }
         return updated;
       } else {
         return [
@@ -45,6 +54,7 @@ export function CartProvider({ children }) {
             productId: String(prodId),
             slug: product.slug,
             productName: product.name,
+            category: product.category || 'Hair Care',
             image: product.images?.[0] || '',
             unitPrice: product.salePrice,
             regularPrice: product.regularPrice,

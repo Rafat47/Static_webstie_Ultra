@@ -5,7 +5,7 @@ export default function HeroSection() {
   const { config } = useConfig();
   const hero = config?.hero || {};
 
-  const desktopImg = hero.desktopImage || hero.heroImage || 'https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=1600&auto=format&fit=crop&q=85';
+  const desktopImg = hero.desktopImage || hero.heroImage || '';
   const mobileImg = hero.mobileImage || hero.heroMobileImage || desktopImg;
 
   return (
@@ -13,18 +13,19 @@ export default function HeroSection() {
       <div className="max-w-[1536px] w-full mx-auto px-3 sm:px-6">
         {/* Main Banner Container - Pure Visual Photography Banner */}
         <div className="relative w-full rounded-xl overflow-hidden border border-gray-200 bg-gray-50 aspect-[16/9] sm:aspect-[21/9] min-h-[220px] sm:min-h-[380px] lg:min-h-[460px] shadow-xs">
-          
-          {/* Responsive Art Direction: Mobile vs Desktop Image */}
-          <picture className="absolute inset-0 w-full h-full">
-            {hero.mobileImage && (
-              <source media="(max-width: 640px)" srcSet={mobileImg} />
-            )}
-            <img
-              src={desktopImg}
-              alt="Hair Care & Minoxidil Solutions"
-              className="w-full h-full object-cover object-center"
-            />
-          </picture>
+          {desktopImg && (
+            /* Responsive Art Direction: Mobile vs Desktop Image */
+            <picture className="absolute inset-0 w-full h-full">
+              {hero.mobileImage && (
+                <source media="(max-width: 640px)" srcSet={mobileImg} />
+              )}
+              <img
+                src={desktopImg}
+                alt="Hair Care & Minoxidil Solutions"
+                className="w-full h-full object-cover object-center"
+              />
+            </picture>
+          )}
         </div>
       </div>
     </section>

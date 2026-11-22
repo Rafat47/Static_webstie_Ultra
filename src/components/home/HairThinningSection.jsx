@@ -9,13 +9,6 @@ export default function HairThinningSection() {
 
   const stages = sectionData.stages || [];
 
-  // Default stage images if not provided in config
-  const defaultStageImages = [
-    'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=800&auto=format&fit=crop&q=80',
-    'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&auto=format&fit=crop&q=80',
-    'https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=800&auto=format&fit=crop&q=80'
-  ];
-
   return (
     <section className="py-10 sm:py-16 bg-[#F8FAFD] border-b border-gray-100" id="hair-thinning">
       <div className="max-w-[1536px] mx-auto px-3 sm:px-6">
@@ -33,30 +26,41 @@ export default function HairThinningSection() {
           </p>
         </div>
 
-        {/* 3 Vertically Taller Stage Cards with Large Visual Stage Photography */}
+        {/* 3 Vertically Taller Stage Cards with Visual Photography if set in JSON */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
           {stages.map((stage, idx) => {
-            const stageImg = stage.image || defaultStageImages[idx % defaultStageImages.length];
+            const stageImg = stage.image || '';
 
             return (
               <div
                 key={idx}
-                className="bg-white rounded-xl border border-gray-200 hover:border-brand-dark transition-all flex flex-col justify-between overflow-hidden shadow-2xs hover:shadow-subtle group h-full min-h-[460px] lg:min-h-[500px]"
+                className="bg-white rounded-xl border border-gray-200 hover:border-brand-dark transition-all flex flex-col justify-between overflow-hidden shadow-2xs hover:shadow-subtle group h-full min-h-[380px] lg:min-h-[420px]"
               >
-                {/* Large Prominent Visual Image Stage Header (h-56 sm:h-64) */}
-                <div className="w-full h-56 sm:h-64 overflow-hidden bg-gray-50 border-b border-gray-100 relative">
-                  <img
-                    src={stageImg}
-                    alt={stage.title}
-                    className="w-full h-full object-cover object-center group-hover:scale-103 transition-transform duration-300"
-                  />
-                  <div className="absolute top-3 left-3 bg-brand-dark/90 backdrop-blur-xs text-white text-xs font-mono font-bold px-2.5 py-1 rounded shadow-xs">
-                    STAGE 0{idx + 1}
+                {/* Visual Image Stage Header if image provided in JSON */}
+                {stageImg ? (
+                  <div className="w-full h-56 sm:h-64 overflow-hidden bg-gray-50 border-b border-gray-100 relative">
+                    <img
+                      src={stageImg}
+                      alt={stage.title}
+                      className="w-full h-full object-cover object-center group-hover:scale-103 transition-transform duration-300"
+                    />
+                    <div className="absolute top-3 left-3 bg-brand-dark/90 backdrop-blur-xs text-white text-xs font-mono font-bold px-2.5 py-1 rounded shadow-xs">
+                      STAGE 0{idx + 1}
+                    </div>
+                    <div className="absolute top-3 right-3 bg-white/95 backdrop-blur-xs text-gray-900 text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded shadow-xs border border-gray-200">
+                      {stage.badge || `Phase ${idx + 1}`}
+                    </div>
                   </div>
-                  <div className="absolute top-3 right-3 bg-white/95 backdrop-blur-xs text-gray-900 text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded shadow-xs border border-gray-200">
-                    {stage.badge || `Phase ${idx + 1}`}
+                ) : (
+                  <div className="p-5 pb-3 bg-gray-50 border-b border-gray-100 flex items-center justify-between">
+                    <div className="bg-brand-dark text-white text-xs font-mono font-bold px-2.5 py-1 rounded shadow-xs">
+                      STAGE 0{idx + 1}
+                    </div>
+                    <div className="bg-white text-gray-900 text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded shadow-xs border border-gray-200">
+                      {stage.badge || `Phase ${idx + 1}`}
+                    </div>
                   </div>
-                </div>
+                )}
 
                 {/* Content */}
                 <div className="p-5 sm:p-6 flex-1 flex flex-col justify-between space-y-4">

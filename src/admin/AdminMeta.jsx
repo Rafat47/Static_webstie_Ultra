@@ -30,14 +30,14 @@ export default function AdminMeta() {
   // Settings State
   const [metaSettings, setMetaSettings] = useState({
     pixelId: '',
-    capiAccessToken: '',
     testEventCode: '',
     isPixelEnabled: true,
     isCapiEnabled: true,
     isLoggingEnabled: true,
     logRetentionDays: 7
   });
-  const [showToken, setShowToken] = useState(false);
+  const [verifying, setVerifying] = useState(false);
+  const [verifyResult, setVerifyResult] = useState(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
@@ -74,7 +74,6 @@ export default function AdminMeta() {
       if (res && res.success && res.data?.metaSettings) {
         setMetaSettings({
           pixelId: res.data.metaSettings.pixelId || '',
-          capiAccessToken: res.data.metaSettings.capiAccessToken || '',
           testEventCode: res.data.metaSettings.testEventCode || '',
           isPixelEnabled: res.data.metaSettings.isPixelEnabled !== false,
           isCapiEnabled: res.data.metaSettings.isCapiEnabled !== false,
@@ -135,6 +134,23 @@ export default function AdminMeta() {
       setSaveError(err.message || 'Error updating Meta settings');
     } finally {
       setSaving(false);
+    }
+  };
+
+  const handleVerifyConnection = async () => {
+    try {
+      setVerifying(true);
+      setVerifyResult(null);
+      const res = await api.verifyMetaConnection();
+      setVerifyResult(res);
+    } catch (err) {
+      setVerifyResult({
+        success: false,
+        connected: false,
+        message: err.response?.data?.message || err.message || 'Failed to verify Meta connection'
+      });
+    } finally {
+      setVerifying(false);
     }
   };
 
@@ -340,47 +356,85 @@ export default function AdminMeta() {
                 </h3>
               </div>
 
-              {/* Meta Pixel ID */}
-              <div>
-                <label className="block font-bold uppercase tracking-wider text-brand-dark mb-1">
-                  Meta Pixel ID / Dataset ID
-                </label>
-                <input
-                  type="text"
-                  placeholder="e.g. 123456789012345"
-                  value={metaSettings.pixelId}
-                  onChange={(e) => setMetaSettings({ ...metaSettings, pixelId: e.target.value.trim() })}
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 font-mono text-xs focus:ring-2 focus:ring-black"
-                />
-                <p className="text-[11px] text-brand-muted mt-1">
-                  Found in Meta Events Manager under Data Sources &gt; Settings.
-                </p>
-              </div>
+              {/* Secure Credentials Loaded via .env */}
+              <div className="p-4 rounded-2xl bg-gray-50 border border-gray-200 space-y-4">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <ShieldCheck className="w-5 h-5 text-emerald-600" />
+                    <div>
+                      <p className="font-bold text-brand-dark text-xs">Credentials Source: .env Environment Variables</p>
+                      <p className="text-[11px] text-brand-muted">
+                        Meta Pixel ID and Conversions API Token are managed exclusively via your server's .env file.
+                      </p>
+                    </div>
+                  </div>
+                  <span className="px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200 flex items-center gap-1">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                    .env Active
+                  </span>
+                </div>
 
-              {/* Conversions API (CAPI) Access Token */}
-              <div>
-                <div className="flex items-center justify-between mb-1">
-                  <label className="block font-bold uppercase tracking-wider text-brand-dark">
-                    Conversions API (CAPI) Access Token
-                  </label>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+                  <div className="p-3 bg-white rounded-xl border border-gray-200">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-gray-500 block">
+                      Meta Pixel / Dataset ID
+                    </span>
+                    <span className="font-mono text-xs font-bold text-brand-dark truncate block mt-0.5">
+                      {metaSettings.pixelId || 'Configured via .env'}
+                    </span>
+                  </div>
+
+                  <div className="p-3 bg-white rounded-xl border border-gray-200">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-gray-500 block">
+                      Conversions API Token
+                    </span>
+                    <span className="font-mono text-xs font-bold text-brand-dark block mt-0.5">
+                      •••••••••••••••• (Protected in .env)
+                    </span>
+                  </div>
+                </div>
+
+                {/* Test Meta Graph API Connection Button */}
+                <div className="pt-2 border-t border-gray-200 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                   <button
                     type="button"
-                    onClick={() => setShowToken(!showToken)}
-                    className="text-[11px] text-gray-500 hover:text-black font-bold underline"
+                    onClick={handleVerifyConnection}
+                    disabled={verifying}
+                    className="inline-flex items-center justify-center gap-2 px-3.5 py-2 rounded-xl bg-brand-dark text-white font-bold text-xs hover:bg-brand-navy transition-colors disabled:opacity-50"
                   >
-                    {showToken ? 'Hide Token' : 'Show Token'}
+                    <RefreshCw className={`w-3.5 h-3.5 ${verifying ? 'animate-spin' : ''}`} />
+                    <span>{verifying ? 'Checking with Meta Graph API...' : 'Test Meta Connection'}</span>
                   </button>
+
+                  <span className="text-[11px] text-gray-500">
+                    Queries Meta Graph API to verify credentials in real-time.
+                  </span>
                 </div>
-                <input
-                  type={showToken ? 'text' : 'password'}
-                  placeholder="Paste your Conversions API Access Token (EAAB...)"
-                  value={metaSettings.capiAccessToken || ''}
-                  onChange={(e) => setMetaSettings({ ...metaSettings, capiAccessToken: e.target.value.trim() })}
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 font-mono text-xs focus:ring-2 focus:ring-black"
-                />
-                <p className="text-[11px] text-brand-muted mt-1">
-                  Paste token here OR set via <code className="bg-gray-100 px-1 py-0.5 rounded font-mono font-bold text-gray-800">META_CAPI_ACCESS_TOKEN</code> in your <code className="bg-gray-100 px-1 py-0.5 rounded font-mono font-bold text-gray-800">.env</code> / Netlify settings.
-                </p>
+
+                {/* Connection Test Result */}
+                {verifyResult && (
+                  <div
+                    className={`p-3.5 rounded-xl border text-xs flex items-start gap-2.5 ${
+                      verifyResult.connected
+                        ? 'bg-emerald-50 border-emerald-200 text-emerald-800'
+                        : 'bg-amber-50 border-amber-200 text-amber-900'
+                    }`}
+                  >
+                    {verifyResult.connected ? (
+                      <CheckCircle className="w-4 h-4 text-emerald-600 flex-shrink-0 mt-0.5" />
+                    ) : (
+                      <AlertCircle className="w-4 h-4 text-amber-600 flex-shrink-0 mt-0.5" />
+                    )}
+                    <div className="space-y-1">
+                      <p className="font-bold">
+                        {verifyResult.connected
+                          ? `Meta Connected: ${verifyResult.datasetName} (${verifyResult.pixelId})`
+                          : 'Meta Connection Response'}
+                      </p>
+                      <p className="text-[11px] leading-relaxed">{verifyResult.message}</p>
+                    </div>
+                  </div>
+                )}
               </div>
 
               {/* Test Event Code */}
@@ -438,7 +492,7 @@ export default function AdminMeta() {
                       className="mt-0.5 rounded text-black focus:ring-black"
                     />
                     <div>
-                      <p className="font-bold text-brand-dark">Enable CAPI Event Logging in MongoDB</p>
+                      <p className="font-bold text-brand-dark">Enable CAPI Event Logging in Database</p>
                       <p className="text-[11px] text-brand-muted">
                         Audits outgoing sanitized CAPI payloads and Meta API responses. <em>Disabling logging never stops Meta event delivery; it only stops saving audit records.</em>
                       </p>
@@ -458,7 +512,7 @@ export default function AdminMeta() {
                         <option value={14}>14 Days</option>
                         <option value={30}>30 Days</option>
                       </select>
-                      <span className="text-[11px] text-gray-500">(Auto-purged via MongoDB TTL)</span>
+                      <span className="text-[11px] text-gray-500">(Auto-purged after retention period)</span>
                     </div>
                   )}
                 </div>

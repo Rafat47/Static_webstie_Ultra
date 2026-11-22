@@ -8,8 +8,8 @@ export default function AdminLoginPage() {
   const { login, isAuthenticated } = useAuth();
   const navigate = useNavigate();
 
-  const [username, setUsername] = useState('admin');
-  const [password, setPassword] = useState('Admin@HairCare2026');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -72,7 +72,7 @@ export default function AdminLoginPage() {
                 required
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                placeholder="admin"
+                placeholder="Username"
                 className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-brand-accent"
               />
             </div>
@@ -108,10 +108,6 @@ export default function AdminLoginPage() {
             )}
           </button>
         </form>
-
-        <div className="p-3 bg-gray-50 rounded-xl border border-gray-100 text-[11px] text-gray-500 text-center">
-          Default Admin: <strong className="text-brand-dark">admin</strong> / <strong className="text-brand-dark">Admin@HairCare2026</strong>
-        </div>
       </div>
     </div>
   );

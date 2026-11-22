@@ -82,7 +82,7 @@ export default function AdminProducts() {
       stock: 50,
       shortDescription: '',
       description: '',
-      images: ['https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=800&auto=format&fit=crop&q=80'],
+      images: [''],
       isFeatured: false,
       isActive: true,
       productType: 'minoxidil',
@@ -331,7 +331,7 @@ export default function AdminProducts() {
                     <td className="py-3 px-4">
                       <div className="flex items-center gap-3">
                         <img
-                          src={prod.images?.[0] || 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=100&auto=format&fit=crop&q=80'}
+                          src={prod.images?.[0] || ''}
                           alt={prod.name}
                           className="w-10 h-10 rounded-lg object-cover border border-gray-200 bg-gray-50 flex-shrink-0"
                         />
@@ -635,7 +635,7 @@ export default function AdminProducts() {
                       type="text"
                       value={img}
                       onChange={(e) => handleImageChange(idx, e.target.value)}
-                      placeholder="https://images.unsplash.com/..."
+                      placeholder="https://example.com/image.webp"
                       className="flex-1 px-3 py-2 rounded-xl border border-gray-200"
                     />
                     {formData.images.length > 1 && (

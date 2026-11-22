@@ -9,7 +9,7 @@ export default function StartNowSection() {
 
   if (sectionData.enabled === false) return null;
 
-  const desktopImg = sectionData.desktopImage || sectionData.image || 'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=800&auto=format&fit=crop&q=80';
+  const desktopImg = sectionData.desktopImage || sectionData.image || '';
   const mobileImg = sectionData.mobileImage || desktopImg;
 
   return (
@@ -18,20 +18,22 @@ export default function StartNowSection() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-12 items-center">
           
           {/* Left Column: Clean Image Presentation with Art Direction & Restrained Mobile Height */}
-          <div className="lg:col-span-5 order-2 lg:order-1">
-            <div className="rounded-xl overflow-hidden border border-gray-200 bg-gray-50 shadow-2xs">
-              <picture>
-                {sectionData.mobileImage && (
-                  <source media="(max-width: 640px)" srcSet={mobileImg} />
-                )}
-                <img
-                  src={desktopImg}
-                  alt="Hair and Scalp Care"
-                  className="w-full h-52 sm:h-80 lg:h-96 object-cover object-center"
-                />
-              </picture>
+          {desktopImg && (
+            <div className="lg:col-span-5 order-2 lg:order-1">
+              <div className="rounded-xl overflow-hidden border border-gray-200 bg-gray-50 shadow-2xs">
+                <picture>
+                  {sectionData.mobileImage && (
+                    <source media="(max-width: 640px)" srcSet={mobileImg} />
+                  )}
+                  <img
+                    src={desktopImg}
+                    alt="Hair and Scalp Care"
+                    className="w-full h-52 sm:h-80 lg:h-96 object-cover object-center"
+                  />
+                </picture>
+              </div>
             </div>
-          </div>
+          )}
 
           {/* Right Column: Editorial Copy with Larger, Readable Typography */}
           <div className="lg:col-span-7 order-1 lg:order-2 space-y-4 sm:space-y-5">

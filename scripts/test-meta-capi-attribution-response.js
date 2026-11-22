@@ -93,7 +93,7 @@ async function runTests() {
     const copyOfOriginal1 = JSON.parse(JSON.stringify(originalCustomData1));
 
     const res1 = await sendMetaCapiEvent({
-      pixelId: '1722516656187525',
+      pixelId: process.env.META_PIXEL_ID,
       accessToken: 'test_meta_token_secret',
       eventName: 'PageView',
       eventId: 'pageview_test_001',
@@ -138,7 +138,7 @@ async function runTests() {
     const copyOfOriginal2 = JSON.parse(JSON.stringify(originalCustomData2));
 
     const res2 = await sendMetaCapiEvent({
-      pixelId: '1722516656187525',
+      pixelId: process.env.META_PIXEL_ID,
       accessToken: 'test_meta_token_secret',
       eventName: 'AddToCart',
       eventId: 'add_to_cart_test_002',
@@ -173,7 +173,7 @@ async function runTests() {
     mockResponseBody = JSON.stringify(metaSuccessResponse);
 
     const res3 = await sendMetaCapiEvent({
-      pixelId: '1722516656187525',
+      pixelId: process.env.META_PIXEL_ID,
       accessToken: 'test_meta_token_secret',
       eventName: 'Purchase',
       eventId: 'purchase_test_003',
@@ -214,7 +214,7 @@ async function runTests() {
     mockResponseBody = JSON.stringify(metaErrorResponse);
 
     const res4 = await sendMetaCapiEvent({
-      pixelId: '1722516656187525',
+      pixelId: process.env.META_PIXEL_ID,
       accessToken: 'test_meta_token_secret',
       eventName: 'ViewContent',
       eventId: 'view_content_test_004'
@@ -248,7 +248,7 @@ async function runTests() {
     mockResponseBody = '';
 
     const res5 = await sendMetaCapiEvent({
-      pixelId: '1722516656187525',
+      pixelId: process.env.META_PIXEL_ID,
       accessToken: 'test_meta_token_secret',
       eventName: 'PageView',
       eventId: 'empty_test_005'
@@ -270,7 +270,7 @@ async function runTests() {
     mockResponseBody = '<html><body>502 Bad Gateway from Cloudflare Proxy</body></html>';
 
     const res6 = await sendMetaCapiEvent({
-      pixelId: '1722516656187525',
+      pixelId: process.env.META_PIXEL_ID,
       accessToken: 'test_meta_token_secret',
       eventName: 'PageView',
       eventId: 'html_test_006'
@@ -290,7 +290,7 @@ async function runTests() {
     console.log('\n[Test 7] Access Token Security Check');
     const secretToken = 'EAABtestSecretToken123456';
     await sendMetaCapiEvent({
-      pixelId: '1722516656187525',
+      pixelId: process.env.META_PIXEL_ID,
       accessToken: secretToken,
       eventName: 'PageView',
       eventId: 'security_test_007'

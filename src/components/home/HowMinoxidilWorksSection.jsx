@@ -8,7 +8,7 @@ export default function HowMinoxidilWorksSection() {
   if (sectionData.enabled === false) return null;
 
   const points = sectionData.mechanismPoints || [];
-  const desktopImg = sectionData.desktopImage || sectionData.image || 'https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=800&auto=format&fit=crop&q=80';
+  const desktopImg = sectionData.desktopImage || sectionData.image || '';
   const mobileImg = sectionData.mobileImage || desktopImg;
 
   return (
@@ -59,31 +59,33 @@ export default function HowMinoxidilWorksSection() {
           </div>
 
           {/* Right Column: Visual Anatomy Illustration with Restrained Mobile Height */}
-          <div className="lg:col-span-5">
-            <div className="rounded-xl overflow-hidden border border-gray-200 bg-gray-50 shadow-2xs">
-              <picture>
-                {sectionData.mobileImage && (
-                  <source media="(max-width: 640px)" srcSet={mobileImg} />
-                )}
-                <img
-                  src={desktopImg}
-                  alt="Hair follicle cellular activity and microcirculation"
-                  className="w-full h-52 sm:h-80 lg:h-96 object-cover object-center"
-                />
-              </picture>
-              <div className="p-4 sm:p-5 bg-white border-t border-gray-200 space-y-1.5">
-                <span className="text-[11px] font-bold uppercase tracking-wider text-gray-500">
-                  Follicular Anatomy
-                </span>
-                <h4 className="text-sm sm:text-base font-bold text-gray-900">
-                  Targeted Microvascular Circulation
-                </h4>
-                <p className="text-xs sm:text-sm text-gray-600 leading-relaxed">
-                  Topical application widens dormant scalp capillaries, delivering oxygen directly to hair dermal papilla roots.
-                </p>
+          {desktopImg && (
+            <div className="lg:col-span-5">
+              <div className="rounded-xl overflow-hidden border border-gray-200 bg-gray-50 shadow-2xs">
+                <picture>
+                  {sectionData.mobileImage && (
+                    <source media="(max-width: 640px)" srcSet={mobileImg} />
+                  )}
+                  <img
+                    src={desktopImg}
+                    alt="Hair follicle cellular activity and microcirculation"
+                    className="w-full h-52 sm:h-80 lg:h-96 object-cover object-center"
+                  />
+                </picture>
+                <div className="p-4 sm:p-5 bg-white border-t border-gray-200 space-y-1.5">
+                  <span className="text-[11px] font-bold uppercase tracking-wider text-gray-500">
+                    Follicular Anatomy
+                  </span>
+                  <h4 className="text-sm sm:text-base font-bold text-gray-900">
+                    Targeted Microvascular Circulation
+                  </h4>
+                  <p className="text-xs sm:text-sm text-gray-600 leading-relaxed">
+                    Topical application widens dormant scalp capillaries, delivering oxygen directly to hair dermal papilla roots.
+                  </p>
+                </div>
               </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
     </section>

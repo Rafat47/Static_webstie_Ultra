@@ -73,7 +73,7 @@ export default function CartDrawer() {
                 <div key={item.productId || item.slug} className="py-3 sm:py-4 flex gap-3 sm:gap-4 items-start">
                   {/* Thumbnail */}
                   <img
-                    src={item.image || 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=200&auto=format&fit=crop&q=80'}
+                    src={item.image || ''}
                     alt={item.productName}
                     className="w-16 h-16 sm:w-20 sm:h-20 object-cover border border-brand-border bg-gray-50 flex-shrink-0"
                   />
