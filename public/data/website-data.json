@@ -588,7 +588,7 @@
       "category": "Minoxidil",
       "regularPrice": 2500,
       "salePrice": 1600,
-      "stock": 47,
+      "stock": 46,
       "isFeatured": true,
       "isActive": true,
       "productType": "minoxidil",
@@ -599,7 +599,7 @@
       "displayOrder": 2,
       "carouselOrder": 2,
       "createdAt": "2026-11-21T10:57:37.132Z",
-      "updatedAt": "2026-11-22T13:25:52.570Z"
+      "updatedAt": "2026-11-22T14:02:16.474Z"
     }
   ],
   "sections": {
@@ -802,6 +802,6 @@
     "whatsappNumber": "+8801356813069",
     "address": "Sonirakra, Dhonia, Dhaka 1236"
   },
-  "updatedAt": "2026-11-22T13:30:00.770Z",
+  "updatedAt": "2026-11-22T14:02:17.064Z",
   "version": 208
 }
