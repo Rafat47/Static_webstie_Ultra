@@ -1,18 +1,34 @@
 [build]
-  command = "npm ci --include=dev && npm run build"
+  command = "node scripts/fetch-content.cjs && npm run build:client && node scripts/post-build-safety-check.cjs"
   publish = "dist"
   functions = "netlify/functions"
 
 [build.environment]
-  NODE_ENV = "development"
+  NODE_VERSION = "22"
+  NODE_ENV = "production"
 
 [functions]
   node_bundler = "esbuild"
-  included_files = ["netlify/functions/**", "public/data/**"]
+  included_files = ["netlify/functions/data/website-data.json"]
 
 [[redirects]]
-  from = "/api/*"
-  to = "/.netlify/functions/api/:splat"
+  from = "/api/orders"
+  to = "/.netlify/functions/create-order"
+  status = 200
+
+[[redirects]]
+  from = "/api/orders/*"
+  to = "/.netlify/functions/create-order"
+  status = 200
+
+[[redirects]]
+  from = "/api/track"
+  to = "/.netlify/functions/track"
+  status = 200
+
+[[redirects]]
+  from = "/api/meta/events"
+  to = "/.netlify/functions/track"
   status = 200
 
 [[redirects]]
@@ -21,11 +37,15 @@
   status = 200
 
 [[headers]]
+  for = "/data/website-data.json"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+    Access-Control-Allow-Origin = "*"
+
+[[headers]]
   for = "/*"
   [headers.values]
-    Content-Security-Policy = "default-src 'self'; script-src 'self' https://connect.facebook.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https:; connect-src 'self' https://connect.facebook.net https://www.facebook.com; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self';"
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' https://connect.facebook.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https:; connect-src 'self' https://connect.facebook.net https://www.facebook.com; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self';"
     X-Content-Type-Options = "nosniff"
     X-Frame-Options = "DENY"
     Referrer-Policy = "strict-origin-when-cross-origin"
-
-

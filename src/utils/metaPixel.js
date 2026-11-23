@@ -1,13 +1,11 @@
 // Meta Facebook Pixel and Conversions API (CAPI) Client Utility
 
-// Helper to safely read a browser cookie by name
 export function getCookie(name) {
   if (typeof document === 'undefined') return '';
   const match = document.cookie.match(new RegExp('(^|;\\s*)(' + name + ')=([^;]*)'));
   return match ? decodeURIComponent(match[3]) : '';
 }
 
-// Helper to safely set a first-party cookie
 export function setCookie(name, value, days = 90) {
   if (typeof document === 'undefined' || !name || !value) return;
   try {
@@ -16,11 +14,10 @@ export function setCookie(name, value, days = 90) {
     const expires = '; expires=' + date.toUTCString();
     document.cookie = `${name}=${encodeURIComponent(value)}${expires}; path=/; SameSite=Lax`;
   } catch (e) {
-    // Non-blocking cookie set fallback
+    // Non-blocking
   }
 }
 
-// Validation helpers for Meta identifiers
 export function isValidFbp(val) {
   return typeof val === 'string' &&
     val.startsWith('fb.') &&
@@ -37,7 +34,19 @@ export function isValidFbc(val) {
     !val.includes('null');
 }
 
-// 1. Capture and persist UTM, fbclid, and Facebook browser/click cookies
+// Generate RFC4122-compliant UUIDv4 for event deduplication
+export function generateUuid() {
+  if (typeof crypto !== 'undefined' && crypto.randomUUID) {
+    return crypto.randomUUID();
+  }
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    const r = (Math.random() * 16) | 0;
+    const v = c === 'x' ? r : (r & 0x3) | 0x8;
+    return v.toString(16);
+  });
+}
+
+// Capture and persist UTM, fbclid, and Facebook cookies
 export function captureAttribution() {
   if (typeof window === 'undefined') return {};
 
@@ -57,8 +66,7 @@ export function captureAttribution() {
       }
     });
 
-    // --- META CLICK ID (_fbc) CAPTURE / GENERATION ---
-    // Prefer actual _fbc cookie if available and valid
+    // META CLICK ID (_fbc)
     const fbcCookie = getCookie('_fbc');
     const rawFbclid = params.get('fbclid');
 
@@ -66,7 +74,6 @@ export function captureAttribution() {
       attributionData.fbc = fbcCookie;
       attributionData.fbcSource = 'fbc_cookie';
     } else if (rawFbclid && typeof rawFbclid === 'string' && rawFbclid.trim().length > 0) {
-      // Generate Meta format: fb.1.<creationTime>.<fbclid>
       const cleanFbclid = rawFbclid.trim();
       const creationTime = Date.now();
       const computedFbc = `fb.1.${creationTime}.${cleanFbclid}`;
@@ -75,10 +82,8 @@ export function captureAttribution() {
       attributionData.fbcSource = 'fbclid_generated';
       attributionData.fbclid = cleanFbclid;
 
-      // Set first-party cookie for 90 days as per Meta documentation
       setCookie('_fbc', computedFbc, 90);
     } else if (isValidFbc(existing.fbc)) {
-      // Preserve previously captured FBC from current session or storage
       attributionData.fbc = existing.fbc;
       attributionData.fbcSource = existing.fbcSource || 'stored_session';
       if (!fbcCookie) {
@@ -89,8 +94,7 @@ export function captureAttribution() {
       attributionData.fbcSource = 'none';
     }
 
-    // --- META BROWSER ID (_fbp) CAPTURE ---
-    // Read actual _fbp cookie created by Meta Pixel. Do NOT generate fake random values.
+    // META BROWSER ID (_fbp)
     const fbpCookie = getCookie('_fbp');
     if (isValidFbp(fbpCookie)) {
       attributionData.fbp = fbpCookie;
@@ -115,7 +119,6 @@ export function captureAttribution() {
   }
 }
 
-// 2. Initialize Meta Pixel in browser
 let isPixelInitialized = false;
 
 export function initMetaPixel(pixelId) {
@@ -148,240 +151,219 @@ export function initMetaPixel(pixelId) {
   console.log(`[Meta Pixel] Initialized with ID: ${pixelId}`);
 }
 
-// 3. Helper to generate unique event ID for deduplication between Pixel and CAPI
-export function generateEventId(prefix = 'evt') {
-  return `${prefix}_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`;
-}
+// Unified Dual Tracking Function
+export function trackEvent(eventName, customData = {}, userData = {}, customEventId = null, skipServerCapi = false) {
+  if (typeof window === 'undefined') return null;
 
-// 4. Dual Track Event (Browser Pixel + Server CAPI Forwarding)
-export async function trackMetaEvent(eventName, customData = {}, userData = {}, customEventId = null, skipServerCapi = false) {
-  if (typeof window === 'undefined') return;
-
-  const eventId = customEventId || generateEventId(eventName.toLowerCase());
+  const eventId = customEventId || generateUuid();
   const attribution = captureAttribution();
 
-  // Validate and extract FBP (strictly unhashed, real cookie value only)
   const effectiveFbp = (isValidFbp(userData.fbp) ? userData.fbp.trim() : null) ||
                        (isValidFbp(attribution.fbp) ? attribution.fbp.trim() : null) ||
                        (isValidFbp(getCookie('_fbp')) ? getCookie('_fbp').trim() : null) ||
                        null;
 
-  // Validate and extract FBC
   const effectiveFbc = (isValidFbc(userData.fbc) ? userData.fbc.trim() : null) ||
                        (isValidFbc(attribution.fbc) ? attribution.fbc.trim() : null) ||
                        (isValidFbc(getCookie('_fbc')) ? getCookie('_fbc').trim() : null) ||
                        null;
 
-  const fbcSource = userData.fbcSource || attribution.fbcSource || (effectiveFbc ? 'fbc_cookie' : 'none');
-
-  // Build clean merged user data (omit missing fields, never send empty/null)
   const mergedUserData = {
     ...userData,
     clientUserAgent: navigator.userAgent
   };
 
-  if (effectiveFbp) {
-    mergedUserData.fbp = effectiveFbp;
-  } else {
-    delete mergedUserData.fbp;
-  }
+  if (effectiveFbp) mergedUserData.fbp = effectiveFbp;
+  if (effectiveFbc) mergedUserData.fbc = effectiveFbc;
 
-  if (effectiveFbc) {
-    mergedUserData.fbc = effectiveFbc;
-    mergedUserData.fbcSource = fbcSource;
-  } else {
-    delete mergedUserData.fbc;
-    delete mergedUserData.fbcSource;
-  }
-
-  // A. Fire Browser Pixel
+  // 1. Browser Pixel Fire
   if (window.fbq) {
     try {
       window.fbq('track', eventName, customData, { eventID: eventId });
     } catch (err) {
-      console.warn('[Meta Pixel] Browser tracking error:', err);
+      console.warn('[Meta Pixel] Browser error:', err);
     }
   }
 
-  // B. Forward to Server CAPI for Deduplication (unless handled exclusively on server)
+  // 2. Server CAPI Dual Dispatch (sendBeacon or keepalive fetch)
   if (!skipServerCapi) {
+    const payload = JSON.stringify({
+      eventName,
+      eventId,
+      eventSourceUrl: window.location.href,
+      userData: mergedUserData,
+      customData: customData || {}
+    });
+
     try {
-      fetch('/api/meta/events', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          eventName,
-          eventId,
-          eventSourceUrl: window.location.href,
-          userData: mergedUserData,
-          customData: customData || {},
-          attribution
-        })
-      }).catch(() => {
-        // Non-blocking background catch
-      });
-    } catch (err) {
-      // Silent catch
+      if (navigator.sendBeacon) {
+        const blob = new Blob([payload], { type: 'application/json' });
+        const queued = navigator.sendBeacon('/api/track', blob);
+        if (!queued) {
+          fetch('/api/track', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: payload,
+            keepalive: true
+          }).catch(() => {});
+        }
+      } else {
+        fetch('/api/track', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: payload,
+          keepalive: true
+        }).catch(() => {});
+      }
+    } catch (e) {
+      // Non-blocking
     }
   }
 
   return eventId;
 }
 
-// 5. Centralized PageView Tracker with Deduplication against StrictMode double-invocations
+// Backward-compatible alias
+export const trackMetaEvent = trackEvent;
+
 let lastTrackedPath = null;
 let lastTrackedTime = 0;
 
 export function trackRoutePageView(pathname) {
-  if (!pathname || pathname.startsWith('/admin')) return;
+  if (!pathname) return;
 
   const now = Date.now();
-  // Deduplicate exact same pathname if called within 500ms (e.g. React StrictMode)
   if (pathname === lastTrackedPath && now - lastTrackedTime < 500) {
     return;
   }
 
   lastTrackedPath = pathname;
   lastTrackedTime = now;
-  trackMetaEvent('PageView');
+
+  // PageView is Pixel ONLY (no server CAPI) per Step 5
+  trackEvent('PageView', {}, {}, null, true);
 }
 
-// 6. Predefined Standard Event Helpers
+// Standard Event Actions
 export const metaEvents = {
-  pageView: () => {
-    trackMetaEvent('PageView');
-  },
+  pageView: () => trackRoutePageView(window.location.pathname),
 
-  viewContent: (product) => {
+  viewContent: (product, currency = 'BDT') => {
     if (!product) return;
     const cat = product.category || 'Hair Care';
-    trackMetaEvent('ViewContent', {
+    const prodId = String(product._id || product.slug);
+    trackEvent('ViewContent', {
       content_name: product.name,
       content_category: cat,
-      content_categories: [cat],
-      content_ids: [String(product._id || product.slug)],
+      content_ids: [prodId],
       contents: [{
-        id: String(product._id || product.slug),
+        id: prodId,
         quantity: 1,
-        item_price: product.salePrice || 0,
-        category: cat
+        item_price: product.salePrice || 0
       }],
       content_type: 'product',
-      value: product.salePrice,
-      currency: 'BDT'
+      value: Number(product.salePrice) || 0,
+      currency
+    });
+  },
+
+  addToCart: (product, quantity = 1, currency = 'BDT') => {
+    if (!product) return;
+    const items = Array.isArray(product) ? product : [product];
+    const cat = items[0]?.category || 'Hair Care';
+    const contentIds = items.map(i => String(i._id || i.productId || i.slug));
+    const totalValue = items.reduce((acc, i) => acc + ((Number(i.salePrice || i.unitPrice) || 0) * (Number(i.quantity || quantity) || 1)), 0);
+    const totalQty = items.reduce((acc, i) => acc + (Number(i.quantity || quantity) || 1), 0);
+
+    trackEvent('AddToCart', {
+      content_name: items.length === 1 ? (items[0].name || items[0].productName || 'Product') : 'Cart Items',
+      content_category: cat,
+      content_ids: contentIds,
+      contents: items.map(i => ({
+        id: String(i._id || i.productId || i.slug),
+        quantity: Number(i.quantity || quantity) || 1,
+        item_price: Number(i.salePrice || i.unitPrice) || 0
+      })),
+      content_type: 'product',
+      value: totalValue,
+      currency,
+      num_items: totalQty
+    });
+  },
+
+  initiateCheckout: (cartItems, subtotal, userData = {}, currency = 'BDT') => {
+    if (!cartItems || cartItems.length === 0) return;
+    const cat = cartItems[0]?.category || 'Hair Care';
+
+    trackEvent('InitiateCheckout', {
+      content_name: 'Cart Checkout',
+      content_category: cat,
+      content_ids: cartItems.map(item => String(item.productId || item.slug || item._id)),
+      contents: cartItems.map(item => ({
+        id: String(item.productId || item.slug || item._id),
+        quantity: Number(item.quantity) || 1,
+        item_price: Number(item.unitPrice || item.salePrice) || 0
+      })),
+      content_type: 'product',
+      num_items: cartItems.reduce((acc, item) => acc + (Number(item.quantity) || 1), 0),
+      value: Number(subtotal) || 0,
+      currency
+    }, userData);
+  },
+
+  contact: (channel = 'WhatsApp', details = {}) => {
+    trackEvent('Contact', {
+      content_name: `Contact via ${channel}`,
+      ...details
     });
   },
 
   search: (query) => {
     if (!query || !query.trim()) return;
-    trackMetaEvent('Search', {
-      search_string: query.trim(),
-      content_category: 'Hair Care',
-      content_categories: ['Hair Care']
+    trackEvent('Search', {
+      search_string: query.trim()
     });
-  },
-
-  addToCart: (product, quantity = 1) => {
-    if (!product) return;
-    const items = Array.isArray(product) ? product : [product];
-    const categories = [...new Set(items.map(i => i.category || i.content_category).filter(Boolean))];
-    const contentCategory = categories.length > 0 ? categories.join(', ') : 'Hair Care';
-    const contentIds = items.map(i => String(i._id || i.productId || i.slug));
-    const totalValue = items.reduce((acc, i) => acc + ((i.salePrice || i.unitPrice || 0) * (i.quantity || quantity || 1)), 0);
-    const totalQty = items.reduce((acc, i) => acc + (i.quantity || quantity || 1), 0);
-
-    trackMetaEvent('AddToCart', {
-      content_name: items.length === 1 ? (items[0].name || items[0].productName || 'Product') : 'Cart Items',
-      content_category: contentCategory,
-      content_categories: categories.length > 0 ? categories : ['Hair Care'],
-      content_ids: contentIds,
-      contents: items.map(i => ({
-        id: String(i._id || i.productId || i.slug),
-        quantity: i.quantity || quantity || 1,
-        item_price: i.salePrice || i.unitPrice || 0,
-        category: i.category || i.content_category || 'Hair Care'
-      })),
-      content_type: 'product',
-      value: totalValue,
-      currency: 'BDT',
-      quantity: totalQty
-    });
-  },
-
-  initiateCheckout: (cartItems, subtotal, userData = {}) => {
-    if (!cartItems || cartItems.length === 0) return;
-    const categories = [...new Set(cartItems.map(item => item.category || item.content_category).filter(Boolean))];
-    const contentCategory = categories.length > 0 ? categories.join(', ') : 'Hair Care';
-
-    trackMetaEvent('InitiateCheckout', {
-      content_name: 'Cart Checkout',
-      content_category: contentCategory,
-      content_categories: categories.length > 0 ? categories : ['Hair Care'],
-      content_ids: cartItems.map(item => String(item.productId || item.slug || item._id)),
-      contents: cartItems.map(item => ({
-        id: String(item.productId || item.slug || item._id),
-        quantity: item.quantity || 1,
-        item_price: item.unitPrice || item.salePrice || 0,
-        category: item.category || item.content_category || 'Hair Care'
-      })),
-      content_type: 'product',
-      num_items: cartItems.reduce((acc, item) => acc + (item.quantity || 1), 0),
-      value: subtotal,
-      currency: 'BDT'
-    }, userData);
   },
 
   purchase: (order) => {
     if (!order || !order.orderId) return;
 
-    // Idempotency: Prevent duplicate Purchase on page refresh
     const storageKey = `meta_purchase_fired_${order.orderId}`;
     if (typeof sessionStorage !== 'undefined' && sessionStorage.getItem(storageKey)) {
-      console.log(`[Meta Pixel] Purchase event already fired for order ${order.orderId}. Skipping duplicate.`);
+      console.log(`[Meta Pixel] Purchase already recorded for order ${order.orderId}. Guarding against duplicate.`);
       return;
     }
 
-    const eventId = order.metaEventId || `order_${order.orderId}`;
-    const attribution = captureAttribution();
-
+    const eventId = order.tracking?.eventId || order.metaEventId || order.eventId || `order_${order.orderId}`;
     const items = order.items || [];
-    const categories = [...new Set(items.map(i => i.category || i.content_category).filter(Boolean))];
-    const contentCategory = categories.length > 0 ? categories.join(', ') : 'Hair Care';
+    const cat = items[0]?.category || 'Hair Care';
 
-    // Fire browser pixel with identical eventID for deduplication.
-    // Skip forwarding to /api/meta/events because the server order route already sent CAPI Purchase.
-    trackMetaEvent(
+    // Browser fires its Purchase with identical eventId; skipServerCapi=true since server already dispatched it
+    trackEvent(
       'Purchase',
       {
         content_name: 'Order Purchase',
         content_type: 'product',
-        content_category: contentCategory,
-        content_categories: categories.length > 0 ? categories : ['Hair Care'],
+        content_category: cat,
         content_ids: items.map(i => String(i.productId || i.slug)),
         contents: items.map(i => ({
           id: String(i.productId || i.slug),
-          quantity: i.quantity || 1,
-          item_price: i.unitPrice || 0,
-          category: i.category || i.content_category || 'Hair Care'
+          quantity: Number(i.quantity) || 1,
+          item_price: Number(i.unitPrice) || 0
         })),
-        num_items: items.reduce((acc, i) => acc + (i.quantity || 1), 0),
-        value: order.finalTotal,
+        num_items: items.reduce((acc, i) => acc + (Number(i.quantity) || 1), 0),
+        value: Number(order.finalTotal || order.total) || 0,
         currency: 'BDT',
-        order_id: order.orderId
+        order_id: String(order.orderId)
       },
       {
         phone: order.customer?.phoneNumber,
         firstName: order.customer?.fullName?.split(' ')[0],
         lastName: order.customer?.fullName?.split(' ').slice(1).join(' '),
-        city: order.customer?.district,
-        fbp: order.attribution?.fbp || attribution.fbp || getCookie('_fbp') || undefined,
-        fbc: order.attribution?.fbc || attribution.fbc || getCookie('_fbc') || undefined,
-        fbcSource: order.attribution?.fbcSource || attribution.fbcSource
+        city: order.customer?.district
       },
       eventId,
-      true // skipServerCapi = true (server already dispatched it)
+      true
     );
 
     if (typeof sessionStorage !== 'undefined') {

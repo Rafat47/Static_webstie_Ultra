@@ -17,7 +17,7 @@ export default function UsageGuideSection() {
         {/* Section Header */}
         <div className="max-w-3xl mb-8 sm:mb-12 space-y-2">
           <span className="text-xs sm:text-sm font-bold uppercase tracking-wider text-gray-500">
-            Application Protocol
+            {sectionData.overline || 'Application Protocol'}
           </span>
           <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black text-gray-900 tracking-tight uppercase">
             {sectionData.title || 'How to Use Minoxidil & Derma Roller'}
@@ -77,7 +77,7 @@ export default function UsageGuideSection() {
           <div className="mt-8 p-4 sm:p-5 rounded-lg bg-amber-50 border border-amber-200 flex gap-3 text-xs sm:text-sm text-amber-950 leading-relaxed font-medium">
             <ShieldAlert className="w-5 h-5 text-amber-700 flex-shrink-0 mt-0.5" />
             <div>
-              <strong className="font-bold">Medical Safety Instructions: </strong>
+              <strong className="font-bold">{sectionData.safetyNoticePrefix || 'Medical Safety Instructions: '}</strong>
               {sectionData.safetyNotice}
             </div>
           </div>

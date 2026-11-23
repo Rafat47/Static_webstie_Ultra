@@ -24,7 +24,7 @@ export default function FeaturedProductsSection({ products = [] }) {
           <div className="space-y-2">
             <div className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest text-brand-accent">
               <Sparkles className="w-3.5 h-3.5" />
-              <span>Dermatological Range</span>
+              <span>{sectionConfig.overline || 'Dermatological Range'}</span>
             </div>
             <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-brand-dark tracking-tight">
               {sectionConfig.title || 'Recommended Hair Restoration Solutions'}
@@ -38,7 +38,7 @@ export default function FeaturedProductsSection({ products = [] }) {
             to="/shop"
             className="inline-flex items-center gap-2 text-sm font-bold text-brand-accent hover:text-blue-600 transition-colors group flex-shrink-0"
           >
-            <span>View All Packages</span>
+            <span>{sectionConfig.ctaText || 'View All Packages'}</span>
             <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </Link>
         </div>

@@ -40,6 +40,8 @@ export default function ProductDetailPage() {
   const [copiedLink, setCopiedLink] = useState(false);
 
   const currency = config?.siteSettings?.currency || '৳';
+  const pdData = config?.productDetail || {};
+  const common = config?.common || {};
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -244,7 +246,7 @@ export default function ProductDetailPage() {
                 )}
                 {discountPercent > 0 && (
                   <span className="text-xs font-bold text-red-600">
-                    {discountPercent}% off
+                    {discountPercent}% {common.offLabel || 'off'}
                   </span>
                 )}
               </div>
@@ -257,14 +259,14 @@ export default function ProductDetailPage() {
                     : 'bg-red-50 text-red-700 border-red-200'
                 }`}>
                   <span className={`w-2 h-2 rounded-full ${!isOutOfStock ? 'bg-emerald-600' : 'bg-red-600'}`}></span>
-                  <span>{!isOutOfStock ? `In stock - ${product.stock} available` : 'Out of stock'}</span>
+                  <span>{!isOutOfStock ? (pdData.inStockLabel ? pdData.inStockLabel.replace('{stock}', product.stock) : `In stock - ${product.stock} available`) : (common.outOfStockLabel || 'Out of stock')}</span>
                 </span>
               </div>
 
               {/* Quantity Stepper (BuyAzz style) */}
               <div className="pt-2 flex items-center gap-4">
                 <span className="text-xs font-bold text-gray-700 uppercase tracking-wider">
-                  Quantity:
+                  {pdData.quantityLabel || 'Quantity:'}
                 </span>
                 <div className="flex items-center border border-gray-300 rounded-lg overflow-hidden bg-white">
                   <button
@@ -296,7 +298,7 @@ export default function ProductDetailPage() {
                   className="flex-1 py-3 px-5 rounded-lg border-2 border-brand-dark bg-white hover:bg-slate-50 text-brand-dark font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-colors disabled:opacity-40"
                 >
                   <ShoppingBag className="w-4 h-4" />
-                  <span>Add to Cart</span>
+                  <span>{pdData.addToCartButtonText || 'Add to Cart'}</span>
                 </button>
 
                 {/* Buy Now (Solid Dark Navy) */}
@@ -305,7 +307,7 @@ export default function ProductDetailPage() {
                   disabled={isOutOfStock}
                   className="flex-1 py-3 px-5 rounded-lg bg-brand-dark hover:bg-brand-navy text-white font-extrabold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-xs transition-colors disabled:opacity-40"
                 >
-                  <span>Buy Now</span>
+                  <span>{pdData.orderNowButtonText || 'Buy Now'}</span>
                   <ArrowRight className="w-4 h-4" />
                 </button>
 
@@ -333,7 +335,7 @@ export default function ProductDetailPage() {
                 <div className="mt-4 p-4 rounded-lg bg-gray-50 border border-gray-200 space-y-2">
                   <div className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-gray-900">
                     <Layers className="w-4 h-4 text-black" />
-                    <span>Included in this Combo Package:</span>
+                    <span>{pdData.comboTabTitle || 'Included in this Combo Package:'}</span>
                   </div>
                   <ul className="space-y-1.5 text-xs text-gray-700">
                     {product.comboItems.map((item, idx) => (
@@ -353,11 +355,11 @@ export default function ProductDetailPage() {
               <div className="pt-4 border-t border-gray-100 grid grid-cols-2 gap-3 text-xs text-gray-600">
                 <div className="flex items-center gap-2">
                   <Truck className="w-4 h-4 text-black flex-shrink-0" />
-                  <span>Cash on Delivery across BD</span>
+                  <span>{pdData.trustPoints?.[0] || 'Cash on Delivery across BD'}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Clock className="w-4 h-4 text-black flex-shrink-0" />
-                  <span>24-48 Hours Express Delivery</span>
+                  <span>{pdData.trustPoints?.[1] || '24-48 Hours Express Delivery'}</span>
                 </div>
               </div>
 
@@ -374,7 +376,7 @@ export default function ProductDetailPage() {
           <div className="lg:col-span-8 space-y-6">
             <div>
               <h3 className="text-base font-bold text-gray-900 uppercase tracking-wider border-b border-gray-200 pb-2 mb-4">
-                Product Details
+                {pdData.descTabTitle || 'Product Details'}
               </h3>
               <div className="text-xs sm:text-sm text-gray-700 leading-relaxed whitespace-pre-line space-y-3">
                 {product.description || product.shortDescription}

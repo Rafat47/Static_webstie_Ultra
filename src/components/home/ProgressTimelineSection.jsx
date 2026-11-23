@@ -17,7 +17,7 @@ export default function ProgressTimelineSection() {
         {/* Section Header */}
         <div className="max-w-3xl mb-8 sm:mb-12 space-y-2">
           <span className="text-xs sm:text-sm font-bold uppercase tracking-wider text-gray-500">
-            Realistic Expectations
+            {sectionData.overline || 'Realistic Expectations'}
           </span>
           <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black text-gray-900 tracking-tight uppercase">
             {sectionData.title || 'Every Journey Takes Time'}
@@ -76,7 +76,7 @@ export default function ProgressTimelineSection() {
                 </div>
 
                 <div className="pt-2.5 border-t border-gray-100 text-xs font-semibold text-gray-500 flex items-center justify-between">
-                  <span>Milestone:</span>
+                  <span>{sectionData.milestoneLabel || 'Milestone:'}</span>
                   <span className="text-gray-900 font-bold">{stage.period}</span>
                 </div>
               </div>

@@ -1,0 +1,1533 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "SiteUIContentSchema",
+  "description": "Strict JSON schema defining the complete visitor-facing UI content document stored in site_ui.ui",
+  "type": "object",
+  "required": [
+    "siteSettings",
+    "hero",
+    "navigation",
+    "categories",
+    "productCarousel",
+    "featuredProducts",
+    "sections",
+    "products",
+    "deliverySettings",
+    "footer",
+    "seo",
+    "metaSettings",
+    "common",
+    "shop",
+    "productDetail",
+    "cart",
+    "checkout",
+    "orderConfirmation",
+    "policies"
+  ],
+  "properties": {
+    "siteSettings": {
+      "title": "Site Settings",
+      "description": "Global website configuration, brand identity, contact details and search options",
+      "type": "object",
+      "required": [
+        "siteName",
+        "logoText",
+        "currency",
+        "contactPhone",
+        "contactEmail",
+        "whatsappNumber",
+        "address"
+      ],
+      "properties": {
+        "siteName": {
+          "title": "Site Name",
+          "description": "Brand name of the website",
+          "type": "string"
+        },
+        "logoText": {
+          "title": "Logo Text",
+          "description": "Text rendered when logo image is unavailable",
+          "type": "string"
+        },
+        "logoUrl": {
+          "title": "Logo URL",
+          "description": "Public URL or relative path to brand logo image",
+          "type": "string"
+        },
+        "faviconUrl": {
+          "title": "Favicon URL",
+          "description": "URL or path to browser tab favicon icon",
+          "type": "string"
+        },
+        "tagline": {
+          "title": "Tagline",
+          "description": "Brand tagline or slogan",
+          "type": "string"
+        },
+        "currency": {
+          "title": "Currency Symbol",
+          "description": "Currency symbol used in storefront prices (e.g. ৳)",
+          "type": "string"
+        },
+        "contactPhone": {
+          "title": "Contact Phone",
+          "description": "Primary customer contact telephone number",
+          "type": "string"
+        },
+        "contactEmail": {
+          "title": "Contact Email",
+          "description": "Customer support email address",
+          "type": "string"
+        },
+        "whatsappNumber": {
+          "title": "WhatsApp Number",
+          "description": "Support WhatsApp number in international format without plus",
+          "type": "string"
+        },
+        "whatsappDefaultMessage": {
+          "title": "Default WhatsApp Message",
+          "description": "Pre-filled inquiry text for WhatsApp link",
+          "type": "string"
+        },
+        "whatsappButtonLabel": {
+          "title": "WhatsApp Button Label",
+          "description": "Tooltip text displayed on WhatsApp floating widget",
+          "type": "string"
+        },
+        "supportHours": {
+          "title": "Support Hours",
+          "description": "Operational customer service hours display string",
+          "type": "string"
+        },
+        "address": {
+          "title": "Store Address",
+          "description": "Official business / dispatch depot address",
+          "type": "string"
+        },
+        "searchPlaceholderEn": {
+          "title": "English Search Placeholder",
+          "description": "Placeholder text for desktop search input (English)",
+          "type": "string"
+        },
+        "searchPlaceholderBn": {
+          "title": "Bengali Search Placeholder",
+          "description": "Placeholder text for desktop search input (Bengali)",
+          "type": "string"
+        },
+        "searchButtonText": {
+          "title": "Search Button Text",
+          "description": "Multi-language button labels for the search input",
+          "type": "object",
+          "properties": {
+            "en": {
+              "title": "English Label",
+              "type": "string"
+            },
+            "bn": {
+              "title": "Bengali Label",
+              "type": "string"
+            }
+          }
+        },
+        "searchPlaceholderMobile": {
+          "title": "Mobile Search Placeholder",
+          "description": "Placeholder text for mobile search bar",
+          "type": "string"
+        },
+        "searchButtonMobileText": {
+          "title": "Mobile Search Button Label",
+          "description": "Label on mobile search button",
+          "type": "string"
+        },
+        "socialLinks": {
+          "title": "Social Media Links",
+          "description": "Official URLs for brand social profiles",
+          "type": "object",
+          "properties": {
+            "facebook": {
+              "title": "Facebook URL",
+              "type": "string"
+            },
+            "instagram": {
+              "title": "Instagram URL",
+              "type": "string"
+            },
+            "youtube": {
+              "title": "YouTube URL",
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "hero": {
+      "title": "Hero Section",
+      "description": "Primary banner display at top of homepage",
+      "type": "object",
+      "required": [
+        "desktopImage"
+      ],
+      "properties": {
+        "badge": {
+          "title": "Hero Badge",
+          "type": "string"
+        },
+        "title": {
+          "title": "Hero Title",
+          "type": "string"
+        },
+        "subtitle": {
+          "title": "Hero Subtitle",
+          "type": "string"
+        },
+        "primaryBtnText": {
+          "title": "Primary Button Text",
+          "type": "string"
+        },
+        "primaryBtnLink": {
+          "title": "Primary Button Target Link",
+          "type": "string"
+        },
+        "secondaryBtnText": {
+          "title": "Secondary Button Text",
+          "type": "string"
+        },
+        "secondaryBtnLink": {
+          "title": "Secondary Button Target Link",
+          "type": "string"
+        },
+        "heroImage": {
+          "title": "Hero Fallback Image URL",
+          "type": "string"
+        },
+        "desktopImage": {
+          "title": "Hero Desktop Banner URL",
+          "type": "string"
+        },
+        "mobileImage": {
+          "title": "Hero Mobile Banner URL",
+          "type": "string"
+        },
+        "rating": {
+          "title": "Hero Customer Rating",
+          "type": "string"
+        },
+        "trustBadges": {
+          "title": "Hero Trust Badges",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "_id": {
+                "title": "Badge ID",
+                "type": "string"
+              },
+              "label": {
+                "title": "Badge Label",
+                "type": "string"
+              },
+              "sub": {
+                "title": "Badge Subtext",
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "navigation": {
+      "title": "Navigation Settings",
+      "description": "Storefront navigation configuration",
+      "type": "object",
+      "required": [
+        "allProductsLabel"
+      ],
+      "properties": {
+        "allProductsLabel": {
+          "title": "All Products Label",
+          "type": "string"
+        },
+        "items": {
+          "title": "Navigation Items",
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        }
+      }
+    },
+    "categories": {
+      "title": "Product Categories",
+      "description": "List of active product categories rendered in carousel and filters",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "_id",
+          "name",
+          "slug",
+          "isActive",
+          "displayOrder"
+        ],
+        "properties": {
+          "_id": {
+            "title": "Category ID",
+            "type": "string"
+          },
+          "name": {
+            "title": "Category Name",
+            "type": "string"
+          },
+          "slug": {
+            "title": "Category URL Slug",
+            "type": "string"
+          },
+          "description": {
+            "title": "Category Description",
+            "type": "string"
+          },
+          "image": {
+            "title": "Category Card Image URL",
+            "type": "string"
+          },
+          "isActive": {
+            "title": "Is Category Active",
+            "type": "boolean"
+          },
+          "displayOrder": {
+            "title": "Display Order Index",
+            "type": "number"
+          },
+          "createdAt": {
+            "title": "Created Timestamp",
+            "type": "string"
+          },
+          "updatedAt": {
+            "title": "Updated Timestamp",
+            "type": "string"
+          }
+        }
+      }
+    },
+    "productCarousel": {
+      "title": "Product Carousel Widget",
+      "description": "Floating quick-selector carousel configuration",
+      "type": "object",
+      "required": [
+        "enabled",
+        "title",
+        "subtitle"
+      ],
+      "properties": {
+        "enabled": {
+          "title": "Enable Carousel",
+          "type": "boolean"
+        },
+        "title": {
+          "title": "Carousel Title",
+          "type": "string"
+        },
+        "subtitle": {
+          "title": "Carousel Subtitle",
+          "type": "string"
+        }
+      }
+    },
+    "featuredProducts": {
+      "title": "Featured Products Section",
+      "description": "Promoted product showcase section configuration",
+      "type": "object",
+      "required": [
+        "title",
+        "subtitle",
+        "enabled",
+        "overline",
+        "ctaText"
+      ],
+      "properties": {
+        "enabled": {
+          "title": "Enable Section",
+          "type": "boolean"
+        },
+        "overline": {
+          "title": "Section Overline",
+          "type": "string"
+        },
+        "title": {
+          "title": "Section Title",
+          "type": "string"
+        },
+        "subtitle": {
+          "title": "Section Subtitle",
+          "type": "string"
+        },
+        "ctaText": {
+          "title": "CTA Link Text",
+          "type": "string"
+        }
+      }
+    },
+    "sections": {
+      "title": "Homepage Editorial Sections",
+      "description": "Educational and informational sections rendered in page order",
+      "type": "object",
+      "required": [
+        "startNow",
+        "hairThinning",
+        "howMinoxidilWorks",
+        "progressTimeline",
+        "usageGuide"
+      ],
+      "properties": {
+        "startNow": {
+          "title": "Start Now Section",
+          "type": "object",
+          "required": [
+            "enabled",
+            "overline",
+            "title",
+            "subtitle",
+            "content"
+          ],
+          "properties": {
+            "enabled": {
+              "title": "Enable Section",
+              "type": "boolean"
+            },
+            "overline": {
+              "title": "Overline Label",
+              "type": "string"
+            },
+            "title": {
+              "title": "Heading",
+              "type": "string"
+            },
+            "subtitle": {
+              "title": "Subheading",
+              "type": "string"
+            },
+            "content": {
+              "title": "Body Editorial Copy",
+              "type": "string"
+            },
+            "bulletPoints": {
+              "title": "Bullet Checkpoints",
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "ctaText": {
+              "title": "CTA Button Label",
+              "type": "string"
+            },
+            "ctaLink": {
+              "title": "CTA Button Link Target",
+              "type": "string"
+            },
+            "desktopImage": {
+              "title": "Desktop Image URL",
+              "type": "string"
+            },
+            "mobileImage": {
+              "title": "Mobile Image URL",
+              "type": "string"
+            }
+          }
+        },
+        "hairThinning": {
+          "title": "Hair Thinning Stages Section",
+          "type": "object",
+          "required": [
+            "enabled",
+            "overline",
+            "title",
+            "subtitle",
+            "healthLabel",
+            "stages"
+          ],
+          "properties": {
+            "enabled": {
+              "title": "Enable Section",
+              "type": "boolean"
+            },
+            "overline": {
+              "title": "Overline Label",
+              "type": "string"
+            },
+            "title": {
+              "title": "Heading",
+              "type": "string"
+            },
+            "subtitle": {
+              "title": "Subheading",
+              "type": "string"
+            },
+            "healthLabel": {
+              "title": "Health Metric Label",
+              "type": "string"
+            },
+            "stages": {
+              "title": "Progression Stages",
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": [
+                  "title",
+                  "description"
+                ],
+                "properties": {
+                  "title": {
+                    "title": "Stage Title",
+                    "type": "string"
+                  },
+                  "description": {
+                    "title": "Stage Description",
+                    "type": "string"
+                  },
+                  "image": {
+                    "title": "Stage Image URL",
+                    "type": "string"
+                  },
+                  "badge": {
+                    "title": "Stage Badge",
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "howMinoxidilWorks": {
+          "title": "How Minoxidil Works Section",
+          "type": "object",
+          "required": [
+            "enabled",
+            "overline",
+            "title",
+            "subtitle",
+            "mechanismPoints",
+            "anatomyOverline",
+            "anatomyTitle",
+            "anatomyDescription"
+          ],
+          "properties": {
+            "enabled": {
+              "title": "Enable Section",
+              "type": "boolean"
+            },
+            "overline": {
+              "title": "Overline Label",
+              "type": "string"
+            },
+            "title": {
+              "title": "Heading",
+              "type": "string"
+            },
+            "subtitle": {
+              "title": "Subheading",
+              "type": "string"
+            },
+            "scienceNote": {
+              "title": "Clinical Authority Note",
+              "type": "string"
+            },
+            "anatomyOverline": {
+              "title": "Anatomy Overline",
+              "type": "string"
+            },
+            "anatomyTitle": {
+              "title": "Anatomy Card Title",
+              "type": "string"
+            },
+            "anatomyDescription": {
+              "title": "Anatomy Description",
+              "type": "string"
+            },
+            "desktopImage": {
+              "title": "Desktop Anatomy Illustration URL",
+              "type": "string"
+            },
+            "mobileImage": {
+              "title": "Mobile Anatomy Illustration URL",
+              "type": "string"
+            },
+            "mechanismPoints": {
+              "title": "Mechanism Steps",
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": [
+                  "title",
+                  "description"
+                ],
+                "properties": {
+                  "title": {
+                    "title": "Point Title",
+                    "type": "string"
+                  },
+                  "description": {
+                    "title": "Point Description",
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "progressTimeline": {
+          "title": "Progress Timeline Section",
+          "type": "object",
+          "required": [
+            "enabled",
+            "overline",
+            "title",
+            "subtitle",
+            "milestoneLabel",
+            "stages"
+          ],
+          "properties": {
+            "enabled": {
+              "title": "Enable Section",
+              "type": "boolean"
+            },
+            "overline": {
+              "title": "Overline Label",
+              "type": "string"
+            },
+            "title": {
+              "title": "Heading",
+              "type": "string"
+            },
+            "subtitle": {
+              "title": "Subheading",
+              "type": "string"
+            },
+            "disclaimer": {
+              "title": "Ethical Medical Disclaimer",
+              "type": "string"
+            },
+            "milestoneLabel": {
+              "title": "Milestone Label",
+              "type": "string"
+            },
+            "stages": {
+              "title": "Timeline Milestone Cards",
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": [
+                  "title",
+                  "description",
+                  "period"
+                ],
+                "properties": {
+                  "period": {
+                    "title": "Milestone Duration",
+                    "type": "string"
+                  },
+                  "stage": {
+                    "title": "Stage Identifier",
+                    "type": "string"
+                  },
+                  "title": {
+                    "title": "Milestone Title",
+                    "type": "string"
+                  },
+                  "description": {
+                    "title": "Milestone Description",
+                    "type": "string"
+                  },
+                  "image": {
+                    "title": "Milestone Visual URL",
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "usageGuide": {
+          "title": "Usage Guide Section",
+          "type": "object",
+          "required": [
+            "enabled",
+            "overline",
+            "title",
+            "subtitle",
+            "safetyNoticePrefix",
+            "steps"
+          ],
+          "properties": {
+            "enabled": {
+              "title": "Enable Section",
+              "type": "boolean"
+            },
+            "overline": {
+              "title": "Overline Label",
+              "type": "string"
+            },
+            "title": {
+              "title": "Heading",
+              "type": "string"
+            },
+            "subtitle": {
+              "title": "Subheading",
+              "type": "string"
+            },
+            "safetyNotice": {
+              "title": "Safety Warning Notice",
+              "type": "string"
+            },
+            "safetyNoticePrefix": {
+              "title": "Safety Warning Bold Prefix",
+              "type": "string"
+            },
+            "steps": {
+              "title": "Application Protocol Steps",
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": [
+                  "title",
+                  "description"
+                ],
+                "properties": {
+                  "stepNumber": {
+                    "title": "Step Number",
+                    "type": "string"
+                  },
+                  "title": {
+                    "title": "Step Title",
+                    "type": "string"
+                  },
+                  "description": {
+                    "title": "Step Description",
+                    "type": "string"
+                  },
+                  "image": {
+                    "title": "Step Visual URL",
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "products": {
+      "title": "Product Catalog",
+      "description": "Full product catalog with pricing, stock and package attributes",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "_id",
+          "name",
+          "slug",
+          "regularPrice",
+          "salePrice",
+          "stock",
+          "isActive"
+        ],
+        "properties": {
+          "_id": {
+            "title": "Product ID",
+            "type": "string"
+          },
+          "name": {
+            "title": "Product Full Name",
+            "type": "string"
+          },
+          "title": {
+            "title": "Display Title",
+            "type": "string"
+          },
+          "slug": {
+            "title": "Product URL Slug",
+            "type": "string"
+          },
+          "shortDescription": {
+            "title": "Short Summary",
+            "type": "string"
+          },
+          "description": {
+            "title": "Full Detailed Description",
+            "type": "string"
+          },
+          "images": {
+            "title": "Product Images",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "category": {
+            "title": "Category Name",
+            "type": "string"
+          },
+          "regularPrice": {
+            "title": "Regular / Crossed-Out Price",
+            "type": "number",
+            "minimum": 0
+          },
+          "salePrice": {
+            "title": "Actual Selling Price",
+            "type": "number",
+            "minimum": 0
+          },
+          "stock": {
+            "title": "Available Units in Stock",
+            "type": "integer",
+            "minimum": 0
+          },
+          "isFeatured": {
+            "title": "Is Featured on Home",
+            "type": "boolean"
+          },
+          "isActive": {
+            "title": "Is Active & Visible",
+            "type": "boolean"
+          },
+          "productType": {
+            "title": "Product Type Code",
+            "type": "string"
+          },
+          "badge": {
+            "title": "Promotional Badge Pill",
+            "type": "string"
+          },
+          "comboItems": {
+            "title": "Included Combo Items",
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "title": "Item Name",
+                  "type": "string"
+                },
+                "quantity": {
+                  "title": "Quantity",
+                  "type": "number"
+                },
+                "description": {
+                  "title": "Item Description",
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "keyBenefits": {
+            "title": "Key Benefits List",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "specifications": {
+            "title": "Specifications List",
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "label": {
+                  "title": "Specification Label",
+                  "type": "string"
+                },
+                "value": {
+                  "title": "Specification Value",
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "displayOrder": {
+            "title": "Catalog Display Serial",
+            "type": "number"
+          },
+          "carouselOrder": {
+            "title": "Carousel Display Serial",
+            "type": "number"
+          },
+          "createdAt": {
+            "title": "Created Date",
+            "type": "string"
+          },
+          "updatedAt": {
+            "title": "Updated Date",
+            "type": "string"
+          }
+        }
+      }
+    },
+    "deliverySettings": {
+      "title": "Delivery & Shipping Charges",
+      "description": "Standard delivery fee structure for Bangladesh",
+      "type": "object",
+      "required": [
+        "insideDhakaFee",
+        "outsideDhakaFee"
+      ],
+      "properties": {
+        "insideDhakaFee": {
+          "title": "Inside Dhaka Delivery Fee (BDT)",
+          "type": "number",
+          "minimum": 0
+        },
+        "outsideDhakaFee": {
+          "title": "Outside Dhaka Delivery Fee (BDT)",
+          "type": "number",
+          "minimum": 0
+        },
+        "estimatedInsideDays": {
+          "title": "Inside Dhaka Timeline String",
+          "type": "string"
+        },
+        "estimatedOutsideDays": {
+          "title": "Outside Dhaka Timeline String",
+          "type": "string"
+        },
+        "freeShippingThreshold": {
+          "title": "Free Delivery Order Threshold",
+          "type": "number"
+        }
+      }
+    },
+    "footer": {
+      "title": "Footer Configuration",
+      "description": "Footer columns, trust badges, about summary and legal notice",
+      "type": "object",
+      "required": [
+        "aboutText",
+        "copyrightText",
+        "trustBadges",
+        "navCol1Title",
+        "navCol2Title",
+        "contactColTitle",
+        "disclaimerText"
+      ],
+      "properties": {
+        "aboutText": {
+          "title": "Footer Brand Summary",
+          "type": "string"
+        },
+        "copyrightText": {
+          "title": "Copyright Notice",
+          "type": "string"
+        },
+        "disclaimerText": {
+          "title": "Medical / Cosmetic Disclaimer",
+          "type": "string"
+        },
+        "navCol1Title": {
+          "title": "Navigation Column 1 Header",
+          "type": "string"
+        },
+        "navCol2Title": {
+          "title": "Navigation Column 2 Header",
+          "type": "string"
+        },
+        "contactColTitle": {
+          "title": "Contact Column Header",
+          "type": "string"
+        },
+        "showCODNotice": {
+          "title": "Show Cash on Delivery Notice",
+          "type": "boolean"
+        },
+        "trustBadges": {
+          "title": "Value Proposition Cards",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "title",
+              "description"
+            ],
+            "properties": {
+              "title": {
+                "title": "Card Title",
+                "type": "string"
+              },
+              "description": {
+                "title": "Card Subtitle",
+                "type": "string"
+              }
+            }
+          }
+        },
+        "quickLinks": {
+          "title": "Quick Navigation Links",
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "legalLinks": {
+          "title": "Legal Policy Links",
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        }
+      }
+    },
+    "seo": {
+      "title": "SEO & Meta Sharing",
+      "description": "Default search engine and social graph tags",
+      "type": "object",
+      "required": [
+        "metaTitle",
+        "metaDescription",
+        "ogTitle",
+        "ogDescription",
+        "ogImage"
+      ],
+      "properties": {
+        "metaTitle": {
+          "title": "Default Browser Title",
+          "type": "string"
+        },
+        "metaDescription": {
+          "title": "Default Meta Description",
+          "type": "string"
+        },
+        "ogTitle": {
+          "title": "Open Graph Share Title",
+          "type": "string"
+        },
+        "ogDescription": {
+          "title": "Open Graph Share Description",
+          "type": "string"
+        },
+        "ogImage": {
+          "title": "Open Graph Social Image URL",
+          "type": "string"
+        }
+      }
+    },
+    "metaSettings": {
+      "title": "Meta Pixel Public Configuration",
+      "description": "Public Pixel identifiers and client-side tracking controls",
+      "type": "object",
+      "required": [
+        "pixelId",
+        "isPixelEnabled",
+        "isCapiEnabled"
+      ],
+      "properties": {
+        "pixelId": {
+          "title": "Meta Pixel ID",
+          "type": "string"
+        },
+        "isPixelEnabled": {
+          "title": "Enable Browser Pixel",
+          "type": "boolean"
+        },
+        "isCapiEnabled": {
+          "title": "Enable Conversions API (CAPI)",
+          "type": "boolean"
+        },
+        "isLoggingEnabled": {
+          "title": "Enable Event Logging",
+          "type": "boolean"
+        },
+        "logRetentionDays": {
+          "title": "Event Log Retention Window (Days)",
+          "type": "integer"
+        },
+        "testEventCode": {
+          "title": "Meta Test Event Code",
+          "type": "string"
+        }
+      }
+    },
+    "common": {
+      "title": "Common UI Labels",
+      "description": "Shared micro-copy across cards and listings",
+      "type": "object",
+      "required": [
+        "offLabel",
+        "outOfStockLabel",
+        "addToCartLabel",
+        "buyNowLabel"
+      ],
+      "properties": {
+        "offLabel": {
+          "title": "Discount Off Label",
+          "type": "string"
+        },
+        "outOfStockLabel": {
+          "title": "Out of Stock Label",
+          "type": "string"
+        },
+        "addToCartLabel": {
+          "title": "Add to Cart Label",
+          "type": "string"
+        },
+        "addToCartMobileLabel": {
+          "title": "Add to Cart Mobile Label",
+          "type": "string"
+        },
+        "buyNowLabel": {
+          "title": "Buy Now Label",
+          "type": "string"
+        }
+      }
+    },
+    "shop": {
+      "title": "Shop Page Content",
+      "description": "Text, headers and filter copy for the /shop catalog page",
+      "type": "object",
+      "required": [
+        "pageTitle",
+        "pageSubtitle",
+        "searchPlaceholder",
+        "allCategoriesLabel",
+        "featuredOnlyLabel",
+        "emptyTitle",
+        "emptySubtitle",
+        "clearFiltersText"
+      ],
+      "properties": {
+        "pageTitle": {
+          "title": "Shop Catalog Title",
+          "type": "string"
+        },
+        "pageSubtitle": {
+          "title": "Shop Catalog Subtitle",
+          "type": "string"
+        },
+        "searchPlaceholder": {
+          "title": "Search Input Placeholder",
+          "type": "string"
+        },
+        "allCategoriesLabel": {
+          "title": "All Categories Filter Chip",
+          "type": "string"
+        },
+        "featuredOnlyLabel": {
+          "title": "Featured Only Checkbox Label",
+          "type": "string"
+        },
+        "sortByLabel": {
+          "title": "Sort By Label",
+          "type": "string"
+        },
+        "emptyTitle": {
+          "title": "Empty State Title",
+          "type": "string"
+        },
+        "emptySubtitle": {
+          "title": "Empty State Subtitle",
+          "type": "string"
+        },
+        "clearFiltersText": {
+          "title": "Clear Filters Button Label",
+          "type": "string"
+        }
+      }
+    },
+    "productDetail": {
+      "title": "Product Detail Page",
+      "description": "Labels, trust points and tabs on /product/:slug",
+      "type": "object",
+      "required": [
+        "notFoundTitle",
+        "returnToShopText",
+        "inStockLabel",
+        "trustPoints",
+        "quantityLabel",
+        "orderNowButtonText",
+        "whatsappInquiryText",
+        "descTabTitle",
+        "comboTabTitle",
+        "relatedHeading"
+      ],
+      "properties": {
+        "notFoundTitle": {
+          "title": "Not Found Title",
+          "type": "string"
+        },
+        "returnToShopText": {
+          "title": "Return to Shop Label",
+          "type": "string"
+        },
+        "inStockLabel": {
+          "title": "In-Stock Badge Text",
+          "type": "string"
+        },
+        "trustPoints": {
+          "title": "Product Trust Points",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "quantityLabel": {
+          "title": "Quantity Label",
+          "type": "string"
+        },
+        "orderNowButtonText": {
+          "title": "Order Now Button Text",
+          "type": "string"
+        },
+        "whatsappInquiryText": {
+          "title": "WhatsApp Inquiry Button Text",
+          "type": "string"
+        },
+        "descTabTitle": {
+          "title": "Description Tab Label",
+          "type": "string"
+        },
+        "comboTabTitle": {
+          "title": "Combo Contents Tab Label",
+          "type": "string"
+        },
+        "relatedHeading": {
+          "title": "Related Products Heading",
+          "type": "string"
+        }
+      }
+    },
+    "cart": {
+      "title": "Cart Drawer Copy",
+      "description": "Labels, totals and notices inside slide-over cart drawer",
+      "type": "object",
+      "required": [
+        "drawerTitle",
+        "emptyTitle",
+        "emptySubtitle",
+        "emptyCtaText",
+        "subtotalLabel",
+        "estimatedDeliveryLabel",
+        "estimatedTotalLabel",
+        "codTrustNotice",
+        "checkoutButtonText",
+        "continueShoppingText"
+      ],
+      "properties": {
+        "drawerTitle": {
+          "title": "Drawer Heading",
+          "type": "string"
+        },
+        "emptyTitle": {
+          "title": "Empty Cart Title",
+          "type": "string"
+        },
+        "emptySubtitle": {
+          "title": "Empty Cart Subtitle",
+          "type": "string"
+        },
+        "emptyCtaText": {
+          "title": "Empty Cart Button",
+          "type": "string"
+        },
+        "subtotalLabel": {
+          "title": "Subtotal Line Label",
+          "type": "string"
+        },
+        "estimatedDeliveryLabel": {
+          "title": "Estimated Delivery Label",
+          "type": "string"
+        },
+        "estimatedTotalLabel": {
+          "title": "Estimated Total Label",
+          "type": "string"
+        },
+        "codTrustNotice": {
+          "title": "Doorstep Inspection Notice",
+          "type": "string"
+        },
+        "checkoutButtonText": {
+          "title": "Checkout Button Text",
+          "type": "string"
+        },
+        "continueShoppingText": {
+          "title": "Continue Shopping Label",
+          "type": "string"
+        }
+      }
+    },
+    "checkout": {
+      "title": "Checkout Page Copy",
+      "description": "Form labels, placeholders, errors and trust badges on /checkout",
+      "type": "object",
+      "required": [
+        "pageHeading",
+        "pageSubheading",
+        "fullNameLabel",
+        "fullNamePlaceholder",
+        "phoneLabel",
+        "phonePlaceholder",
+        "deliveryAreaLabel",
+        "insideDhakaOptionLabel",
+        "outsideDhakaOptionLabel",
+        "addressLabel",
+        "addressPlaceholder",
+        "summaryHeading",
+        "subtotalLabel",
+        "deliveryFeeLabel",
+        "totalPayableLabel",
+        "submitButtonText",
+        "submittingButtonText",
+        "trustPoints",
+        "errors"
+      ],
+      "properties": {
+        "emptyCartTitle": {
+          "title": "Empty Cart Heading",
+          "type": "string"
+        },
+        "emptyCartSubtitle": {
+          "title": "Empty Cart Subheading",
+          "type": "string"
+        },
+        "browseProductsButton": {
+          "title": "Browse Products Button",
+          "type": "string"
+        },
+        "returnToCartText": {
+          "title": "Return to Cart Link Text",
+          "type": "string"
+        },
+        "pageHeading": {
+          "title": "Form Page Heading",
+          "type": "string"
+        },
+        "pageSubheading": {
+          "title": "Form Page Subheading",
+          "type": "string"
+        },
+        "fullNameLabel": {
+          "title": "Full Name Field Label",
+          "type": "string"
+        },
+        "fullNamePlaceholder": {
+          "title": "Full Name Input Placeholder",
+          "type": "string"
+        },
+        "phoneLabel": {
+          "title": "Phone Field Label",
+          "type": "string"
+        },
+        "phonePlaceholder": {
+          "title": "Phone Input Placeholder",
+          "type": "string"
+        },
+        "deliveryAreaLabel": {
+          "title": "Delivery Area Radio Label",
+          "type": "string"
+        },
+        "insideDhakaOptionLabel": {
+          "title": "Inside Dhaka Radio Option",
+          "type": "string"
+        },
+        "outsideDhakaOptionLabel": {
+          "title": "Outside Dhaka Radio Option",
+          "type": "string"
+        },
+        "addressLabel": {
+          "title": "Delivery Address Label",
+          "type": "string"
+        },
+        "addressPlaceholder": {
+          "title": "Delivery Address Placeholder",
+          "type": "string"
+        },
+        "notesLabel": {
+          "title": "Order Notes Label",
+          "type": "string"
+        },
+        "notesPlaceholder": {
+          "title": "Order Notes Placeholder",
+          "type": "string"
+        },
+        "summaryHeading": {
+          "title": "Order Summary Heading",
+          "type": "string"
+        },
+        "subtotalLabel": {
+          "title": "Subtotal Line Label",
+          "type": "string"
+        },
+        "deliveryFeeLabel": {
+          "title": "Delivery Fee Line Label",
+          "type": "string"
+        },
+        "totalPayableLabel": {
+          "title": "Total Payable Line Label",
+          "type": "string"
+        },
+        "submitButtonText": {
+          "title": "Submit Button Label",
+          "type": "string"
+        },
+        "submittingButtonText": {
+          "title": "Submitting Active Label",
+          "type": "string"
+        },
+        "trustPoints": {
+          "title": "Trust Badges List",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "errors": {
+          "title": "Validation Error Messages",
+          "type": "object",
+          "required": [
+            "nameRequired",
+            "phoneRequired",
+            "phoneInvalid",
+            "addressRequired"
+          ],
+          "properties": {
+            "nameRequired": {
+              "title": "Name Required Error",
+              "type": "string"
+            },
+            "phoneRequired": {
+              "title": "Phone Required Error",
+              "type": "string"
+            },
+            "phoneInvalid": {
+              "title": "Phone Invalid Format Error",
+              "type": "string"
+            },
+            "addressRequired": {
+              "title": "Address Required Error",
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "orderConfirmation": {
+      "title": "Order Confirmation Page Copy",
+      "description": "Receipt headings, labels and post-order guidance on /order-success/:orderId",
+      "type": "object",
+      "required": [
+        "heading",
+        "subheading",
+        "orderIdLabel",
+        "dateLabel",
+        "statusLabel",
+        "paymentMethodLabel",
+        "paymentMethodValue",
+        "addressHeading",
+        "phoneHeading",
+        "itemsHeading",
+        "subtotalLabel",
+        "deliveryLabel",
+        "totalLabel",
+        "nextStepsHeading",
+        "nextStepsText",
+        "continueShoppingText",
+        "whatsappSupportText"
+      ],
+      "properties": {
+        "heading": {
+          "title": "Receipt Heading",
+          "type": "string"
+        },
+        "subheading": {
+          "title": "Receipt Subheading",
+          "type": "string"
+        },
+        "orderIdLabel": {
+          "title": "Order ID Label",
+          "type": "string"
+        },
+        "dateLabel": {
+          "title": "Date Label",
+          "type": "string"
+        },
+        "statusLabel": {
+          "title": "Status Label",
+          "type": "string"
+        },
+        "paymentMethodLabel": {
+          "title": "Payment Method Label",
+          "type": "string"
+        },
+        "paymentMethodValue": {
+          "title": "Payment Method Value",
+          "type": "string"
+        },
+        "addressHeading": {
+          "title": "Address Heading",
+          "type": "string"
+        },
+        "phoneHeading": {
+          "title": "Phone Heading",
+          "type": "string"
+        },
+        "itemsHeading": {
+          "title": "Ordered Items Heading",
+          "type": "string"
+        },
+        "subtotalLabel": {
+          "title": "Subtotal Line Label",
+          "type": "string"
+        },
+        "deliveryLabel": {
+          "title": "Delivery Line Label",
+          "type": "string"
+        },
+        "totalLabel": {
+          "title": "Total Line Label",
+          "type": "string"
+        },
+        "nextStepsHeading": {
+          "title": "Next Steps Heading",
+          "type": "string"
+        },
+        "nextStepsText": {
+          "title": "Next Steps Guidance Text",
+          "type": "string"
+        },
+        "continueShoppingText": {
+          "title": "Continue Shopping Button Text",
+          "type": "string"
+        },
+        "whatsappSupportText": {
+          "title": "WhatsApp Support Button Text",
+          "type": "string"
+        }
+      }
+    },
+    "policies": {
+      "title": "Legal & Service Policies",
+      "description": "Full policy documents formatted for customer transparency",
+      "type": "object",
+      "required": [
+        "shipping",
+        "refund",
+        "privacy",
+        "terms"
+      ],
+      "properties": {
+        "shipping": {
+          "title": "Shipping Policy Document",
+          "type": "object"
+        },
+        "refund": {
+          "title": "Return & Refund Policy Document",
+          "type": "object"
+        },
+        "privacy": {
+          "title": "Privacy Policy Document",
+          "type": "object"
+        },
+        "terms": {
+          "title": "Terms & Conditions Document",
+          "type": "object"
+        }
+      }
+    }
+  }
+}

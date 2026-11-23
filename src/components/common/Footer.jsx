@@ -32,6 +32,11 @@ export default function Footer() {
   const { config } = useConfig();
   const siteSettings = config?.siteSettings || {};
   const footerData = config?.footer || {};
+  const trustBadges = footerData.trustBadges || [
+    { title: '100% Authentic Guarantee', description: 'USA formulation Kirkland 5% & sterile titanium micro-needles.' },
+    { title: 'Nationwide Cash on Delivery', description: 'Pay safely after inspecting your parcel in all 64 districts of Bangladesh.' },
+    { title: 'Fast Dispatch', description: '24-48 hours inside Dhaka; 2-4 days across Bangladesh.' }
+  ];
 
   return (
     <footer className="bg-brand-dark text-white border-t border-brand-border" id="contact">
@@ -42,24 +47,24 @@ export default function Footer() {
             <div className="flex items-start space-x-3.5 border-b md:border-b-0 md:border-r border-white/10 pb-6 md:pb-0 pr-4">
               <ShieldCheck className="w-5 h-5 text-white flex-shrink-0 mt-0.5 stroke-[2]" />
               <div>
-                <h4 className="font-bold text-xs uppercase tracking-wider text-white">100% Authentic Guarantee</h4>
-                <p className="text-xs text-gray-400 mt-1">USA formulation Kirkland 5% & sterile titanium micro-needles.</p>
+                <h4 className="font-bold text-xs uppercase tracking-wider text-white">{trustBadges[0]?.title || '100% Authentic Guarantee'}</h4>
+                <p className="text-xs text-gray-400 mt-1">{trustBadges[0]?.description || 'USA formulation Kirkland 5% & sterile titanium micro-needles.'}</p>
               </div>
             </div>
 
             <div className="flex items-start space-x-3.5 border-b md:border-b-0 md:border-r border-white/10 pb-6 md:pb-0 pr-4">
               <Truck className="w-5 h-5 text-white flex-shrink-0 mt-0.5 stroke-[2]" />
               <div>
-                <h4 className="font-bold text-xs uppercase tracking-wider text-white">Nationwide Cash on Delivery</h4>
-                <p className="text-xs text-gray-400 mt-1">Pay safely after inspecting your parcel in all 64 districts of Bangladesh.</p>
+                <h4 className="font-bold text-xs uppercase tracking-wider text-white">{trustBadges[1]?.title || 'Nationwide Cash on Delivery'}</h4>
+                <p className="text-xs text-gray-400 mt-1">{trustBadges[1]?.description || 'Pay safely after inspecting your parcel in all 64 districts of Bangladesh.'}</p>
               </div>
             </div>
 
             <div className="flex items-start space-x-3.5">
               <Clock className="w-5 h-5 text-white flex-shrink-0 mt-0.5 stroke-[2]" />
               <div>
-                <h4 className="font-bold text-xs uppercase tracking-wider text-white">Fast Dispatch</h4>
-                <p className="text-xs text-gray-400 mt-1">24-48 hours inside Dhaka; 2-4 days across Bangladesh.</p>
+                <h4 className="font-bold text-xs uppercase tracking-wider text-white">{trustBadges[2]?.title || 'Fast Dispatch'}</h4>
+                <p className="text-xs text-gray-400 mt-1">{trustBadges[2]?.description || '24-48 hours inside Dhaka; 2-4 days across Bangladesh.'}</p>
               </div>
             </div>
           </div>
@@ -129,7 +134,7 @@ export default function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h5 className="font-bold text-xs uppercase tracking-widest text-white mb-4">Quick Navigation</h5>
+            <h5 className="font-bold text-xs uppercase tracking-widest text-white mb-4">{footerData.navCol1Title || 'Quick Navigation'}</h5>
             <ul className="space-y-2 text-xs text-gray-400">
               <li>
                 <Link to="/" className="hover:text-white transition-colors">Home</Link>
@@ -151,7 +156,7 @@ export default function Footer() {
 
           {/* Policies */}
           <div>
-            <h5 className="font-bold text-xs uppercase tracking-widest text-white mb-4">Customer Care & Policies</h5>
+            <h5 className="font-bold text-xs uppercase tracking-widest text-white mb-4">{footerData.navCol2Title || 'Customer Care & Policies'}</h5>
             <ul className="space-y-2 text-xs text-gray-400">
               <li>
                 <Link to="/shipping-policy" className="hover:text-white transition-colors">Shipping & Delivery Policy</Link>
@@ -173,7 +178,7 @@ export default function Footer() {
 
           {/* Contact Details */}
           <div>
-            <h5 className="font-bold text-xs uppercase tracking-widest text-white mb-4">Direct Contact</h5>
+            <h5 className="font-bold text-xs uppercase tracking-widest text-white mb-4">{footerData.contactColTitle || 'Direct Contact'}</h5>
             <div className="space-y-2.5 text-xs text-gray-400">
               {siteSettings.contactPhone && (
                 <div className="flex items-start space-x-2.5">
@@ -194,7 +199,7 @@ export default function Footer() {
                 </div>
               )}
               <div className="pt-2 text-[11px] text-gray-500">
-                Support Hours: 10:00 AM – 9:00 PM (Everyday)
+                {siteSettings.supportHours || 'Support Hours: 10:00 AM – 9:00 PM (Everyday)'}
               </div>
             </div>
           </div>
@@ -206,7 +211,7 @@ export default function Footer() {
         <div className="max-w-[1536px] mx-auto px-3 sm:px-6 py-5 flex flex-col sm:flex-row items-center justify-between text-xs text-gray-400 gap-2">
           <p>{footerData.copyrightText || '© 2026 Regrow Hair Care BD. All rights reserved.'}</p>
           <p className="text-[11px] text-gray-400">
-            Disclaimer: For cosmetic & topical use. Consult a physician for chronic dermatological conditions.
+            {footerData.disclaimerText || 'Disclaimer: For cosmetic & topical use. Consult a physician for chronic dermatological conditions.'}
           </p>
         </div>
       </div>

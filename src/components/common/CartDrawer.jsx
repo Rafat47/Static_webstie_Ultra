@@ -12,6 +12,7 @@ export default function CartDrawer() {
 
   const currency = config?.siteSettings?.currency || '৳';
   const insideDhaka = config?.deliverySettings?.insideDhakaFee ?? 70;
+  const cartData = config?.cart || {};
 
   if (!isCartOpen) return null;
 
@@ -34,7 +35,7 @@ export default function CartDrawer() {
           <div className="px-4 py-3 sm:px-5 sm:py-4 bg-white text-brand-dark flex items-center justify-between border-b border-brand-border">
             <div className="flex items-center space-x-2">
               <ShoppingBag className="w-4 h-4 sm:w-5 sm:h-5 text-brand-dark stroke-[2]" />
-              <h2 className="text-xs sm:text-sm font-black tracking-wide uppercase">Shopping Cart ({totalItemsCount})</h2>
+              <h2 className="text-xs sm:text-sm font-black tracking-wide uppercase">{cartData.drawerTitle || 'Shopping Cart'} ({totalItemsCount})</h2>
             </div>
             <button
               onClick={() => setIsCartOpen(false)}
@@ -53,9 +54,9 @@ export default function CartDrawer() {
                   <ShoppingBag className="w-7 h-7 sm:w-8 sm:h-8 stroke-[1.5]" />
                 </div>
                 <div>
-                  <h3 className="text-sm sm:text-base font-bold text-brand-dark">Your cart is currently empty</h3>
+                  <h3 className="text-sm sm:text-base font-bold text-brand-dark">{cartData.emptyTitle || 'Your cart is currently empty'}</h3>
                   <p className="text-xs text-brand-muted mt-1 max-w-xs">
-                    Browse our authentic Minoxidil and Derma Roller products to begin your hair restoration journey.
+                    {cartData.emptySubtitle || 'Browse our authentic Minoxidil and Derma Roller products to begin your hair restoration journey.'}
                   </p>
                 </div>
                 <button
@@ -65,7 +66,7 @@ export default function CartDrawer() {
                   }}
                   className="mt-2 px-5 py-2.5 sm:px-6 sm:py-3 bg-brand-dark hover:bg-brand-navy text-white text-xs font-black uppercase tracking-wider transition-colors"
                 >
-                  Browse Products
+                  {cartData.emptyCtaText || 'Browse Products'}
                 </button>
               </div>
             ) : (
@@ -134,29 +135,29 @@ export default function CartDrawer() {
             <div className="p-3.5 sm:p-5 bg-white border-t border-brand-border space-y-2 sm:space-y-3">
               <div className="space-y-1 text-xs">
                 <div className="flex justify-between text-brand-muted text-[11px] sm:text-xs">
-                  <span>Subtotal</span>
+                  <span>{cartData.subtotalLabel || 'Subtotal'}</span>
                   <span className="font-semibold text-brand-dark">{formatCurrency(subtotal, currency)}</span>
                 </div>
                 <div className="flex justify-between text-brand-muted text-[11px] sm:text-xs">
-                  <span>Estimated Delivery (Inside Dhaka)</span>
+                  <span>{cartData.estimatedDeliveryLabel || 'Estimated Delivery (Inside Dhaka)'}</span>
                   <span className="font-semibold text-brand-dark">{formatCurrency(insideDhaka, currency)}</span>
                 </div>
                 <div className="flex justify-between text-xs sm:text-sm font-black text-brand-dark pt-1.5 border-t border-brand-border">
-                  <span className="uppercase">Estimated Total</span>
+                  <span className="uppercase">{cartData.estimatedTotalLabel || 'Estimated Total'}</span>
                   <span>{formatCurrency(subtotal + insideDhaka, currency)}</span>
                 </div>
               </div>
 
               <div className="flex items-center gap-1.5 text-[10px] sm:text-[11px] text-brand-dark bg-gray-50 py-1.5 px-2 border border-brand-border">
                 <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 flex-shrink-0" />
-                <span className="truncate">Cash on Delivery: Inspect & pay at doorstep!</span>
+                <span className="truncate">{cartData.codTrustNotice || 'Cash on Delivery: Inspect & pay at doorstep!'}</span>
               </div>
 
               <button
                 onClick={handleCheckout}
                 className="w-full py-2.5 sm:py-3.5 px-4 bg-brand-dark hover:bg-brand-navy text-white font-black text-xs uppercase tracking-wider flex items-center justify-center space-x-2 transition-colors shadow-xs"
               >
-                <span>Proceed to Checkout</span>
+                <span>{cartData.checkoutButtonText || 'Proceed to Checkout'}</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
 
@@ -164,7 +165,7 @@ export default function CartDrawer() {
                 onClick={() => setIsCartOpen(false)}
                 className="w-full text-center text-[10px] sm:text-xs text-brand-muted hover:text-brand-dark py-0.5 underline font-medium"
               >
-                Continue Shopping
+                {cartData.continueShoppingText || 'Continue Shopping'}
               </button>
             </div>
           )}

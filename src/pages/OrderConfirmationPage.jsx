@@ -26,6 +26,7 @@ export default function OrderConfirmationPage() {
 
   const currency = config?.siteSettings?.currency || '৳';
   const whatsappNum = config?.siteSettings?.whatsappNumber?.replace(/[^0-9]/g, '') || '8801711234567';
+  const confirmationData = config?.orderConfirmation || {};
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -47,6 +48,20 @@ export default function OrderConfirmationPage() {
   const loadOrder = async () => {
     try {
       setLoading(true);
+      // Check session storage first for instantaneous offline render
+      if (typeof sessionStorage !== 'undefined') {
+        const cached = sessionStorage.getItem(`order_${orderId}`);
+        if (cached) {
+          try {
+            const parsed = JSON.parse(cached);
+            setOrder(parsed);
+            metaEvents.purchase(parsed);
+            setLoading(false);
+            return;
+          } catch (e) {}
+        }
+      }
+
       const res = await api.getOrderById(orderId);
       if (res && res.success && res.data) {
         setOrder(res.data);
@@ -88,17 +103,17 @@ export default function OrderConfirmationPage() {
               Order Confirmed Successfully
             </span>
             <h1 className="text-2xl sm:text-3xl font-black text-brand-dark tracking-tight uppercase">
-              Thank You For Your Order!
+              {confirmationData.heading || 'Thank You For Your Order!'}
             </h1>
             <p className="text-xs sm:text-sm text-brand-muted max-w-lg mx-auto">
-              We have received your order. Our team is dispatching your authentic package via Cash on Delivery.
+              {confirmationData.subheading || 'We have received your order. Our team is dispatching your authentic package via Cash on Delivery.'}
             </p>
           </div>
 
           {/* Order ID & Reference Banner */}
           <div className="p-4 sm:p-5 bg-brand-dark text-white flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
             <div>
-              <p className="text-[11px] text-gray-400 uppercase tracking-widest">Order Reference Number</p>
+              <p className="text-[11px] text-gray-400 uppercase tracking-widest">{confirmationData.orderIdLabel || 'Order Reference Number'}</p>
               <p className="text-lg sm:text-xl font-black text-white tracking-wider font-mono">
                 #{orderId}
               </p>
@@ -110,7 +125,7 @@ export default function OrderConfirmationPage() {
               className="px-4 py-2.5 bg-white text-brand-dark hover:bg-gray-100 text-xs font-bold uppercase tracking-wider flex items-center gap-2 transition-colors"
             >
               <MessageCircle className="w-4 h-4 text-emerald-600" />
-              <span>Track via WhatsApp</span>
+              <span>{confirmationData.whatsappSupportText || 'Track via WhatsApp'}</span>
             </a>
           </div>
 
@@ -129,15 +144,15 @@ export default function OrderConfirmationPage() {
             <div className="p-4 border border-brand-border bg-gray-50 flex items-start gap-3">
               <ShieldCheck className="w-4 h-4 text-emerald-600 mt-0.5 flex-shrink-0" />
               <div>
-                <p className="font-bold uppercase tracking-wider text-brand-dark">Payment Method</p>
-                <p className="text-brand-muted mt-0.5">Cash on Delivery (COD)</p>
+                <p className="font-bold uppercase tracking-wider text-brand-dark">{confirmationData.paymentMethodLabel || 'Payment Method'}</p>
+                <p className="text-brand-muted mt-0.5">{confirmationData.paymentMethodValue || 'Cash on Delivery (COD)'}</p>
               </div>
             </div>
 
             <div className="p-4 border border-brand-border bg-gray-50 flex items-start gap-3">
               <Clock className="w-4 h-4 text-brand-dark mt-0.5 flex-shrink-0" />
               <div>
-                <p className="font-bold uppercase tracking-wider text-brand-dark">Status</p>
+                <p className="font-bold uppercase tracking-wider text-brand-dark">{confirmationData.statusLabel || 'Status'}</p>
                 <p className="text-brand-muted mt-0.5">{order?.orderStatus || 'Pending Dispatch'}</p>
               </div>
             </div>
@@ -147,7 +162,7 @@ export default function OrderConfirmationPage() {
           {order && (
             <div className="p-5 border border-brand-border bg-white space-y-3 text-xs">
               <h4 className="font-bold uppercase tracking-wider text-brand-dark border-b border-brand-border pb-2">
-                Shipping Details
+                {confirmationData.addressHeading || 'Shipping Details'}
               </h4>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-brand-dark">
                 <div>
@@ -170,7 +185,7 @@ export default function OrderConfirmationPage() {
           {order && order.items && (
             <div className="space-y-3 text-xs">
               <h4 className="font-bold uppercase tracking-wider text-brand-dark border-b border-brand-border pb-2">
-                Ordered Products
+                {confirmationData.itemsHeading || 'Ordered Products'}
               </h4>
               <div className="divide-y divide-brand-border">
                 {order.items.map((item, idx) => (
@@ -189,15 +204,15 @@ export default function OrderConfirmationPage() {
               {/* Total Summary */}
               <div className="pt-3 border-t border-brand-border space-y-1.5 text-xs">
                 <div className="flex justify-between text-brand-muted">
-                  <span>Subtotal:</span>
+                  <span>{confirmationData.subtotalLabel ? `${confirmationData.subtotalLabel}:` : 'Subtotal:'}</span>
                   <span className="font-semibold text-brand-dark">{formatCurrency(order.subtotal, currency)}</span>
                 </div>
                 <div className="flex justify-between text-brand-muted">
-                  <span>Delivery Charge:</span>
+                  <span>{confirmationData.deliveryLabel ? `${confirmationData.deliveryLabel}:` : 'Delivery Charge:'}</span>
                   <span className="font-semibold text-brand-dark">{formatCurrency(order.deliveryCharge, currency)}</span>
                 </div>
                 <div className="flex justify-between text-sm font-black text-brand-dark pt-2 border-t border-brand-border uppercase">
-                  <span>Payable at Delivery (COD):</span>
+                  <span>{confirmationData.totalLabel ? `${confirmationData.totalLabel} (COD):` : 'Payable at Delivery (COD):'}</span>
                   <span>{formatCurrency(order.finalTotal, currency)}</span>
                 </div>
               </div>
@@ -210,7 +225,7 @@ export default function OrderConfirmationPage() {
               to="/shop"
               className="w-full sm:w-auto px-6 py-3 bg-brand-dark hover:bg-brand-navy text-white text-xs font-bold uppercase tracking-wider text-center transition-colors shadow-xs"
             >
-              Continue Shopping
+              {confirmationData.continueShoppingText || 'Continue Shopping'}
             </Link>
             <Link
               to="/"

@@ -7,7 +7,8 @@ import { useWebsiteData } from '../context/WebsiteDataContext';
 import { metaEvents } from '../utils/metaPixel';
 
 export default function ShopPage() {
-  const { categories, products: allProducts, loading } = useWebsiteData();
+  const { config, categories, products: allProducts, loading } = useWebsiteData();
+  const shopData = config?.shop || {};
   const [searchParams, setSearchParams] = useSearchParams();
   const categoryParam = searchParams.get('category') || 'All';
 
@@ -83,10 +84,10 @@ export default function ShopPage() {
         {/* Header Banner */}
         <div className="mb-8 space-y-2 pb-6 border-b border-brand-border">
           <h1 className="text-2xl sm:text-3xl font-black text-brand-dark tracking-tight uppercase">
-            All Hair Care Products
+            {shopData.pageTitle || 'All Hair Care Products'}
           </h1>
           <p className="text-xs sm:text-sm text-brand-muted max-w-2xl">
-            100% genuine Minoxidil 5% topical solutions, titanium micro-needles, and cost-effective combo packages. Cash on Delivery nationwide.
+            {shopData.pageSubtitle || '100% genuine Minoxidil 5% topical solutions, titanium micro-needles, and cost-effective combo packages. Cash on Delivery nationwide.'}
           </p>
         </div>
 
@@ -98,7 +99,7 @@ export default function ShopPage() {
               <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
               <input
                 type="text"
-                placeholder="Search products..."
+                placeholder={shopData.searchPlaceholder || "Search products..."}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="w-full pl-10 pr-4 py-2.5 border border-brand-border text-xs text-brand-dark placeholder-gray-400 focus:outline-none focus:border-brand-dark transition-colors"
@@ -150,7 +151,7 @@ export default function ShopPage() {
                   : 'bg-white text-brand-muted border border-brand-border hover:border-brand-dark hover:text-brand-dark'
               }`}
             >
-              All Products
+              {shopData.allCategoriesLabel || 'All Products'}
             </button>
             {categories.map((cat) => (
               <button
@@ -179,15 +180,15 @@ export default function ShopPage() {
             <div className="w-14 h-14 border border-brand-border text-brand-dark flex items-center justify-center mx-auto">
               <Package className="w-7 h-7 stroke-[1.5]" />
             </div>
-            <h3 className="text-base font-bold text-brand-dark uppercase">No products found</h3>
+            <h3 className="text-base font-bold text-brand-dark uppercase">{shopData.emptyTitle || 'No products found'}</h3>
             <p className="text-xs text-brand-muted">
-              We couldn't find any products matching your current filters. Try searching with a different term.
+              {shopData.emptySubtitle || "We couldn't find any products matching your current filters. Try searching with a different term."}
             </p>
             <button
               onClick={clearFilters}
               className="px-6 py-3 bg-brand-dark hover:bg-brand-navy text-white font-bold text-xs uppercase tracking-wider transition-colors shadow-xs"
             >
-              Reset All Filters
+              {shopData.clearFiltersText || 'Reset All Filters'}
             </button>
           </div>
         ) : (

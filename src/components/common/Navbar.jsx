@@ -123,7 +123,7 @@ export default function Navbar() {
             </div>
             <input
               type="text"
-              placeholder={lang === 'BN' ? "পণ্য, মিনোক্সিডিল, ডার্মা রোলার খুঁজুন..." : "Search products, brands, and daily essentials..."}
+              placeholder={lang === 'BN' ? (siteSettings.searchPlaceholderBn || "পণ্য, মিনোক্সিডিল, ডার্মা রোলার খুঁজুন...") : (siteSettings.searchPlaceholderEn || "Search products, brands, and daily essentials...")}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full h-full text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none bg-transparent"
@@ -132,7 +132,7 @@ export default function Navbar() {
               type="submit"
               className="h-full px-6 bg-brand-dark hover:bg-brand-navy text-white font-bold text-xs uppercase tracking-wider transition-colors flex items-center justify-center flex-shrink-0"
             >
-              {lang === 'BN' ? "খুঁজুন" : "SEARCH"}
+              {lang === 'BN' ? (siteSettings.searchButtonText?.bn || "খুঁজুন") : (siteSettings.searchButtonText?.en || "SEARCH")}
             </button>
           </form>
 
@@ -181,7 +181,7 @@ export default function Navbar() {
             </div>
             <input
               type="text"
-              placeholder="Search products & essentials..."
+              placeholder={siteSettings.searchPlaceholderMobile || "Search products & essentials..."}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full h-full px-2 text-xs text-gray-900 focus:outline-none bg-transparent"
@@ -190,7 +190,7 @@ export default function Navbar() {
               type="submit"
               className="h-full px-4 bg-brand-dark hover:bg-brand-navy text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center flex-shrink-0 transition-colors"
             >
-              Search
+              {siteSettings.searchButtonMobileText || "Search"}
             </button>
           </form>
         </div>
@@ -204,7 +204,7 @@ export default function Navbar() {
               onClick={() => navigate('/shop')}
               className="text-sm sm:text-base font-bold text-brand-dark hover:text-brand-navy whitespace-nowrap transition-colors uppercase tracking-wider flex-shrink-0"
             >
-              All Products
+              {config?.navigation?.allProductsLabel || 'All Products'}
             </button>
 
             {categories.map((cat) => (

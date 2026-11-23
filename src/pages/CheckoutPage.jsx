@@ -70,6 +70,7 @@ export default function CheckoutPage() {
   const [formErrors, setFormErrors] = useState({});
 
   const currency = config?.siteSettings?.currency || '৳';
+  const checkoutData = config?.checkout || {};
   const deliverySettings = config?.deliverySettings || {
     insideDhakaFee: 70,
     outsideDhakaFee: 130
@@ -97,15 +98,15 @@ export default function CheckoutPage() {
       <div className="min-h-screen bg-brand-light py-20 px-4">
         <div className="max-w-md mx-auto bg-white border border-brand-border p-8 text-center space-y-4">
           <ShoppingBag className="w-12 h-12 text-brand-dark mx-auto stroke-[1.5]" />
-          <h2 className="text-xl font-bold text-brand-dark tracking-tight">Your Cart is Empty</h2>
+          <h2 className="text-xl font-bold text-brand-dark tracking-tight">{checkoutData.emptyCartTitle || 'Your Cart is Empty'}</h2>
           <p className="text-sm text-brand-muted">
-            Please add a product to your cart before proceeding to checkout.
+            {checkoutData.emptyCartSubtitle || 'Please add a product to your cart before proceeding to checkout.'}
           </p>
           <Link
             to="/shop"
             className="inline-flex items-center gap-2 px-6 py-3 bg-brand-dark text-white text-xs font-bold uppercase tracking-wider hover:bg-brand-navy transition-colors shadow-xs"
           >
-            Browse Products
+            {checkoutData.browseProductsButton || 'Browse Products'}
           </Link>
         </div>
       </div>
@@ -114,16 +115,17 @@ export default function CheckoutPage() {
 
   const validate = () => {
     const errors = {};
+    const errMessages = checkoutData.errors || {};
     if (!formData.fullName.trim()) {
-      errors.fullName = 'Full Name is required';
+      errors.fullName = errMessages.nameRequired || 'Full Name is required';
     }
     if (!formData.phoneNumber.trim()) {
-      errors.phoneNumber = 'Phone number is required';
+      errors.phoneNumber = errMessages.phoneRequired || 'Phone number is required';
     } else if (!validateBDPhone(formData.phoneNumber)) {
-      errors.phoneNumber = 'Please enter a valid 11-digit Bangladeshi phone number (e.g. 01712345678)';
+      errors.phoneNumber = errMessages.phoneInvalid || 'Please enter a valid 11-digit Bangladeshi phone number (e.g. 01712345678)';
     }
     if (!formData.address.trim()) {
-      errors.address = 'Full delivery address is required';
+      errors.address = errMessages.addressRequired || 'Full delivery address is required';
     }
     setFormErrors(errors);
     return Object.keys(errors).length === 0;
@@ -165,8 +167,17 @@ export default function CheckoutPage() {
       if (res && res.success && res.orderId) {
         clearCart();
         try {
-          // Keep customer name, phone and address cached so returning customers have it auto-filled,
-          // but clear order-specific notes:
+          // Cache order receipt for instant confirmation render
+          sessionStorage.setItem(`order_${res.orderId}`, JSON.stringify(res.data || res.order || {
+            orderId: res.orderId,
+            createdAt: new Date().toISOString(),
+            customer: payload.customer,
+            items: payload.items,
+            subtotal,
+            deliveryCharge,
+            finalTotal,
+            orderStatus: 'pending'
+          }));
           const updatedCache = { ...formData, notes: '' };
           localStorage.setItem(CHECKOUT_STORAGE_KEY, JSON.stringify(updatedCache));
         } catch (e) {}
@@ -204,10 +215,10 @@ export default function CheckoutPage() {
           <div className="lg:col-span-7 bg-white border border-brand-border p-6 sm:p-8">
             <div className="mb-6 space-y-1 pb-4 border-b border-brand-border">
               <h1 className="text-xl sm:text-2xl font-black text-brand-dark tracking-tight uppercase">
-                Checkout & Delivery Information
+                {checkoutData.pageHeading || 'Checkout & Delivery Information'}
               </h1>
               <p className="text-xs text-brand-muted">
-                Complete your delivery details below. Cash on delivery — pay when you receive your package.
+                {checkoutData.pageSubheading || 'Complete your delivery details below. Cash on delivery — pay when you receive your package.'}
               </p>
             </div>
 
@@ -222,14 +233,14 @@ export default function CheckoutPage() {
               {/* 1. Customer Full Name */}
               <div>
                 <label className="block text-xs font-bold uppercase tracking-wider text-brand-dark mb-1.5">
-                  Full Name *
+                  {checkoutData.fullNameLabel || 'Full Name *'}
                 </label>
                 <div className="relative">
                   <User className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
                   <input
                     type="text"
                     required
-                    placeholder="Enter your full name"
+                    placeholder={checkoutData.fullNamePlaceholder || "Enter your full name"}
                     value={formData.fullName}
                     onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
                     className={`w-full pl-10 pr-4 py-3 border text-sm text-brand-dark placeholder-gray-400 focus:outline-none focus:border-brand-dark transition-colors ${
@@ -245,14 +256,14 @@ export default function CheckoutPage() {
               {/* 2. Mobile Phone Number */}
               <div>
                 <label className="block text-xs font-bold uppercase tracking-wider text-brand-dark mb-1.5">
-                  Mobile Phone Number (Active) *
+                  {checkoutData.phoneLabel || 'Mobile Phone Number (Active) *'}
                 </label>
                 <div className="relative">
                   <Phone className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
                   <input
                     type="tel"
                     required
-                    placeholder="017XXXXXXXX"
+                    placeholder={checkoutData.phonePlaceholder || "017XXXXXXXX"}
                     value={formData.phoneNumber}
                     onChange={(e) => setFormData({ ...formData, phoneNumber: e.target.value })}
                     className={`w-full pl-10 pr-4 py-3 border text-sm text-brand-dark placeholder-gray-400 focus:outline-none focus:border-brand-dark transition-colors ${
@@ -269,14 +280,14 @@ export default function CheckoutPage() {
               {/* 3. Full Delivery Address (Placed BEFORE Delivery Area Selector as requested) */}
               <div>
                 <label className="block text-xs font-bold uppercase tracking-wider text-brand-dark mb-1.5">
-                  Full Delivery Address *
+                  {checkoutData.addressLabel || 'Full Delivery Address *'}
                 </label>
                 <div className="relative">
                   <Home className="w-4 h-4 absolute left-3.5 top-3.5 text-gray-400" />
                   <textarea
                     rows={3}
                     required
-                    placeholder="House / Flat no, Road no, Area, Thana, District"
+                    placeholder={checkoutData.addressPlaceholder || "House / Flat no, Road no, Area, Thana, District"}
                     value={formData.address}
                     onChange={(e) => setFormData({ ...formData, address: e.target.value })}
                     className={`w-full pl-10 pr-4 py-3 border text-sm text-brand-dark placeholder-gray-400 focus:outline-none focus:border-brand-dark transition-colors ${
@@ -293,7 +304,7 @@ export default function CheckoutPage() {
               {/* 4. Delivery Area Selection (Inside Dhaka / Outside Dhaka) */}
               <div>
                 <label className="block text-xs font-bold uppercase tracking-wider text-brand-dark mb-2">
-                  Select Delivery Area *
+                  {checkoutData.deliveryAreaLabel || 'Select Delivery Area *'}
                 </label>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {/* Inside Dhaka */}
@@ -313,7 +324,7 @@ export default function CheckoutPage() {
                       className="mt-1 text-brand-dark focus:ring-brand-dark accent-brand-dark"
                     />
                     <div>
-                      <p className="text-sm font-bold text-brand-dark">Inside Dhaka City</p>
+                      <p className="text-sm font-bold text-brand-dark">{checkoutData.insideDhakaOptionLabel || 'Inside Dhaka City'}</p>
                       <p className="text-xs text-brand-muted mt-0.5">
                         Delivery Charge: <span className="font-semibold text-brand-dark">{formatCurrency(deliverySettings.insideDhakaFee ?? 70, currency)}</span>
                       </p>
@@ -338,7 +349,7 @@ export default function CheckoutPage() {
                       className="mt-1 text-brand-dark focus:ring-brand-dark accent-brand-dark"
                     />
                     <div>
-                      <p className="text-sm font-bold text-brand-dark">Outside Dhaka (All Bangladesh)</p>
+                      <p className="text-sm font-bold text-brand-dark">{checkoutData.outsideDhakaOptionLabel || 'Outside Dhaka (All Bangladesh)'}</p>
                       <p className="text-xs text-brand-muted mt-0.5">
                         Delivery Charge: <span className="font-semibold text-brand-dark">{formatCurrency(deliverySettings.outsideDhakaFee ?? 130, currency)}</span>
                       </p>
@@ -351,13 +362,13 @@ export default function CheckoutPage() {
               {/* Special Delivery Instructions (Optional) */}
               <div>
                 <label className="block text-xs font-bold uppercase tracking-wider text-brand-dark mb-1.5">
-                  Order Note (Optional)
+                  {checkoutData.notesLabel || 'Order Note (Optional)'}
                 </label>
                 <div className="relative">
                   <MessageSquare className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
                   <input
                     type="text"
-                    placeholder="e.g. Call before delivery, deliver after 4 PM"
+                    placeholder={checkoutData.notesPlaceholder || "e.g. Call before delivery, deliver after 4 PM"}
                     value={formData.notes}
                     onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
                     className="w-full pl-10 pr-4 py-2.5 border border-brand-border text-sm text-brand-dark placeholder-gray-400 focus:outline-none focus:border-brand-dark transition-colors"
@@ -383,11 +394,11 @@ export default function CheckoutPage() {
                 className="w-full py-4 px-6 bg-brand-dark hover:bg-brand-navy text-white font-black text-sm uppercase tracking-wider transition-colors flex items-center justify-center gap-2 disabled:opacity-50 shadow-md"
               >
                 {isSubmitting ? (
-                  <span>Securing Order...</span>
+                  <span>{checkoutData.submittingButtonText || 'Securing Order...'}</span>
                 ) : (
                   <>
                     <Lock className="w-4 h-4 text-white" />
-                    <span>Confirm Order ({formatCurrency(finalTotal, currency)})</span>
+                    <span>{checkoutData.submitButtonText ? `${checkoutData.submitButtonText} (${formatCurrency(finalTotal, currency)})` : `Confirm Order (${formatCurrency(finalTotal, currency)})`}</span>
                   </>
                 )}
               </button>
@@ -397,7 +408,7 @@ export default function CheckoutPage() {
           {/* Right Column: Order Summary Card */}
           <div className="lg:col-span-5 bg-white border border-brand-border p-6 sm:p-7 space-y-5 sticky top-24">
             <h3 className="text-base font-black uppercase tracking-wider text-brand-dark border-b border-brand-border pb-3 flex items-center justify-between">
-              <span>Order Summary</span>
+              <span>{checkoutData.summaryHeading || 'Order Summary'}</span>
               <span className="text-xs text-brand-muted font-normal lowercase">
                 {cartItems.reduce((acc, i) => acc + i.quantity, 0)} items
               </span>
@@ -476,15 +487,15 @@ export default function CheckoutPage() {
             {/* Calculations Breakdown */}
             <div className="pt-3 border-t border-brand-border space-y-2 text-xs">
               <div className="flex justify-between text-brand-muted">
-                <span>Subtotal</span>
+                <span>{checkoutData.subtotalLabel || 'Subtotal'}</span>
                 <span className="font-semibold text-brand-dark">{formatCurrency(subtotal, currency)}</span>
               </div>
               <div className="flex justify-between text-brand-muted">
-                <span>Delivery Charge ({formData.deliveryArea === 'inside_dhaka' ? 'Inside Dhaka' : 'Outside Dhaka'})</span>
+                <span>{checkoutData.deliveryFeeLabel ? `${checkoutData.deliveryFeeLabel} (${formData.deliveryArea === 'inside_dhaka' ? 'Inside Dhaka' : 'Outside Dhaka'})` : `Delivery Charge (${formData.deliveryArea === 'inside_dhaka' ? 'Inside Dhaka' : 'Outside Dhaka'})`}</span>
                 <span className="font-semibold text-brand-dark">{formatCurrency(deliveryCharge, currency)}</span>
               </div>
               <div className="flex justify-between text-base font-black text-brand-dark pt-3 border-t border-brand-border">
-                <span>Total Payable (COD)</span>
+                <span>{checkoutData.totalPayableLabel || 'Total Payable (COD)'}</span>
                 <span>{formatCurrency(finalTotal, currency)}</span>
               </div>
             </div>

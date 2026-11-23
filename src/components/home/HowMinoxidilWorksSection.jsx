@@ -20,7 +20,7 @@ export default function HowMinoxidilWorksSection() {
           <div className="lg:col-span-7 space-y-5">
             <div className="space-y-2">
               <span className="text-xs sm:text-sm font-bold uppercase tracking-wider text-gray-500">
-                Dermatological Science
+                {sectionData.overline || 'Dermatological Science'}
               </span>
               <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black text-gray-900 tracking-tight leading-tight uppercase">
                 {sectionData.title || 'How Does Minoxidil Work?'}
@@ -74,13 +74,13 @@ export default function HowMinoxidilWorksSection() {
                 </picture>
                 <div className="p-4 sm:p-5 bg-white border-t border-gray-200 space-y-1.5">
                   <span className="text-[11px] font-bold uppercase tracking-wider text-gray-500">
-                    Follicular Anatomy
+                    {sectionData.anatomyOverline || 'Follicular Anatomy'}
                   </span>
                   <h4 className="text-sm sm:text-base font-bold text-gray-900">
-                    Targeted Microvascular Circulation
+                    {sectionData.anatomyTitle || 'Targeted Microvascular Circulation'}
                   </h4>
                   <p className="text-xs sm:text-sm text-gray-600 leading-relaxed">
-                    Topical application widens dormant scalp capillaries, delivering oxygen directly to hair dermal papilla roots.
+                    {sectionData.anatomyDescription || 'Topical application widens dormant scalp capillaries, delivering oxygen directly to hair dermal papilla roots.'}
                   </p>
                 </div>
               </div>

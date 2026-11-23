@@ -39,7 +39,7 @@ export default function StartNowSection() {
           <div className="lg:col-span-7 order-1 lg:order-2 space-y-4 sm:space-y-5">
             <div className="space-y-2">
               <span className="text-xs sm:text-sm font-bold uppercase tracking-wider text-gray-500">
-                Early Action Strategy
+                {sectionData.overline || 'Early Action Strategy'}
               </span>
               <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black text-gray-900 tracking-tight leading-tight uppercase">
                 {sectionData.title || "It's Not Too Late to Start Now."}

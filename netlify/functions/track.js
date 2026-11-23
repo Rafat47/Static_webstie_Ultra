@@ -1,0 +1,159 @@
+import {
+  sendMetaCapiEvent,
+  extractClientIp,
+  buildUserData,
+  buildCustomData
+} from './utils/metaCapi.js';
+
+const ALLOWED_EVENTS = new Set([
+  'PageView',
+  'ViewContent',
+  'AddToCart',
+  'InitiateCheckout',
+  'AddPaymentInfo',
+  'Purchase',
+  'Contact',
+  'Search',
+  'Lead'
+]);
+
+// Simple in-memory rate limiter (per client IP)
+const ipRateMap = new Map();
+const RATE_LIMIT_WINDOW_MS = 60 * 1000;
+const MAX_REQUESTS_PER_MINUTE = 60;
+
+function isRateLimited(ip) {
+  if (!ip) return false;
+  const now = Date.now();
+  const record = ipRateMap.get(ip);
+
+  if (!record || now - record.start > RATE_LIMIT_WINDOW_MS) {
+    ipRateMap.set(ip, { count: 1, start: now });
+    return false;
+  }
+
+  record.count += 1;
+  return record.count > MAX_REQUESTS_PER_MINUTE;
+}
+
+export const handler = async (event, context) => {
+  const headers = {
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+    'Access-Control-Allow-Methods': 'POST, OPTIONS',
+    'Content-Type': 'application/json'
+  };
+
+  if (event.httpMethod === 'OPTIONS') {
+    return { statusCode: 204, headers, body: '' };
+  }
+
+  if (event.httpMethod !== 'POST') {
+    return {
+      statusCode: 405,
+      headers,
+      body: JSON.stringify({ success: false, error: 'Method not allowed' })
+    };
+  }
+
+  // Payload size limit check (approx 64KB)
+  if (event.body && event.body.length > 65536) {
+    return {
+      statusCode: 413,
+      headers,
+      body: JSON.stringify({ success: false, error: 'Payload too large' })
+    };
+  }
+
+  const clientIp = extractClientIp(event.headers);
+  if (isRateLimited(clientIp)) {
+    return {
+      statusCode: 429,
+      headers,
+      body: JSON.stringify({ success: false, error: 'Rate limit exceeded' })
+    };
+  }
+
+  try {
+    const payload = JSON.parse(event.body || '{}');
+    const { eventName, eventId, eventSourceUrl, userData = {}, customData = {} } = payload;
+
+    if (!eventName || !ALLOWED_EVENTS.has(eventName)) {
+      return {
+        statusCode: 400,
+        headers,
+        body: JSON.stringify({ success: false, error: 'Invalid or unsupported eventName' })
+      };
+    }
+
+    if (!eventId) {
+      return {
+        statusCode: 400,
+        headers,
+        body: JSON.stringify({ success: false, error: 'eventId is required for deduplication' })
+      };
+    }
+
+    const clientUserAgent = event.headers['user-agent'] || userData.clientUserAgent || null;
+
+    const normalizedUserData = buildUserData({
+      email: userData.email,
+      phone: userData.phone,
+      firstName: userData.firstName,
+      lastName: userData.lastName,
+      city: userData.city,
+      country: userData.country || 'bd',
+      externalId: userData.externalId,
+      clientIp,
+      clientUserAgent,
+      fbp: userData.fbp,
+      fbc: userData.fbc
+    });
+
+    const normalizedCustomData = buildCustomData({
+      contentIds: customData.content_ids,
+      contents: customData.contents,
+      contentName: customData.content_name,
+      contentCategory: customData.content_category,
+      value: customData.value,
+      currency: customData.currency || 'BDT',
+      numItems: customData.num_items,
+      orderId: customData.order_id,
+      inStock: customData.in_stock
+    });
+
+    // Fire CAPI event in background (fire-and-forget or await with short timeout)
+    const capiPromise = sendMetaCapiEvent({
+      eventName,
+      eventId,
+      eventTime: Math.floor(Date.now() / 1000),
+      eventSourceUrl: eventSourceUrl || event.headers['referer'] || null,
+      userData: normalizedUserData,
+      customData: normalizedCustomData
+    });
+
+    // Respond quickly to client
+    const capiResult = await Promise.race([
+      capiPromise,
+      new Promise(resolve => setTimeout(() => resolve({ success: true, status: 'dispatched_async' }), 1500))
+    ]);
+
+    return {
+      statusCode: 200,
+      headers,
+      body: JSON.stringify({
+        success: true,
+        eventId,
+        status: capiResult.status || 'delivered'
+      })
+    };
+  } catch (err) {
+    console.warn('[Track Function Error]', err.message);
+    return {
+      statusCode: 200, // Non-breaking failure response for user flow
+      headers,
+      body: JSON.stringify({ success: false, error: 'Non-fatal tracking dispatch issue' })
+    };
+  }
+};
+

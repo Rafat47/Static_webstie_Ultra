@@ -1,34 +1,40 @@
 import { useEffect } from 'react';
+import { useConfig } from '../../context/ConfigContext';
 
-export default function SEOHead({ description, image }) {
+export default function SEOHead({ title, description, image }) {
+  const { config } = useConfig();
+
   useEffect(() => {
-    // Keep browser tab title always constant as the brand name across all pages
-    document.title = 'Hair Shurokkha';
+    const brandName = config?.siteSettings?.brandName || 'Hair Shurokkha';
+    const siteTitle = title || config?.seo?.defaultTitle || brandName;
+    document.title = siteTitle;
 
-    // Ensure tab icon is the transparent brand logo
+    const favicon = config?.siteSettings?.faviconUrl || '/hair-shurokkha-logo-transparent.png';
     let linkIcon = document.querySelector('link[rel="icon"]');
     if (linkIcon) {
-      linkIcon.href = '/hair-shurokkha-logo-transparent.png';
+      linkIcon.href = favicon;
       linkIcon.type = 'image/png';
     }
 
-    if (description) {
+    const metaDescription = description || config?.seo?.defaultDescription;
+    if (metaDescription) {
       let metaDesc = document.querySelector('meta[name="description"]');
       if (!metaDesc) {
         metaDesc = document.createElement('meta');
         metaDesc.name = 'description';
         document.head.appendChild(metaDesc);
       }
-      metaDesc.content = description;
+      metaDesc.content = metaDescription;
     }
 
-    if (image) {
+    const ogImg = image || config?.seo?.ogImage || '/hair-shurokkha-logo-transparent.png';
+    if (ogImg) {
       let metaOgImage = document.querySelector('meta[property="og:image"]');
       if (metaOgImage) {
-        metaOgImage.content = image;
+        metaOgImage.content = ogImg;
       }
     }
-  }, [description, image]);
+  }, [title, description, image, config]);
 
   return null;
 }

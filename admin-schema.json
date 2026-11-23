@@ -1,0 +1,51 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "SiteAdminConfigSchema",
+  "description": "Strict JSON schema defining internal administrative configuration stored in site_admin.admin",
+  "type": "object",
+  "required": [
+    "adminEmail",
+    "notifyNewOrders",
+    "orderNotificationEmail",
+    "maxOrderQuantityPerItem",
+    "autoLockoutAttempts",
+    "lockoutDurationMinutes",
+    "metaApiVersion"
+  ],
+  "properties": {
+    "adminEmail": {
+      "title": "Primary Admin Email",
+      "type": "string"
+    },
+    "notifyNewOrders": {
+      "title": "Order Notification Toggle",
+      "type": "boolean"
+    },
+    "orderNotificationEmail": {
+      "title": "Notification Dispatch Email",
+      "type": "string"
+    },
+    "maxOrderQuantityPerItem": {
+      "title": "Maximum Quantity Per Line Item",
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 50
+    },
+    "autoLockoutAttempts": {
+      "title": "Failed Login Lockout Threshold",
+      "type": "integer",
+      "minimum": 3,
+      "maximum": 20
+    },
+    "lockoutDurationMinutes": {
+      "title": "Lockout Duration in Minutes",
+      "type": "integer",
+      "minimum": 5,
+      "maximum": 120
+    },
+    "metaApiVersion": {
+      "title": "Meta Graph API Version",
+      "type": "string"
+    }
+  }
+}

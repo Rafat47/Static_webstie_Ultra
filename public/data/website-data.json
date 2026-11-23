@@ -1,5 +1,109 @@
 {
-  "_id": "main",
+  "siteSettings": {
+    "socialLinks": {
+      "facebook": "https://facebook.com/hairshurokkhabd",
+      "instagram": "https://instagram.com/hairshurokkhabd",
+      "youtube": "https://youtube.com/@hairshurokkhabd"
+    },
+    "siteName": "Hair Shurokkha",
+    "logoText": "Hair Shurokkha",
+    "logoUrl": "/images/hair-shurokkha-logo-transparent.png",
+    "tagline": "Science-Backed Hair Restoration & Scalp Wellness",
+    "currency": "৳",
+    "contactPhone": "01356813069, 01521259918",
+    "contactEmail": "hairsurokkha@gmail.com",
+    "whatsappNumber": "+8801356813069",
+    "address": "Sonirakra, Dhonia, Dhaka 1236",
+    "faviconUrl": "/hair-shurokkha-logo-transparent.png",
+    "searchPlaceholderEn": "Search products, brands, and daily essentials...",
+    "searchPlaceholderBn": "পণ্য, মিনোক্সিডিল, ডার্মা রোলার খুঁজুন...",
+    "searchButtonText": {
+      "en": "SEARCH",
+      "bn": "খুঁজুন"
+    },
+    "searchPlaceholderMobile": "Search products & essentials...",
+    "searchButtonMobileText": "Search",
+    "supportHours": "Support Hours: 10:00 AM – 9:00 PM (Everyday)",
+    "whatsappDefaultMessage": "Hello Regrow Hair Care BD, I want to learn more about your authentic Minoxidil packages.",
+    "whatsappButtonLabel": "Chat with Us"
+  },
+  "hero": {
+    "badge": "100% Authentic Guaranteed",
+    "title": "Science-Backed Scalp Restoration BD",
+    "subtitle": "Reactivate dormant hair follicles, increase scalp blood microcirculation, and reclaim thicker hair with dermatologically proven Minoxidil 5% and micro-needling systems.",
+    "primaryBtnText": "Shop Now",
+    "primaryBtnLink": "/shop",
+    "secondaryBtnText": "How to Use",
+    "secondaryBtnLink": "#how-to-use",
+    "heroImage": "https://res.cloudinary.com/wvd1wcrw/image/upload/v1795301427/Modern_Hair_Care_Product_Showcase.png",
+    "rating": "4.9 / 5.0 Rating across Bangladesh",
+    "trustBadges": [
+      {
+        "label": "Authentic Sourced",
+        "sub": "100% Genuine USA Formulation",
+        "_id": "6b0072b8ca8f2dea4a890df8"
+      },
+      {
+        "label": "Fast Cash on Delivery",
+        "sub": "Inside & Outside Dhaka",
+        "_id": "6b0072b8ca8f2dea4a890df9"
+      },
+      {
+        "label": "7-Day Inspection",
+        "sub": "Check package before payment",
+        "_id": "6b0072b8ca8f2dea4a890dfa"
+      }
+    ],
+    "desktopImage": "https://res.cloudinary.com/wvd1wcrw/image/upload/v1795301427/Modern_Hair_Care_Product_Showcase.png",
+    "mobileImage": "https://res.cloudinary.com/wvd1wcrw/image/upload/v1795301800/Minoxidil_Hair_Care_Product_Showcase.png"
+  },
+  "navigation": {
+    "items": [
+      {
+        "label": "Home",
+        "href": "#hero",
+        "isSection": true,
+        "_id": "6b0072b8ca8f2dea4a890df1"
+      },
+      {
+        "label": "Shop",
+        "href": "/shop",
+        "isSection": false,
+        "_id": "6b0072b8ca8f2dea4a890df2"
+      },
+      {
+        "label": "Hair Thinning",
+        "href": "#hair-thinning",
+        "isSection": true,
+        "_id": "6b0072b8ca8f2dea4a890df3"
+      },
+      {
+        "label": "How It Works",
+        "href": "#how-it-works",
+        "isSection": true,
+        "_id": "6b0072b8ca8f2dea4a890df4"
+      },
+      {
+        "label": "Progress",
+        "href": "#progress",
+        "isSection": true,
+        "_id": "6b0072b8ca8f2dea4a890df5"
+      },
+      {
+        "label": "How to Use",
+        "href": "#how-to-use",
+        "isSection": true,
+        "_id": "6b0072b8ca8f2dea4a890df6"
+      },
+      {
+        "label": "Contact",
+        "href": "#contact",
+        "isSection": true,
+        "_id": "6b0072b8ca8f2dea4a890df7"
+      }
+    ],
+    "allProductsLabel": "All Products"
+  },
   "categories": [
     {
       "_id": "cat_1795201483653",
@@ -57,159 +161,207 @@
       "updatedAt": "2026-11-22T08:40:31.018Z"
     }
   ],
-  "deliverySettings": {
-    "insideDhakaFee": 70,
-    "outsideDhakaFee": 130,
-    "estimatedInsideDays": "1 - 2 Business Days",
-    "estimatedOutsideDays": "2 - 4 Business Days",
-    "freeShippingThreshold": 0
-  },
-  "featuredProducts": {
-    "title": "Recommended Hair Restoration Solutions",
-    "subtitle": "Dermatologically selected formulations & packages delivered straight to your door across Bangladesh.",
-    "enabled": true
-  },
-  "footer": {
-    "aboutText": "Regrow Hair Care is Bangladesh's trusted supplier of genuine dermatological Minoxidil 5% solutions, titanium micro-needling derma rollers, and targeted scalp care combos. Verified authentic, shipped Cash on Delivery nationwide.",
-    "copyrightText": "© 2026 Hair Surokkha. All rights reserved.",
-    "quickLinks": [
-      {
-        "label": "Home",
-        "href": "/",
-        "_id": "6b0072b8ca8f2dea4a890e0b"
-      },
-      {
-        "label": "Shop All Products",
-        "href": "/shop",
-        "_id": "6b0072b8ca8f2dea4a890e0c"
-      },
-      {
-        "label": "Minoxidil 5% Solutions",
-        "href": "/shop?category=Minoxidil",
-        "_id": "6b0072b8ca8f2dea4a890e0d"
-      },
-      {
-        "label": "Derma Rollers",
-        "href": "/shop?category=Derma%20Roller",
-        "_id": "6b0072b8ca8f2dea4a890e0e"
-      },
-      {
-        "label": "Combo Packages",
-        "href": "/shop?category=Combo%20Packages",
-        "_id": "6b0072b8ca8f2dea4a890e0f"
-      }
-    ],
-    "legalLinks": [
-      {
-        "label": "Shipping Policy",
-        "href": "/shipping-policy",
-        "_id": "6b0072b8ca8f2dea4a890e10"
-      },
-      {
-        "label": "Return & Refund Policy",
-        "href": "/refund-policy",
-        "_id": "6b0072b8ca8f2dea4a890e11"
-      },
-      {
-        "label": "Privacy Policy",
-        "href": "/privacy-policy",
-        "_id": "6b0072b8ca8f2dea4a890e12"
-      },
-      {
-        "label": "Terms & Conditions",
-        "href": "/terms-and-conditions",
-        "_id": "6b0072b8ca8f2dea4a890e13"
-      }
-    ],
-    "showCODNotice": true
-  },
-  "hero": {
-    "badge": "100% Authentic Guaranteed",
-    "title": "Science-Backed Scalp Restoration BD",
-    "subtitle": "Reactivate dormant hair follicles, increase scalp blood microcirculation, and reclaim thicker hair with dermatologically proven Minoxidil 5% and micro-needling systems.",
-    "primaryBtnText": "Shop Now",
-    "primaryBtnLink": "/shop",
-    "secondaryBtnText": "How to Use",
-    "secondaryBtnLink": "#how-to-use",
-    "heroImage": "https://res.cloudinary.com/wvd1wcrw/image/upload/v1795301427/Modern_Hair_Care_Product_Showcase.png",
-    "rating": "4.9 / 5.0 Rating across Bangladesh",
-    "trustBadges": [
-      {
-        "label": "Authentic Sourced",
-        "sub": "100% Genuine USA Formulation",
-        "_id": "6b0072b8ca8f2dea4a890df8"
-      },
-      {
-        "label": "Fast Cash on Delivery",
-        "sub": "Inside & Outside Dhaka",
-        "_id": "6b0072b8ca8f2dea4a890df9"
-      },
-      {
-        "label": "7-Day Inspection",
-        "sub": "Check package before payment",
-        "_id": "6b0072b8ca8f2dea4a890dfa"
-      }
-    ],
-    "desktopImage": "https://res.cloudinary.com/wvd1wcrw/image/upload/v1795301427/Modern_Hair_Care_Product_Showcase.png",
-    "mobileImage": "https://res.cloudinary.com/wvd1wcrw/image/upload/v1795301800/Minoxidil_Hair_Care_Product_Showcase.png"
-  },
-  "metaSettings": {
-    "testEventCode": "",
-    "isPixelEnabled": true,
-    "isCapiEnabled": true,
-    "isLoggingEnabled": true,
-    "logRetentionDays": 7
-  },
-  "navigation": {
-    "items": [
-      {
-        "label": "Home",
-        "href": "#hero",
-        "isSection": true,
-        "_id": "6b0072b8ca8f2dea4a890df1"
-      },
-      {
-        "label": "Shop",
-        "href": "/shop",
-        "isSection": false,
-        "_id": "6b0072b8ca8f2dea4a890df2"
-      },
-      {
-        "label": "Hair Thinning",
-        "href": "#hair-thinning",
-        "isSection": true,
-        "_id": "6b0072b8ca8f2dea4a890df3"
-      },
-      {
-        "label": "How It Works",
-        "href": "#how-it-works",
-        "isSection": true,
-        "_id": "6b0072b8ca8f2dea4a890df4"
-      },
-      {
-        "label": "Progress",
-        "href": "#progress",
-        "isSection": true,
-        "_id": "6b0072b8ca8f2dea4a890df5"
-      },
-      {
-        "label": "How to Use",
-        "href": "#how-to-use",
-        "isSection": true,
-        "_id": "6b0072b8ca8f2dea4a890df6"
-      },
-      {
-        "label": "Contact",
-        "href": "#contact",
-        "isSection": true,
-        "_id": "6b0072b8ca8f2dea4a890df7"
-      }
-    ]
-  },
   "productCarousel": {
     "enabled": true,
     "title": "Quick Product Selector",
     "subtitle": "Tap any product to explore complete details & packages"
+  },
+  "featuredProducts": {
+    "title": "Recommended Hair Restoration Solutions",
+    "subtitle": "Dermatologically selected formulations & packages delivered straight to your door across Bangladesh.",
+    "enabled": true,
+    "overline": "Dermatological Range",
+    "ctaText": "View All Packages"
+  },
+  "sections": {
+    "startNow": {
+      "enabled": true,
+      "title": "It's Not Too Late to Start Now.",
+      "subtitle": "Early intervention makes the critical difference between miniaturized and restored follicles.",
+      "content": "Hair thinning is a progressive biological process. DHT (Dihydrotestosterone) gradually binds to vulnerable receptors, shrinking follicles and shortening growth cycles. However, as long as hair follicles remain alive, targeted topical stimulation can help restore blood flow, nutrients, and cellular regeneration.",
+      "bulletPoints": [
+        "Follicles remain viable years before irreversible dormancy occurs.",
+        "Topical Minoxidil dilates micro-capillaries to supply oxygen and vital amino acids.",
+        "Derma rolling enhances topical absorption up to 3x while stimulating collagen synthesis."
+      ],
+      "ctaText": "Explore Hair Care Products",
+      "ctaLink": "/shop",
+      "image": "https://res.cloudinary.com/wvd1wcrw/image/upload/v1795290138/Worried_Man_Touching_His_Hair.png",
+      "desktopImage": "https://res.cloudinary.com/wvd1wcrw/image/upload/v1795290138/Worried_Man_Touching_His_Hair.png",
+      "mobileImage": "https://res.cloudinary.com/wvd1wcrw/image/upload/v1795290138/Worried_Man_Touching_His_Hair.png",
+      "overline": "Early Action Strategy"
+    },
+    "hairThinning": {
+      "enabled": true,
+      "title": "Understanding Hair Thinning",
+      "subtitle": "Why hair loses density and how early detection saves thinning crowns & temples.",
+      "intro": "Pattern thinning is not an overnight event; it develops silently across months. Here is what happens beneath the scalp surface:",
+      "stages": [
+        {
+          "stageNumber": "01",
+          "title": "Healthy Hair Follicles",
+          "description": "Follicles are deeply rooted in the dermal layer. Blood vessels supply ample oxygen and nutrients, keeping 85-90% of hairs in the active growing (Anagen) phase.",
+          "badge": "Phase 1: Normal",
+          "icon": "ShieldCheck",
+          "_id": "6b0072b8ca8f2dea4a890dfb",
+          "image": "https://res.cloudinary.com/wvd1wcrw/image/upload/v1795286894/Clinical_Portrait_of_Voluminous_Wavy_Hair.png"
+        },
+        {
+          "stageNumber": "02",
+          "title": "Miniaturization Begins",
+          "description": "DHT sensitivity constricts micro-vessels. Hair shafts become progressively finer, shorter, and brittle as the growth phase shortens drastically.",
+          "badge": "Phase 2: Warning",
+          "icon": "TrendingDown",
+          "_id": "6b0072b8ca8f2dea4a890dfc",
+          "image": "https://res.cloudinary.com/wvd1wcrw/image/upload/v1795287105/Overhead_Portrait_of_Hair_Thinning.png"
+        },
+        {
+          "stageNumber": "03",
+          "title": "Visible Scalp Exposure",
+          "description": "Without topical stimulation, hairs shed faster than they can regenerate, leading to widened part lines, receding temples, and thinning crowns.",
+          "badge": "Phase 3: Action Required",
+          "icon": "AlertCircle",
+          "_id": "6b0072b8ca8f2dea4a890dfd",
+          "image": "https://res.cloudinary.com/wvd1wcrw/image/upload/v1795287199/Overhead_Portrait_of_Thinning_Hair.png"
+        }
+      ],
+      "ctaText": "Start Recovery Routine",
+      "ctaLink": "/shop",
+      "overline": "Biological Progression",
+      "healthLabel": "Follicle Health:"
+    },
+    "howMinoxidilWorks": {
+      "enabled": true,
+      "title": "How Does Minoxidil Work?",
+      "subtitle": "The dermatological science behind follicular reactivation and prolonged Anagen growth.",
+      "mechanismPoints": [
+        {
+          "step": "01",
+          "title": "Potassium Channel Opening",
+          "description": "Minoxidil acts as a potassium channel opener, widening cell membranes and encouraging cellular hyperpolarization.",
+          "_id": "6b0072b8ca8f2dea4a890dfe"
+        },
+        {
+          "step": "02",
+          "title": "Micro-Vascular Vasodilation",
+          "description": "Expands constricted scalp capillaries, boosting immediate oxygen and nutrient delivery directly to dormant follicle roots.",
+          "_id": "6b0072b8ca8f2dea4a890dff"
+        },
+        {
+          "step": "03",
+          "title": "Prolonging the Anagen Phase",
+          "description": "Transitions prematurely resting (Telogen) follicles back into vigorous, prolonged active growth (Anagen) cycles.",
+          "_id": "6b0072b8ca8f2dea4a890e00"
+        },
+        {
+          "step": "04",
+          "title": "Thicker Shaft Diameter",
+          "description": "Over consistent application, renewed follicles produce visibly thicker, darker terminal hairs with greater root anchorage.",
+          "_id": "6b0072b8ca8f2dea4a890e01"
+        }
+      ],
+      "scienceNote": "Topical Minoxidil 5% is recommended worldwide by dermatologists as the first-line non-surgical treatment for both vertex and crown hair thinning.",
+      "image": "https://res.cloudinary.com/wvd1wcrw/image/upload/v1795287599/How_Minoxidil_Reactivates_Hair_Growth.png",
+      "ctaText": "View Minoxidil Solutions",
+      "ctaLink": "/shop",
+      "desktopImage": "https://res.cloudinary.com/wvd1wcrw/image/upload/v1795287599/How_Minoxidil_Reactivates_Hair_Growth.png",
+      "overline": "Dermatological Science",
+      "anatomyOverline": "Follicular Anatomy",
+      "anatomyTitle": "Targeted Microvascular Circulation",
+      "anatomyDescription": "Topical application widens dormant scalp capillaries, delivering oxygen directly to hair dermal papilla roots."
+    },
+    "progressTimeline": {
+      "enabled": true,
+      "title": "Every Journey Takes Time",
+      "subtitle": "What to realistically expect with consistent daily application. Results vary by individual.",
+      "disclaimer": "Important: Consistent twice-daily application is essential. Individual biological response, timeline, and degree of recovery naturally vary.",
+      "stages": [
+        {
+          "stage": "Stage 1",
+          "period": "Month 1",
+          "title": "Adjustment & Shedding Phase",
+          "description": "Old, miniaturized resting telogen hairs shed to make room for healthier new follicles. This shedding is normal and a sign of active response.",
+          "image": "https://res.cloudinary.com/wvd1wcrw/image/upload/v1795289339/Clinical_Scalp_Hair_Loss_Assessment.png",
+          "highlight": "Normal Shedding",
+          "_id": "6b0072b8ca8f2dea4a890e02"
+        },
+        {
+          "stage": "Stage 2",
+          "period": "Month 3",
+          "title": "Early Vellus Hair Emergence",
+          "description": "Fine, soft baby hairs begin sprouting in previously thinning areas. Follicle roots gain deeper anchorage and improved micro-circulation.",
+          "image": "https://res.cloudinary.com/wvd1wcrw/image/upload/v1795289342/Three-Month_Hair_Growth_Progress.png",
+          "highlight": "Soft Sprouting",
+          "_id": "6b0072b8ca8f2dea4a890e03"
+        },
+        {
+          "stage": "Stage 3",
+          "period": "Month 6",
+          "title": "Terminal Hair Thickening",
+          "description": "Vellus hairs mature into pigmented, thicker terminal shafts. Noticeable reduction in scalp visibility and visible density restoration.",
+          "image": "https://res.cloudinary.com/wvd1wcrw/image/upload/v1795289694/Clinical_Crown_Hair_Assessment.png",
+          "highlight": "Visible Density",
+          "_id": "6b0072b8ca8f2dea4a890e04"
+        },
+        {
+          "stage": "Stage 4",
+          "period": "Month 9 - 12",
+          "title": "Optimal Density & Maintenance",
+          "description": "Full cosmetic density achieved in responsive areas. Continued maintenance routine preserves healthy hair cycles permanently.",
+          "image": "https://res.cloudinary.com/wvd1wcrw/image/upload/v1795289929/Dense_Dark_Hair_Overhead_Portrait.png",
+          "highlight": "Full Routine",
+          "_id": "6b0072b8ca8f2dea4a890e05"
+        }
+      ],
+      "overline": "Realistic Expectations",
+      "milestoneLabel": "Milestone:"
+    },
+    "usageGuide": {
+      "enabled": true,
+      "title": "How to Use Minoxidil",
+      "subtitle": "Simple 5-step daily routine for maximum absorption and safety.",
+      "safetyNotice": "For external scalp use only. Do not exceed 1ml per application. Wash hands thoroughly with soap after use. If scalp irritation or dizziness occurs, discontinue and consult a healthcare professional.",
+      "steps": [
+        {
+          "stepNumber": "01",
+          "title": "Cleanse & Dry Scalp",
+          "description": "Wash your scalp with a gentle shampoo. Ensure hair and scalp are 100% dry before application, as moisture impedes optimal absorption.",
+          "_id": "6b0072b8ca8f2dea4a890e06",
+          "image": "https://res.cloudinary.com/wvd1wcrw/image/upload/v1795290923/Young_Man_Washing_Hair_with_Foamy_Shampoo.png"
+        },
+        {
+          "stepNumber": "02",
+          "title": "Measure Exactly 1 mL",
+          "description": "Draw 1 mL of Minoxidil 5% solution into the calibrated dropper. Never exceed 1 mL per application, regardless of the area size.",
+          "_id": "6b0072b8ca8f2dea4a890e07",
+          "image": "https://res.cloudinary.com/wvd1wcrw/image/upload/v1795291018/Minoxidil_Dropper_with_1_mL_Badge.png"
+        },
+        {
+          "stepNumber": "03",
+          "title": "Part Hair & Apply to Scalp(not Hair)",
+          "description": "Part hair in areas of thinning (vertex, crown, temples). Gently release drops directly onto the scalp surface, not on hair strands.",
+          "_id": "6b0072b8ca8f2dea4a890e08",
+          "image": "https://res.cloudinary.com/wvd1wcrw/image/upload/v1795291131/Hair_Serum_Dropper_on_Thinning_Scalp.png"
+        },
+        {
+          "stepNumber": "04",
+          "title": "Wait 3-4 Hours before washing off",
+          "description": "Lightly spread the liquid over the target scalp area with your fingertips. Do not vigorously rub. Wash hands immediately.",
+          "_id": "6b0072b8ca8f2dea4a890e09",
+          "image": "https://res.cloudinary.com/wvd1wcrw/image/upload/v1795291757/3_4_Hour_Hair_Timer_Badge.png"
+        },
+        {
+          "stepNumber": "05",
+          "title": "Apply twice a day, daily. Consistency is key!!",
+          "description": "Let the solution naturally absorb for at least 4 hours before washing hair, wearing tight hats, or going to sleep.",
+          "_id": "6b0072b8ca8f2dea4a890e0a",
+          "image": "https://res.cloudinary.com/wvd1wcrw/image/upload/v1795291755/Glossy_Minoxidil_Twice-Daily_Schedule.png"
+        }
+      ],
+      "image": "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=800&auto=format&fit=crop&q=80",
+      "overline": "Application Protocol",
+      "safetyNoticePrefix": "Medical Safety Instructions: "
+    }
   },
   "products": [
     {
@@ -602,206 +754,288 @@
       "updatedAt": "2026-11-22T14:02:16.474Z"
     }
   ],
-  "sections": {
-    "startNow": {
-      "enabled": true,
-      "title": "It's Not Too Late to Start Now.",
-      "subtitle": "Early intervention makes the critical difference between miniaturized and restored follicles.",
-      "content": "Hair thinning is a progressive biological process. DHT (Dihydrotestosterone) gradually binds to vulnerable receptors, shrinking follicles and shortening growth cycles. However, as long as hair follicles remain alive, targeted topical stimulation can help restore blood flow, nutrients, and cellular regeneration.",
-      "bulletPoints": [
-        "Follicles remain viable years before irreversible dormancy occurs.",
-        "Topical Minoxidil dilates micro-capillaries to supply oxygen and vital amino acids.",
-        "Derma rolling enhances topical absorption up to 3x while stimulating collagen synthesis."
-      ],
-      "ctaText": "Explore Hair Care Products",
-      "ctaLink": "/shop",
-      "image": "https://res.cloudinary.com/wvd1wcrw/image/upload/v1795290138/Worried_Man_Touching_His_Hair.png",
-      "desktopImage": "https://res.cloudinary.com/wvd1wcrw/image/upload/v1795290138/Worried_Man_Touching_His_Hair.png",
-      "mobileImage": "https://res.cloudinary.com/wvd1wcrw/image/upload/v1795290138/Worried_Man_Touching_His_Hair.png"
-    },
-    "hairThinning": {
-      "enabled": true,
-      "title": "Understanding Hair Thinning",
-      "subtitle": "Why hair loses density and how early detection saves thinning crowns & temples.",
-      "intro": "Pattern thinning is not an overnight event; it develops silently across months. Here is what happens beneath the scalp surface:",
-      "stages": [
-        {
-          "stageNumber": "01",
-          "title": "Healthy Hair Follicles",
-          "description": "Follicles are deeply rooted in the dermal layer. Blood vessels supply ample oxygen and nutrients, keeping 85-90% of hairs in the active growing (Anagen) phase.",
-          "badge": "Phase 1: Normal",
-          "icon": "ShieldCheck",
-          "_id": "6b0072b8ca8f2dea4a890dfb",
-          "image": "https://res.cloudinary.com/wvd1wcrw/image/upload/v1795286894/Clinical_Portrait_of_Voluminous_Wavy_Hair.png"
-        },
-        {
-          "stageNumber": "02",
-          "title": "Miniaturization Begins",
-          "description": "DHT sensitivity constricts micro-vessels. Hair shafts become progressively finer, shorter, and brittle as the growth phase shortens drastically.",
-          "badge": "Phase 2: Warning",
-          "icon": "TrendingDown",
-          "_id": "6b0072b8ca8f2dea4a890dfc",
-          "image": "https://res.cloudinary.com/wvd1wcrw/image/upload/v1795287105/Overhead_Portrait_of_Hair_Thinning.png"
-        },
-        {
-          "stageNumber": "03",
-          "title": "Visible Scalp Exposure",
-          "description": "Without topical stimulation, hairs shed faster than they can regenerate, leading to widened part lines, receding temples, and thinning crowns.",
-          "badge": "Phase 3: Action Required",
-          "icon": "AlertCircle",
-          "_id": "6b0072b8ca8f2dea4a890dfd",
-          "image": "https://res.cloudinary.com/wvd1wcrw/image/upload/v1795287199/Overhead_Portrait_of_Thinning_Hair.png"
-        }
-      ],
-      "ctaText": "Start Recovery Routine",
-      "ctaLink": "/shop"
-    },
-    "howMinoxidilWorks": {
-      "enabled": true,
-      "title": "How Does Minoxidil Work?",
-      "subtitle": "The dermatological science behind follicular reactivation and prolonged Anagen growth.",
-      "mechanismPoints": [
-        {
-          "step": "01",
-          "title": "Potassium Channel Opening",
-          "description": "Minoxidil acts as a potassium channel opener, widening cell membranes and encouraging cellular hyperpolarization.",
-          "_id": "6b0072b8ca8f2dea4a890dfe"
-        },
-        {
-          "step": "02",
-          "title": "Micro-Vascular Vasodilation",
-          "description": "Expands constricted scalp capillaries, boosting immediate oxygen and nutrient delivery directly to dormant follicle roots.",
-          "_id": "6b0072b8ca8f2dea4a890dff"
-        },
-        {
-          "step": "03",
-          "title": "Prolonging the Anagen Phase",
-          "description": "Transitions prematurely resting (Telogen) follicles back into vigorous, prolonged active growth (Anagen) cycles.",
-          "_id": "6b0072b8ca8f2dea4a890e00"
-        },
-        {
-          "step": "04",
-          "title": "Thicker Shaft Diameter",
-          "description": "Over consistent application, renewed follicles produce visibly thicker, darker terminal hairs with greater root anchorage.",
-          "_id": "6b0072b8ca8f2dea4a890e01"
-        }
-      ],
-      "scienceNote": "Topical Minoxidil 5% is recommended worldwide by dermatologists as the first-line non-surgical treatment for both vertex and crown hair thinning.",
-      "image": "https://res.cloudinary.com/wvd1wcrw/image/upload/v1795287599/How_Minoxidil_Reactivates_Hair_Growth.png",
-      "ctaText": "View Minoxidil Solutions",
-      "ctaLink": "/shop",
-      "desktopImage": "https://res.cloudinary.com/wvd1wcrw/image/upload/v1795287599/How_Minoxidil_Reactivates_Hair_Growth.png"
-    },
-    "progressTimeline": {
-      "enabled": true,
-      "title": "Every Journey Takes Time",
-      "subtitle": "What to realistically expect with consistent daily application. Results vary by individual.",
-      "disclaimer": "Important: Consistent twice-daily application is essential. Individual biological response, timeline, and degree of recovery naturally vary.",
-      "stages": [
-        {
-          "stage": "Stage 1",
-          "period": "Month 1",
-          "title": "Adjustment & Shedding Phase",
-          "description": "Old, miniaturized resting telogen hairs shed to make room for healthier new follicles. This shedding is normal and a sign of active response.",
-          "image": "https://res.cloudinary.com/wvd1wcrw/image/upload/v1795289339/Clinical_Scalp_Hair_Loss_Assessment.png",
-          "highlight": "Normal Shedding",
-          "_id": "6b0072b8ca8f2dea4a890e02"
-        },
-        {
-          "stage": "Stage 2",
-          "period": "Month 3",
-          "title": "Early Vellus Hair Emergence",
-          "description": "Fine, soft baby hairs begin sprouting in previously thinning areas. Follicle roots gain deeper anchorage and improved micro-circulation.",
-          "image": "https://res.cloudinary.com/wvd1wcrw/image/upload/v1795289342/Three-Month_Hair_Growth_Progress.png",
-          "highlight": "Soft Sprouting",
-          "_id": "6b0072b8ca8f2dea4a890e03"
-        },
-        {
-          "stage": "Stage 3",
-          "period": "Month 6",
-          "title": "Terminal Hair Thickening",
-          "description": "Vellus hairs mature into pigmented, thicker terminal shafts. Noticeable reduction in scalp visibility and visible density restoration.",
-          "image": "https://res.cloudinary.com/wvd1wcrw/image/upload/v1795289694/Clinical_Crown_Hair_Assessment.png",
-          "highlight": "Visible Density",
-          "_id": "6b0072b8ca8f2dea4a890e04"
-        },
-        {
-          "stage": "Stage 4",
-          "period": "Month 9 - 12",
-          "title": "Optimal Density & Maintenance",
-          "description": "Full cosmetic density achieved in responsive areas. Continued maintenance routine preserves healthy hair cycles permanently.",
-          "image": "https://res.cloudinary.com/wvd1wcrw/image/upload/v1795289929/Dense_Dark_Hair_Overhead_Portrait.png",
-          "highlight": "Full Routine",
-          "_id": "6b0072b8ca8f2dea4a890e05"
-        }
-      ]
-    },
-    "usageGuide": {
-      "enabled": true,
-      "title": "How to Use Minoxidil",
-      "subtitle": "Simple 5-step daily routine for maximum absorption and safety.",
-      "safetyNotice": "For external scalp use only. Do not exceed 1ml per application. Wash hands thoroughly with soap after use. If scalp irritation or dizziness occurs, discontinue and consult a healthcare professional.",
-      "steps": [
-        {
-          "stepNumber": "01",
-          "title": "Cleanse & Dry Scalp",
-          "description": "Wash your scalp with a gentle shampoo. Ensure hair and scalp are 100% dry before application, as moisture impedes optimal absorption.",
-          "_id": "6b0072b8ca8f2dea4a890e06",
-          "image": "https://res.cloudinary.com/wvd1wcrw/image/upload/v1795290923/Young_Man_Washing_Hair_with_Foamy_Shampoo.png"
-        },
-        {
-          "stepNumber": "02",
-          "title": "Measure Exactly 1 mL",
-          "description": "Draw 1 mL of Minoxidil 5% solution into the calibrated dropper. Never exceed 1 mL per application, regardless of the area size.",
-          "_id": "6b0072b8ca8f2dea4a890e07",
-          "image": "https://res.cloudinary.com/wvd1wcrw/image/upload/v1795291018/Minoxidil_Dropper_with_1_mL_Badge.png"
-        },
-        {
-          "stepNumber": "03",
-          "title": "Part Hair & Apply to Scalp(not Hair)",
-          "description": "Part hair in areas of thinning (vertex, crown, temples). Gently release drops directly onto the scalp surface, not on hair strands.",
-          "_id": "6b0072b8ca8f2dea4a890e08",
-          "image": "https://res.cloudinary.com/wvd1wcrw/image/upload/v1795291131/Hair_Serum_Dropper_on_Thinning_Scalp.png"
-        },
-        {
-          "stepNumber": "04",
-          "title": "Wait 3-4 Hours before washing off",
-          "description": "Lightly spread the liquid over the target scalp area with your fingertips. Do not vigorously rub. Wash hands immediately.",
-          "_id": "6b0072b8ca8f2dea4a890e09",
-          "image": "https://res.cloudinary.com/wvd1wcrw/image/upload/v1795291757/3_4_Hour_Hair_Timer_Badge.png"
-        },
-        {
-          "stepNumber": "05",
-          "title": "Apply twice a day, daily. Consistency is key!!",
-          "description": "Let the solution naturally absorb for at least 4 hours before washing hair, wearing tight hats, or going to sleep.",
-          "_id": "6b0072b8ca8f2dea4a890e0a",
-          "image": "https://res.cloudinary.com/wvd1wcrw/image/upload/v1795291755/Glossy_Minoxidil_Twice-Daily_Schedule.png"
-        }
-      ],
-      "image": "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=800&auto=format&fit=crop&q=80"
-    }
+  "deliverySettings": {
+    "insideDhakaFee": 70,
+    "outsideDhakaFee": 130,
+    "estimatedInsideDays": "1 - 2 Business Days",
+    "estimatedOutsideDays": "2 - 4 Business Days",
+    "freeShippingThreshold": 0
+  },
+  "footer": {
+    "aboutText": "Regrow Hair Care is Bangladesh's trusted supplier of genuine dermatological Minoxidil 5% solutions, titanium micro-needling derma rollers, and targeted scalp care combos. Verified authentic, shipped Cash on Delivery nationwide.",
+    "copyrightText": "© 2026 Hair Surokkha. All rights reserved.",
+    "quickLinks": [
+      {
+        "label": "Home",
+        "href": "/",
+        "_id": "6b0072b8ca8f2dea4a890e0b"
+      },
+      {
+        "label": "Shop All Products",
+        "href": "/shop",
+        "_id": "6b0072b8ca8f2dea4a890e0c"
+      },
+      {
+        "label": "Minoxidil 5% Solutions",
+        "href": "/shop?category=Minoxidil",
+        "_id": "6b0072b8ca8f2dea4a890e0d"
+      },
+      {
+        "label": "Derma Rollers",
+        "href": "/shop?category=Derma%20Roller",
+        "_id": "6b0072b8ca8f2dea4a890e0e"
+      },
+      {
+        "label": "Combo Packages",
+        "href": "/shop?category=Combo%20Packages",
+        "_id": "6b0072b8ca8f2dea4a890e0f"
+      }
+    ],
+    "legalLinks": [
+      {
+        "label": "Shipping Policy",
+        "href": "/shipping-policy",
+        "_id": "6b0072b8ca8f2dea4a890e10"
+      },
+      {
+        "label": "Return & Refund Policy",
+        "href": "/refund-policy",
+        "_id": "6b0072b8ca8f2dea4a890e11"
+      },
+      {
+        "label": "Privacy Policy",
+        "href": "/privacy-policy",
+        "_id": "6b0072b8ca8f2dea4a890e12"
+      },
+      {
+        "label": "Terms & Conditions",
+        "href": "/terms-and-conditions",
+        "_id": "6b0072b8ca8f2dea4a890e13"
+      }
+    ],
+    "showCODNotice": true,
+    "trustBadges": [
+      {
+        "title": "100% Authentic Guarantee",
+        "description": "USA formulation Kirkland 5% & sterile titanium micro-needles."
+      },
+      {
+        "title": "Nationwide Cash on Delivery",
+        "description": "Pay safely after inspecting your parcel in all 64 districts of Bangladesh."
+      },
+      {
+        "title": "Fast Dispatch",
+        "description": "24-48 hours inside Dhaka; 2-4 days across Bangladesh."
+      }
+    ],
+    "navCol1Title": "Quick Navigation",
+    "navCol2Title": "Customer Care & Policies",
+    "contactColTitle": "Direct Contact",
+    "disclaimerText": "Disclaimer: For cosmetic & topical use. Consult a physician for chronic dermatological conditions."
   },
   "seo": {
     "metaTitle": "Regrow Hair Care — Premium Minoxidil & Scalp Wellness Bangladesh",
     "metaDescription": "100% Authentic Minoxidil 5%, 540 Titanium Derma Rollers, and hair recovery packages in Bangladesh. Cash on Delivery available.",
-    "ogImage": "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=1200&auto=format&fit=crop&q=80"
+    "ogImage": "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=1200&auto=format&fit=crop&q=80",
+    "ogTitle": "Regrow Hair Care — Premium Minoxidil & Scalp Wellness Bangladesh",
+    "ogDescription": "Science-backed hair recovery routine: Minoxidil 5%, 540 Titanium Derma Rollers, and combo packs. Cash on delivery across Bangladesh."
   },
-  "siteSettings": {
-    "socialLinks": {
-      "facebook": "https://facebook.com/hairshurokkhabd",
-      "instagram": "https://instagram.com/hairshurokkhabd",
-      "youtube": "https://youtube.com/@hairshurokkhabd"
+  "metaSettings": {
+    "pixelId": "631522819642055",
+    "isPixelEnabled": true,
+    "isCapiEnabled": true,
+    "isLoggingEnabled": true,
+    "logRetentionDays": 60,
+    "testEventCode": ""
+  },
+  "common": {
+    "offLabel": "off",
+    "outOfStockLabel": "Out of Stock",
+    "addToCartLabel": "Add Cart",
+    "addToCartMobileLabel": "Cart",
+    "buyNowLabel": "Buy Now"
+  },
+  "shop": {
+    "pageTitle": "All Hair Care Products",
+    "pageSubtitle": "100% genuine Minoxidil 5% topical solutions, titanium micro-needles, and cost-effective combo packages. Cash on Delivery nationwide.",
+    "searchPlaceholder": "Search products...",
+    "allCategoriesLabel": "ALL PRODUCTS",
+    "featuredOnlyLabel": "Featured Only",
+    "sortByLabel": "Sort By",
+    "emptyTitle": "No products found",
+    "emptySubtitle": "Try clearing your filters or search terms.",
+    "clearFiltersText": "Clear All Filters"
+  },
+  "productDetail": {
+    "notFoundTitle": "Product Not Found",
+    "returnToShopText": "Return to Shop",
+    "inStockLabel": "In stock - {stock} available",
+    "trustPoints": [
+      "Cash on Delivery across BD",
+      "24-48 Hours Express Delivery"
+    ],
+    "quantityLabel": "Quantity:",
+    "orderNowButtonText": "Buy Now",
+    "whatsappInquiryText": "Ask Question on WhatsApp",
+    "descTabTitle": "Product Details",
+    "comboTabTitle": "Combo Package Contents",
+    "relatedHeading": "Related Hair Care Solutions",
+    "addToCartButtonText": "Add to Cart"
+  },
+  "cart": {
+    "drawerTitle": "Shopping Cart",
+    "emptyTitle": "Your cart is currently empty",
+    "emptySubtitle": "Browse our authentic Minoxidil and Derma Roller products to begin your hair restoration journey.",
+    "emptyCtaText": "Browse Products",
+    "subtotalLabel": "Subtotal",
+    "estimatedDeliveryLabel": "Estimated Delivery (Inside Dhaka)",
+    "estimatedTotalLabel": "Estimated Total",
+    "codTrustNotice": "Cash on Delivery: Inspect & pay at doorstep!",
+    "checkoutButtonText": "Proceed to Checkout",
+    "continueShoppingText": "Continue Shopping"
+  },
+  "checkout": {
+    "emptyCartTitle": "Your Cart is Empty",
+    "emptyCartSubtitle": "Please add a product to your cart before proceeding to checkout.",
+    "browseProductsButton": "Browse Products",
+    "returnToCartText": "Return to Cart",
+    "pageHeading": "Checkout & Delivery Details",
+    "pageSubheading": "Cash on Delivery: Inspect your package and pay only when delivered to your door.",
+    "fullNameLabel": "Full Name *",
+    "fullNamePlaceholder": "e.g. Rahim Uddin",
+    "phoneLabel": "Phone Number (11-Digit BD Number) *",
+    "phonePlaceholder": "e.g. 01712345678",
+    "deliveryAreaLabel": "Delivery Area *",
+    "insideDhakaOptionLabel": "Inside Dhaka City",
+    "outsideDhakaOptionLabel": "Outside Dhaka (All Bangladesh)",
+    "addressLabel": "Full Delivery Address *",
+    "addressPlaceholder": "House/Flat number, Road, Area, Thana, District",
+    "notesLabel": "Order Notes (Optional)",
+    "notesPlaceholder": "Special delivery instructions (optional)",
+    "summaryHeading": "Order Summary",
+    "subtotalLabel": "Subtotal",
+    "deliveryFeeLabel": "Delivery Fee",
+    "totalPayableLabel": "Total Payable",
+    "submitButtonText": "Confirm Order (Cash on Delivery)",
+    "submittingButtonText": "Processing Order...",
+    "trustPoints": [
+      "100% Authentic Guarantee",
+      "No Advance Payment Required",
+      "Easy 7-Day Replacement"
+    ],
+    "errors": {
+      "nameRequired": "Full Name is required",
+      "phoneRequired": "Phone number is required",
+      "phoneInvalid": "Please enter a valid 11-digit Bangladeshi phone number (e.g. 01712345678)",
+      "addressRequired": "Full delivery address is required"
+    }
+  },
+  "orderConfirmation": {
+    "heading": "Thank You for Your Order!",
+    "subheading": "We have received your order. Our team is dispatching your authentic package via Cash on Delivery.",
+    "orderIdLabel": "Order Reference Number",
+    "dateLabel": "Date",
+    "statusLabel": "Status",
+    "paymentMethodLabel": "Payment Method",
+    "paymentMethodValue": "Cash on Delivery (COD)",
+    "addressHeading": "Shipping Details",
+    "phoneHeading": "Phone Number",
+    "itemsHeading": "Ordered Products",
+    "subtotalLabel": "Subtotal",
+    "deliveryLabel": "Delivery Charge",
+    "totalLabel": "Payable at Delivery",
+    "nextStepsHeading": "What Happens Next?",
+    "nextStepsText": "Our delivery representative will call you to confirm your address before dispatch.",
+    "continueShoppingText": "Continue Shopping",
+    "whatsappSupportText": "Track via WhatsApp"
+  },
+  "policies": {
+    "shipping": {
+      "title": "Shipping & Delivery Policy",
+      "lastUpdated": "November 2026",
+      "sections": [
+        {
+          "heading": "1. Nationwide Cash on Delivery (COD)",
+          "body": "We provide dependable Cash on Delivery services to all 64 districts in Bangladesh. You pay only upon receipt of your parcel."
+        },
+        {
+          "heading": "2. Delivery Timeframes & Charges",
+          "cards": [
+            {
+              "area": "Inside Dhaka City",
+              "fee": 70,
+              "timeline": "Timeline: 24 to 48 Hours"
+            },
+            {
+              "area": "Outside Dhaka (All BD)",
+              "fee": 130,
+              "timeline": "Timeline: 2 to 4 Business Days"
+            }
+          ]
+        },
+        {
+          "heading": "3. Parcel Inspection",
+          "body": "Customers are encouraged to visually inspect the external packaging before completing payment with the delivery courier. If the parcel appears damaged or tampered with, please reject it immediately and contact our customer helpline."
+        }
+      ]
     },
-    "siteName": "Hair Shurokkha",
-    "logoText": "Hair Shurokkha",
-    "logoUrl": "/images/hair-shurokkha-logo-transparent.png",
-    "tagline": "Science-Backed Hair Restoration & Scalp Wellness",
-    "currency": "৳",
-    "contactPhone": "01356813069, 01521259918",
-    "contactEmail": "hairsurokkha@gmail.com",
-    "whatsappNumber": "+8801356813069",
-    "address": "Sonirakra, Dhonia, Dhaka 1236"
-  },
-  "updatedAt": "2026-11-22T14:02:17.064Z",
-  "version": 208
+    "refund": {
+      "title": "Return & Refund Policy",
+      "lastUpdated": "November 2026",
+      "sections": [
+        {
+          "heading": "1. 7-Day Replacement Guarantee",
+          "body": "If your received product has a manufacturer defect, transit damage, or if an incorrect package was delivered, you are eligible for an immediate replacement within 7 calendar days of delivery."
+        },
+        {
+          "heading": "2. Conditions for Return",
+          "bulletPoints": [
+            "Item must be in its original, unopened, and sealed packaging.",
+            "Due to personal hygiene and pharmaceutical safety regulations, opened bottles of Minoxidil solution or used Derma Rollers cannot be returned.",
+            "Proof of purchase (Order ID or invoice) must be provided."
+          ]
+        },
+        {
+          "heading": "3. Refund Processing",
+          "body": "Once your returned package is received and verified by our Banani, Dhaka depot, refunds are disbursed via bKash, Nagad, or Bank Transfer within 3 to 5 business days."
+        }
+      ]
+    },
+    "privacy": {
+      "title": "Privacy Policy",
+      "lastUpdated": "November 2026",
+      "sections": [
+        {
+          "heading": "1. Information We Collect",
+          "body": "When placing an order on Regrow Hair Care BD, we collect essential fulfillment information: your name, contact phone number, delivery address, and order history."
+        },
+        {
+          "heading": "2. Advertising & Attribution",
+          "body": "We use Facebook Meta Pixel and Conversions API (CAPI) to analyze advertisement effectiveness and deliver relevant product recommendations. Any customer identifiers transmitted are cryptographically hashed (SHA-256) prior to processing."
+        },
+        {
+          "heading": "3. Data Protection",
+          "body": "We do not sell, rent, or trade your personal information to third parties. Customer details are strictly utilized for delivery dispatch and post-purchase customer support."
+        }
+      ]
+    },
+    "terms": {
+      "title": "Terms & Conditions",
+      "lastUpdated": "November 2026",
+      "sections": [
+        {
+          "heading": "1. General Information & Health Disclaimer",
+          "body": "Content presented on this website is for educational and product selection purposes only. It is not intended as a substitute for professional dermatological or medical diagnosis. Individual biological response to topical Minoxidil varies."
+        },
+        {
+          "heading": "2. Order Acceptance & Pricing",
+          "body": "All orders are subject to stock availability and address verification. We reserve the right to cancel or decline orders with invalid contact numbers or fraudulent information."
+        },
+        {
+          "heading": "3. Intellectual Property",
+          "body": "Product trademarks (e.g. Kirkland Signature) belong to their respective registered brand owners. Regrow Hair Care BD operates as an authentic importer and reseller in Bangladesh."
+        }
+      ]
+    }
+  }
 }

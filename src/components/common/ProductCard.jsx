@@ -14,6 +14,7 @@ export default function ProductCard({ product }) {
   if (!product) return null;
 
   const currency = config?.siteSettings?.currency || '৳';
+  const common = config?.common || {};
   const discountPercent = calculateDiscount(product.regularPrice, product.salePrice);
   const isOutOfStock = product.stock <= 0;
 
@@ -54,7 +55,7 @@ export default function ProductCard({ product }) {
         <div className="absolute top-2 left-2 flex flex-col gap-1 z-10">
           {discountPercent > 0 && (
             <span className="bg-brand-dark text-white text-[10px] sm:text-xs font-bold px-2 py-0.5 rounded shadow-xs">
-              {discountPercent}% off
+              {discountPercent}% {common.offLabel || 'off'}
             </span>
           )}
           {product.badge && (
@@ -77,7 +78,7 @@ export default function ProductCard({ product }) {
         {isOutOfStock && (
           <div className="absolute inset-0 bg-white/80 backdrop-blur-xs flex items-center justify-center">
             <span className="bg-brand-dark text-white font-bold text-[10px] uppercase px-2.5 py-1 rounded">
-              Out of Stock
+              {common.outOfStockLabel || 'Out of Stock'}
             </span>
           </div>
         )}
@@ -126,8 +127,8 @@ export default function ProductCard({ product }) {
               className="py-1.5 sm:py-2 px-2 rounded border border-gray-300 hover:border-brand-dark text-gray-900 hover:text-brand-dark hover:bg-slate-50 text-[11px] sm:text-xs font-bold flex items-center justify-center gap-1 transition-colors disabled:opacity-40"
             >
               <ShoppingBag className="w-3.5 h-3.5" />
-              <span className="hidden sm:inline">Add Cart</span>
-              <span className="sm:hidden">Cart</span>
+              <span className="hidden sm:inline">{common.addToCartLabel || 'Add Cart'}</span>
+              <span className="sm:hidden">{common.addToCartMobileLabel || 'Cart'}</span>
             </button>
 
             <button
@@ -135,7 +136,7 @@ export default function ProductCard({ product }) {
               disabled={isOutOfStock}
               className="py-1.5 sm:py-2 px-2 rounded bg-brand-dark hover:bg-brand-navy text-white text-[11px] sm:text-xs font-extrabold flex items-center justify-center gap-1 transition-colors disabled:opacity-40 shadow-xs"
             >
-              <span>Buy Now</span>
+              <span>{common.buyNowLabel || 'Buy Now'}</span>
               <ArrowRight className="w-3 h-3" />
             </button>
           </div>
