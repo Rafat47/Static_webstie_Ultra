@@ -1,5 +1,12 @@
+[dev]
+  framework = "#custom"
+  command = "npm run dev"
+  targetPort = 5173
+  port = 8888
+  autoLaunch = false
+
 [build]
-  command = "node scripts/fetch-content.cjs && npm run build:client && node scripts/post-build-safety-check.cjs"
+  command = "npm run build"
   publish = "dist"
   functions = "netlify/functions"
   ignore = "git diff --quiet $CACHED_COMMIT_REF $COMMIT_REF ."
@@ -11,6 +18,21 @@
 [functions]
   node_bundler = "esbuild"
   included_files = ["netlify/functions/data/website-data.json"]
+
+[[redirects]]
+  from = "/api/website-data"
+  to = "/.netlify/functions/website-data"
+  status = 200
+
+[[redirects]]
+  from = "/api/content"
+  to = "/.netlify/functions/website-data"
+  status = 200
+
+[[redirects]]
+  from = "/data/website-data.json"
+  to = "/.netlify/functions/website-data"
+  status = 200
 
 [[redirects]]
   from = "/api/orders"
@@ -36,12 +58,6 @@
   from = "/*"
   to = "/index.html"
   status = 200
-
-[[headers]]
-  for = "/data/website-data.json"
-  [headers.values]
-    Cache-Control = "public, max-age=0, must-revalidate"
-    Access-Control-Allow-Origin = "*"
 
 [[headers]]
   for = "/*"

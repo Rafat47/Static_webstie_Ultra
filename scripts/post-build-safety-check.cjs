@@ -70,6 +70,21 @@ for (const filePath of allFiles) {
   }
 }
 
+// Check function data file
+const fnData = path.resolve(__dirname, '../netlify/functions/data/website-data.json');
+if (fs.existsSync(fnData)) {
+  try {
+    const parsed = JSON.parse(fs.readFileSync(fnData, 'utf8'));
+    if (parsed.orders || parsed.admins || parsed.metaEventLogs || parsed.admin || parsed.capiAccessToken) {
+      console.error(`[SECURITY VIOLATION] netlify/functions/data/website-data.json contains sensitive keys!`);
+      leaksFound++;
+    }
+  } catch (e) {
+    console.error(`[SECURITY ERROR] Invalid JSON in netlify/functions/data/website-data.json: ${e.message}`);
+    leaksFound++;
+  }
+}
+
 if (leaksFound > 0) {
   console.error(`\n[FATAL] Security check FAILED with ${leaksFound} leak(s)! Aborting deploy.`);
   process.exit(1);

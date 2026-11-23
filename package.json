@@ -4,12 +4,11 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "dev:server": "node dev-server.js",
     "fetch:content": "node scripts/fetch-content.cjs",
     "build:client": "vite build",
     "check:safety": "node scripts/post-build-safety-check.cjs",
     "build": "node scripts/fetch-content.cjs && vite build && node scripts/post-build-safety-check.cjs",
-    "start": "node dev-server.js",
+    "rebuild": "npm run build",
     "preview": "vite preview"
   },
   "dependencies": {

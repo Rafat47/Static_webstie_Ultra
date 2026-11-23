@@ -66,32 +66,30 @@ export const clearApiCache = (keyPrefix = '') => {
 export const api = {
   clearCache: clearApiCache,
 
-  // Centralized Public Website Data API (reads static /data/website-data.json)
+  // Centralized Public Website Data API (reads from Netlify function serving website-data.json)
   getWebsiteData: async (force = false) => {
-    return getCachedOrFetch('website-data', async () => {
-      try {
-        const query = force ? `?t=${Date.now()}` : '';
-        const localRes = await axios.get(`/data/website-data.json${query}`, {
-          headers: {
-            'Cache-Control': 'no-cache, no-store, must-revalidate',
-            'Pragma': 'no-cache'
-          }
-        });
-
-        if (localRes.data && (localRes.data.categories || localRes.data.products || localRes.data.siteSettings)) {
-          const payload = localRes.data;
-          return {
-            success: true,
-            version: payload.version || 1,
-            updatedAt: payload.updatedAt,
-            data: payload
-          };
+    try {
+      const query = `?t=${Date.now()}`;
+      const localRes = await axios.get(`/api/website-data${query}`, {
+        headers: {
+          'Cache-Control': 'no-cache, no-store, must-revalidate',
+          'Pragma': 'no-cache'
         }
-      } catch (err) {
-        console.warn('Direct static fetch of website-data.json failed:', err.message);
+      });
+
+      if (localRes.data && (localRes.data.categories || localRes.data.products || localRes.data.siteSettings)) {
+        const payload = localRes.data;
+        return {
+          success: true,
+          version: payload.version || 1,
+          updatedAt: payload.updatedAt,
+          data: payload
+        };
       }
-      return { success: false, data: null };
-    }, 5 * 60 * 1000, force);
+    } catch (err) {
+      console.warn('Direct fetch of website data failed:', err.message);
+    }
+    return { success: false, data: null };
   },
 
   // Public compatibility aliases

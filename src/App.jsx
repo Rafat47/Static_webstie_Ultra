@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { trackRoutePageView } from './utils/metaPixel';
+import { useWebsiteData } from './context/WebsiteDataContext';
 import Navbar from './components/common/Navbar';
 import Footer from './components/common/Footer';
 import CartDrawer from './components/common/CartDrawer';
@@ -43,6 +44,17 @@ function ScrollToTop() {
 }
 
 export default function App() {
+  const { config, loading } = useWebsiteData();
+
+  // If loading or JSON not yet arrived, show clean minimal loader (no hardcoded pre-built layout)
+  if (loading || !config) {
+    return (
+      <div className="min-h-screen bg-brand-light flex flex-col items-center justify-center p-6 space-y-4">
+        <div className="w-10 h-10 border-4 border-gray-200 border-t-black rounded-full animate-spin"></div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen flex flex-col bg-brand-light text-brand-text">
       <ScrollToTop />

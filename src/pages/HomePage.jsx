@@ -14,6 +14,15 @@ import { RefreshCw } from 'lucide-react';
 export default function HomePage() {
   const { config, categories, products, loading } = useWebsiteData();
 
+  if (loading || !config) {
+    return (
+      <div className="py-24 flex flex-col items-center justify-center space-y-3 min-h-[50vh]">
+        <RefreshCw className="w-8 h-8 text-black animate-spin" />
+        <p className="text-xs font-semibold text-gray-500">Loading authentic products...</p>
+      </div>
+    );
+  }
+
   const seo = config?.seo || {};
 
   return (
@@ -27,28 +36,21 @@ export default function HomePage() {
       {/* 1. Main Hero Banner */}
       <HeroSection />
 
-      {/* 2. Shop by Category Image Carousel (Desktop 1-row, Mobile 2-rows synchronized) */}
+      {/* 2. Shop by Category Image Carousel */}
       <CategoryCarousel categories={categories} />
 
-      {/* 3. Category-Wise Product Collections (Shopping First!) */}
-      {loading ? (
-        <div className="py-20 flex flex-col items-center justify-center space-y-3">
-          <RefreshCw className="w-8 h-8 text-black animate-spin" />
-          <p className="text-xs font-semibold text-gray-500">Loading authentic products...</p>
-        </div>
-      ) : (
-        <div className="space-y-2">
-          {categories.map((cat) => (
-            <CategoryProductSection
-              key={cat._id || cat.slug}
-              category={cat}
-              products={products}
-            />
-          ))}
-        </div>
-      )}
+      {/* 3. Category-Wise Product Collections */}
+      <div className="space-y-2">
+        {categories.map((cat) => (
+          <CategoryProductSection
+            key={cat._id || cat.slug}
+            category={cat}
+            products={products}
+          />
+        ))}
+      </div>
 
-      {/* 4. Educational & Haircare Information Sections (After all product collections) */}
+      {/* 4. Educational & Haircare Information Sections (Rendered strictly from JSON) */}
       <StartNowSection />
       <HairThinningSection />
       <HowMinoxidilWorksSection />

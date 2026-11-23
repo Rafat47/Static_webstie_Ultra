@@ -3,9 +3,9 @@ import { useConfig } from '../../context/ConfigContext';
 
 export default function HowMinoxidilWorksSection() {
   const { config } = useConfig();
-  const sectionData = config?.sections?.howMinoxidilWorks || {};
+  const sectionData = config?.sections?.howMinoxidilWorks;
 
-  if (sectionData.enabled === false) return null;
+  if (!sectionData || sectionData.enabled === false || !sectionData.title) return null;
 
   const points = sectionData.mechanismPoints || [];
   const desktopImg = sectionData.desktopImage || sectionData.image || '';
@@ -19,36 +19,42 @@ export default function HowMinoxidilWorksSection() {
           {/* Left Column: Educational Content & Mechanism Cards */}
           <div className="lg:col-span-7 space-y-5">
             <div className="space-y-2">
-              <span className="text-xs sm:text-sm font-bold uppercase tracking-wider text-gray-500">
-                {sectionData.overline || 'Dermatological Science'}
-              </span>
+              {sectionData.overline && (
+                <span className="text-xs sm:text-sm font-bold uppercase tracking-wider text-gray-500">
+                  {sectionData.overline}
+                </span>
+              )}
               <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black text-gray-900 tracking-tight leading-tight uppercase">
-                {sectionData.title || 'How Does Minoxidil Work?'}
+                {sectionData.title}
               </h2>
-              <p className="text-sm sm:text-base text-gray-700 font-medium">
-                {sectionData.subtitle || 'The science behind follicular reactivation and prolonged Anagen growth cycles.'}
-              </p>
+              {sectionData.subtitle && (
+                <p className="text-sm sm:text-base text-gray-700 font-medium">
+                  {sectionData.subtitle}
+                </p>
+              )}
             </div>
 
-            {/* Scientific Explanation Steps with Readable Text */}
-            <div className="space-y-3 pt-1">
-              {points.map((pt, idx) => (
-                <div
-                  key={idx}
-                  className="p-4 rounded-lg bg-white border border-gray-200 hover:border-brand-dark transition-colors flex gap-3.5 items-start shadow-2xs"
-                >
-                  <div className="w-8 h-8 rounded bg-gray-100 text-gray-900 text-xs font-bold font-mono flex items-center justify-center flex-shrink-0">
-                    0{idx + 1}
+            {/* Scientific Explanation Steps */}
+            {points.length > 0 && (
+              <div className="space-y-3 pt-1">
+                {points.map((pt, idx) => (
+                  <div
+                    key={idx}
+                    className="p-4 rounded-lg bg-white border border-gray-200 hover:border-brand-dark transition-colors flex gap-3.5 items-start shadow-2xs"
+                  >
+                    <div className="w-8 h-8 rounded bg-gray-100 text-gray-900 text-xs font-bold font-mono flex items-center justify-center flex-shrink-0">
+                      0{idx + 1}
+                    </div>
+                    <div className="space-y-1">
+                      <h4 className="text-sm sm:text-base font-bold text-gray-900">{pt.title}</h4>
+                      <p className="text-xs sm:text-sm text-gray-600 leading-relaxed">
+                        {pt.description}
+                      </p>
+                    </div>
                   </div>
-                  <div className="space-y-1">
-                    <h4 className="text-sm sm:text-base font-bold text-gray-900">{pt.title}</h4>
-                    <p className="text-xs sm:text-sm text-gray-600 leading-relaxed">
-                      {pt.description}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            )}
 
             {/* Clinical Authority Note */}
             {sectionData.scienceNote && (
@@ -58,7 +64,7 @@ export default function HowMinoxidilWorksSection() {
             )}
           </div>
 
-          {/* Right Column: Visual Anatomy Illustration with Restrained Mobile Height */}
+          {/* Right Column: Visual Infographic Banner */}
           {desktopImg && (
             <div className="lg:col-span-5">
               <div className="rounded-xl overflow-hidden border border-gray-200 bg-gray-50 shadow-2xs">
@@ -68,21 +74,10 @@ export default function HowMinoxidilWorksSection() {
                   )}
                   <img
                     src={desktopImg}
-                    alt="Hair follicle cellular activity and microcirculation"
-                    className="w-full h-52 sm:h-80 lg:h-96 object-cover object-center"
+                    alt={sectionData.title || "How Minoxidil Works"}
+                    className="w-full h-auto object-cover object-center"
                   />
                 </picture>
-                <div className="p-4 sm:p-5 bg-white border-t border-gray-200 space-y-1.5">
-                  <span className="text-[11px] font-bold uppercase tracking-wider text-gray-500">
-                    {sectionData.anatomyOverline || 'Follicular Anatomy'}
-                  </span>
-                  <h4 className="text-sm sm:text-base font-bold text-gray-900">
-                    {sectionData.anatomyTitle || 'Targeted Microvascular Circulation'}
-                  </h4>
-                  <p className="text-xs sm:text-sm text-gray-600 leading-relaxed">
-                    {sectionData.anatomyDescription || 'Topical application widens dormant scalp capillaries, delivering oxygen directly to hair dermal papilla roots.'}
-                  </p>
-                </div>
               </div>
             </div>
           )}

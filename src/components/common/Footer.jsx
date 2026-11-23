@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ShieldCheck, Truck, Clock, Sparkles, Phone, Mail, MapPin } from 'lucide-react';
-import { useConfig } from '../../context/ConfigContext';
+import { ShieldCheck, Truck, Sparkles, Phone, Mail, MapPin, CheckCircle2 } from 'lucide-react';
+import { useWebsiteData } from '../../context/WebsiteDataContext';
 
 // Clean SVG Brand Icons for Social Platforms
 function FacebookIcon({ className }) {
@@ -29,204 +29,281 @@ function YoutubeIcon({ className }) {
 }
 
 export default function Footer() {
-  const { config } = useConfig();
+  const { config } = useWebsiteData();
   const siteSettings = config?.siteSettings || {};
   const footerData = config?.footer || {};
-  const trustBadges = footerData.trustBadges || [
-    { title: '100% Authentic Guarantee', description: 'USA formulation Kirkland 5% & sterile titanium micro-needles.' },
-    { title: 'Nationwide Cash on Delivery', description: 'Pay safely after inspecting your parcel in all 64 districts of Bangladesh.' },
-    { title: 'Fast Dispatch', description: '24-48 hours inside Dhaka; 2-4 days across Bangladesh.' }
-  ];
+  const trustBadges = footerData.trustBadges || [];
+
+  const quickLinks = footerData.quickLinks || [];
+  const legalLinks = footerData.legalLinks || [];
 
   return (
     <footer className="bg-brand-dark text-white border-t border-brand-border" id="contact">
-      {/* Value Proposition Badges */}
-      <div className="border-b border-white/10">
-        <div className="max-w-[1536px] mx-auto px-3 sm:px-6 py-8">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="flex items-start space-x-3.5 border-b md:border-b-0 md:border-r border-white/10 pb-6 md:pb-0 pr-4">
-              <ShieldCheck className="w-5 h-5 text-white flex-shrink-0 mt-0.5 stroke-[2]" />
-              <div>
-                <h4 className="font-bold text-xs uppercase tracking-wider text-white">{trustBadges[0]?.title || '100% Authentic Guarantee'}</h4>
-                <p className="text-xs text-gray-400 mt-1">{trustBadges[0]?.description || 'USA formulation Kirkland 5% & sterile titanium micro-needles.'}</p>
-              </div>
-            </div>
+      {/* 1. Value Proposition Cards / Trust Badges */}
+      {trustBadges.length > 0 && (
+        <div className="border-b border-white/10">
+          <div className="max-w-[1536px] mx-auto px-3 sm:px-6 py-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {trustBadges.map((badge, idx) => {
+                const titleLower = (badge.title || '').toLowerCase();
+                let IconComponent = ShieldCheck;
+                if (titleLower.includes('delivery') || titleLower.includes('dispatch') || titleLower.includes('fast')) {
+                  IconComponent = Truck;
+                } else if (titleLower.includes('guarantee') || titleLower.includes('authentic')) {
+                  IconComponent = ShieldCheck;
+                } else {
+                  IconComponent = Sparkles;
+                }
 
-            <div className="flex items-start space-x-3.5 border-b md:border-b-0 md:border-r border-white/10 pb-6 md:pb-0 pr-4">
-              <Truck className="w-5 h-5 text-white flex-shrink-0 mt-0.5 stroke-[2]" />
-              <div>
-                <h4 className="font-bold text-xs uppercase tracking-wider text-white">{trustBadges[1]?.title || 'Nationwide Cash on Delivery'}</h4>
-                <p className="text-xs text-gray-400 mt-1">{trustBadges[1]?.description || 'Pay safely after inspecting your parcel in all 64 districts of Bangladesh.'}</p>
-              </div>
-            </div>
-
-            <div className="flex items-start space-x-3.5">
-              <Clock className="w-5 h-5 text-white flex-shrink-0 mt-0.5 stroke-[2]" />
-              <div>
-                <h4 className="font-bold text-xs uppercase tracking-wider text-white">{trustBadges[2]?.title || 'Fast Dispatch'}</h4>
-                <p className="text-xs text-gray-400 mt-1">{trustBadges[2]?.description || '24-48 hours inside Dhaka; 2-4 days across Bangladesh.'}</p>
-              </div>
+                return (
+                  <div
+                    key={idx}
+                    className={`flex items-start space-x-3.5 ${
+                      idx < trustBadges.length - 1 ? 'border-b md:border-b-0 md:border-r border-white/10 pb-6 md:pb-0 pr-4' : ''
+                    }`}
+                  >
+                    <IconComponent className="w-5 h-5 text-white flex-shrink-0 mt-0.5 stroke-[2]" />
+                    <div>
+                      <h4 className="font-bold text-xs uppercase tracking-wider text-white">
+                        {badge.title}
+                      </h4>
+                      {badge.description && (
+                        <p className="text-xs text-gray-400 mt-1">{badge.description}</p>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           </div>
         </div>
-      </div>
+      )}
 
-      {/* Main Footer Links & Info */}
-      <div className="max-w-[1536px] mx-auto px-3 sm:px-6 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {/* Brand Info */}
+      {/* 2. Main Footer Links */}
+      <div className="max-w-[1536px] mx-auto px-3 sm:px-6 py-12 lg:py-16">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
+          
+          {/* Brand Info & Summary */}
           <div className="space-y-4">
-            <div className="flex items-center space-x-2">
-              {(siteSettings.logoUrl || '/images/hair-shurokkha-logo-transparent.png') ? (
-                <div className="bg-white/95 px-3 py-1.5 rounded-xl inline-block shadow-xs">
-                  <img
-                    src={siteSettings.logoUrl || '/images/hair-shurokkha-logo-transparent.png'}
-                    alt={siteSettings.siteName || siteSettings.logoText || "Hair Shurokkha"}
-                    className="h-11 sm:h-13 w-auto max-w-[200px] sm:max-w-[250px] object-contain"
-                  />
-                </div>
-              ) : (
-                <span className="font-black text-xl tracking-wider text-white uppercase">
-                  {siteSettings.logoText || 'Hair Shurokkha'}
+            <div className="flex items-center space-x-2.5">
+              {siteSettings.logoUrl ? (
+                <img
+                  src={siteSettings.logoUrl}
+                  alt={siteSettings.siteName || 'Hair Shurokkha'}
+                  className="h-8 sm:h-9 w-auto brightness-0 invert object-contain"
+                />
+              ) : null}
+              {siteSettings.siteName && (
+                <span className="font-black text-lg sm:text-xl tracking-tight text-white uppercase">
+                  {siteSettings.siteName}
                 </span>
               )}
             </div>
-            <p className="text-xs text-gray-400 leading-relaxed">
-              {footerData.aboutText || 'Science-backed topical Minoxidil 5% solutions and titanium micro-needling systems for men & women experiencing hair thinning.'}
-            </p>
+
+            {/* About Text directly from website-data.json */}
+            {footerData.aboutText ? (
+              <p className="text-xs sm:text-sm text-gray-400 leading-relaxed">
+                {footerData.aboutText}
+              </p>
+            ) : siteSettings.tagline ? (
+              <p className="text-xs sm:text-sm text-gray-400 leading-relaxed">
+                {siteSettings.tagline}
+              </p>
+            ) : null}
+
             {/* Social Links */}
-            <div className="flex items-center space-x-3 pt-2">
-              {siteSettings.socialLinks?.facebook && (
-                <a
-                  href={siteSettings.socialLinks.facebook}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="w-8 h-8 border border-white/20 hover:border-white hover:bg-white hover:text-brand-dark flex items-center justify-center text-gray-300 transition-colors"
-                  aria-label="Facebook"
-                >
-                  <FacebookIcon className="w-4 h-4" />
-                </a>
-              )}
-              {siteSettings.socialLinks?.instagram && (
-                <a
-                  href={siteSettings.socialLinks.instagram}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="w-8 h-8 border border-white/20 hover:border-white hover:bg-white hover:text-brand-dark flex items-center justify-center text-gray-300 transition-colors"
-                  aria-label="Instagram"
-                >
-                  <InstagramIcon className="w-4 h-4" />
-                </a>
-              )}
-              {siteSettings.socialLinks?.youtube && (
-                <a
-                  href={siteSettings.socialLinks.youtube}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="w-8 h-8 border border-white/20 hover:border-white hover:bg-white hover:text-brand-dark flex items-center justify-center text-gray-300 transition-colors"
-                  aria-label="YouTube"
-                >
-                  <YoutubeIcon className="w-4 h-4" />
-                </a>
-              )}
-            </div>
-          </div>
-
-          {/* Quick Links */}
-          <div>
-            <h5 className="font-bold text-xs uppercase tracking-widest text-white mb-4">{footerData.navCol1Title || 'Quick Navigation'}</h5>
-            <ul className="space-y-2 text-xs text-gray-400">
-              <li>
-                <Link to="/" className="hover:text-white transition-colors">Home</Link>
-              </li>
-              <li>
-                <Link to="/shop" className="hover:text-white transition-colors">Shop All Products</Link>
-              </li>
-              <li>
-                <Link to="/shop?category=Minoxidil" className="hover:text-white transition-colors">Minoxidil Solutions</Link>
-              </li>
-              <li>
-                <Link to="/shop?category=Derma%20Roller" className="hover:text-white transition-colors">Derma Rollers (0.5mm)</Link>
-              </li>
-              <li>
-                <Link to="/shop?category=Combo%20Packages" className="hover:text-white transition-colors">Combo Packages & Savings</Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Policies */}
-          <div>
-            <h5 className="font-bold text-xs uppercase tracking-widest text-white mb-4">{footerData.navCol2Title || 'Customer Care & Policies'}</h5>
-            <ul className="space-y-2 text-xs text-gray-400">
-              <li>
-                <Link to="/shipping-policy" className="hover:text-white transition-colors">Shipping & Delivery Policy</Link>
-              </li>
-              <li>
-                <Link to="/refund-policy" className="hover:text-white transition-colors">Return & Refund Policy</Link>
-              </li>
-              <li>
-                <Link to="/privacy-policy" className="hover:text-white transition-colors">Privacy Policy</Link>
-              </li>
-              <li>
-                <Link to="/terms-and-conditions" className="hover:text-white transition-colors">Terms & Conditions</Link>
-              </li>
-              <li>
-                {footerData.adminPortalUrl && footerData.adminPortalUrl.startsWith('http') ? (
+            {siteSettings.socialLinks && (
+              <div className="flex items-center space-x-3 pt-2">
+                {siteSettings.socialLinks.facebook && (
                   <a
-                    href={footerData.adminPortalUrl}
-                    className="hover:text-white transition-colors opacity-50"
+                    href={siteSettings.socialLinks.facebook}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-8 h-8 rounded-full bg-white/10 hover:bg-brand-accent text-white flex items-center justify-center transition-colors"
+                    aria-label="Facebook"
                   >
-                    {footerData.adminPortalText || 'Admin Portal'}
+                    <FacebookIcon className="w-4 h-4" />
                   </a>
-                ) : (
-                  <Link
-                    to={footerData.adminPortalUrl || '/admin/login'}
-                    className="hover:text-white transition-colors opacity-50"
-                  >
-                    {footerData.adminPortalText || 'Admin Portal'}
-                  </Link>
                 )}
-              </li>
+                {siteSettings.socialLinks.instagram && (
+                  <a
+                    href={siteSettings.socialLinks.instagram}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-8 h-8 rounded-full bg-white/10 hover:bg-brand-accent text-white flex items-center justify-center transition-colors"
+                    aria-label="Instagram"
+                  >
+                    <InstagramIcon className="w-4 h-4" />
+                  </a>
+                )}
+                {siteSettings.socialLinks.youtube && (
+                  <a
+                    href={siteSettings.socialLinks.youtube}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-8 h-8 rounded-full bg-white/10 hover:bg-brand-accent text-white flex items-center justify-center transition-colors"
+                    aria-label="YouTube"
+                  >
+                    <YoutubeIcon className="w-4 h-4" />
+                  </a>
+                )}
+              </div>
+            )}
+          </div>
+
+          {/* Quick Navigation Links (Column 1) */}
+          <div className="space-y-3.5">
+            <h4 className="text-xs font-bold uppercase tracking-wider text-white">
+              {footerData.navCol1Title || footerData.quickLinksTitle || 'Quick Navigation'}
+            </h4>
+            <ul className="space-y-2 text-xs sm:text-sm text-gray-400">
+              {quickLinks.length > 0 ? (
+                quickLinks.map((link, idx) => {
+                  const href = link.href || '/';
+                  const isExternal = href.startsWith('http') || href.startsWith('//');
+                  const isHash = href.startsWith('#');
+
+                  if (isExternal || isHash) {
+                    return (
+                      <li key={link._id || idx}>
+                        <a href={href} className="hover:text-white transition-colors">
+                          {link.label}
+                        </a>
+                      </li>
+                    );
+                  }
+
+                  return (
+                    <li key={link._id || idx}>
+                      <Link to={href} className="hover:text-white transition-colors">
+                        {link.label}
+                      </Link>
+                    </li>
+                  );
+                })
+              ) : (
+                <>
+                  <li><Link to="/" className="hover:text-white transition-colors">Home</Link></li>
+                  <li><Link to="/shop" className="hover:text-white transition-colors">Shop All Products</Link></li>
+                </>
+              )}
             </ul>
           </div>
 
-          {/* Contact Details */}
-          <div>
-            <h5 className="font-bold text-xs uppercase tracking-widest text-white mb-4">{footerData.contactColTitle || 'Direct Contact'}</h5>
-            <div className="space-y-2.5 text-xs text-gray-400">
+          {/* Customer Care & Legal Policies (Column 2) */}
+          <div className="space-y-3.5">
+            <h4 className="text-xs font-bold uppercase tracking-wider text-white">
+              {footerData.navCol2Title || footerData.legalTitle || 'Customer Care & Policies'}
+            </h4>
+            <ul className="space-y-2 text-xs sm:text-sm text-gray-400">
+              {legalLinks.length > 0 ? (
+                legalLinks.map((link, idx) => {
+                  const href = link.href || '/';
+                  const isExternal = href.startsWith('http') || href.startsWith('//');
+
+                  if (isExternal) {
+                    return (
+                      <li key={link._id || idx}>
+                        <a href={href} target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">
+                          {link.label}
+                        </a>
+                      </li>
+                    );
+                  }
+
+                  return (
+                    <li key={link._id || idx}>
+                      <Link to={href} className="hover:text-white transition-colors">
+                        {link.label}
+                      </Link>
+                    </li>
+                  );
+                })
+              ) : (
+                <>
+                  <li><Link to="/shipping-policy" className="hover:text-white transition-colors">Shipping & Delivery</Link></li>
+                  <li><Link to="/refund-policy" className="hover:text-white transition-colors">Return & Refund Policy</Link></li>
+                  <li><Link to="/privacy-policy" className="hover:text-white transition-colors">Privacy Policy</Link></li>
+                  <li><Link to="/terms-and-conditions" className="hover:text-white transition-colors">Terms of Service</Link></li>
+                </>
+              )}
+            </ul>
+          </div>
+
+          {/* Contact Support (Column 3) */}
+          <div className="space-y-3.5">
+            <h4 className="text-xs font-bold uppercase tracking-wider text-white">
+              {footerData.contactColTitle || footerData.contactTitle || 'Direct Contact'}
+            </h4>
+            <div className="space-y-2.5 text-xs sm:text-sm text-gray-400">
               {siteSettings.contactPhone && (
-                <div className="flex items-start space-x-2.5">
-                  <Phone className="w-3.5 h-3.5 text-white mt-0.5 flex-shrink-0" />
-                  <span>{siteSettings.contactPhone}</span>
+                <div className="flex items-center space-x-2">
+                  <Phone className="w-4 h-4 text-gray-400 flex-shrink-0" />
+                  <a href={`tel:${siteSettings.contactPhone.split(',')[0].trim()}`} className="hover:text-white transition-colors">
+                    {siteSettings.contactPhone}
+                  </a>
                 </div>
               )}
               {siteSettings.contactEmail && (
-                <div className="flex items-start space-x-2.5">
-                  <Mail className="w-3.5 h-3.5 text-white mt-0.5 flex-shrink-0" />
-                  <span>{siteSettings.contactEmail}</span>
+                <div className="flex items-center space-x-2">
+                  <Mail className="w-4 h-4 text-gray-400 flex-shrink-0" />
+                  <a href={`mailto:${siteSettings.contactEmail}`} className="hover:text-white transition-colors">
+                    {siteSettings.contactEmail}
+                  </a>
                 </div>
               )}
               {siteSettings.address && (
-                <div className="flex items-start space-x-2.5">
-                  <MapPin className="w-3.5 h-3.5 text-white mt-0.5 flex-shrink-0" />
+                <div className="flex items-start space-x-2">
+                  <MapPin className="w-4 h-4 text-gray-400 flex-shrink-0 mt-0.5" />
                   <span>{siteSettings.address}</span>
                 </div>
               )}
-              <div className="pt-2 text-[11px] text-gray-500">
-                {siteSettings.supportHours || 'Support Hours: 10:00 AM – 9:00 PM (Everyday)'}
-              </div>
+              {siteSettings.supportHours && (
+                <p className="text-[11px] text-gray-500 pt-1">
+                  {siteSettings.supportHours}
+                </p>
+              )}
+              {footerData.showCODNotice && (
+                <div className="pt-2">
+                  <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 flex-shrink-0" />
+                    Cash on Delivery Available
+                  </span>
+                </div>
+              )}
             </div>
           </div>
+
         </div>
       </div>
 
-      {/* Copyright Bar */}
-      <div className="border-t border-white/10">
-        <div className="max-w-[1536px] mx-auto px-3 sm:px-6 py-5 flex flex-col sm:flex-row items-center justify-between text-xs text-gray-400 gap-2">
-          <p>{footerData.copyrightText || '© 2026 Regrow Hair Care BD. All rights reserved.'}</p>
-          <p className="text-[11px] text-gray-400">
-            {footerData.disclaimerText || 'Disclaimer: For cosmetic & topical use. Consult a physician for chronic dermatological conditions.'}
+      {/* 3. Medical / Cosmetic Disclaimer Text */}
+      {footerData.disclaimerText && (
+        <div className="border-t border-white/10 bg-black/25">
+          <div className="max-w-[1536px] mx-auto px-3 sm:px-6 py-3.5">
+            <p className="text-[11px] text-gray-400 text-center leading-relaxed">
+              {footerData.disclaimerText}
+            </p>
+          </div>
+        </div>
+      )}
+
+      {/* 4. Copyright & Admin Portal Bar */}
+      <div className="border-t border-white/10 bg-brand-dark/95">
+        <div className="max-w-[1536px] mx-auto px-3 sm:px-6 py-5 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-gray-500">
+          <p>
+            {footerData.copyrightText || `© ${new Date().getFullYear()} ${siteSettings.siteName || 'Hair Shurokkha'}. All rights reserved.`}
           </p>
+          <div className="flex items-center space-x-4">
+            <a
+              href={footerData.adminPortalUrl || 'https://admin-hairshurokkha.netlify.app'}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-gray-500 hover:text-gray-300 transition-colors text-[11px] flex items-center gap-1"
+            >
+              <span>{footerData.adminPortalText || 'Admin Portal'}</span>
+            </a>
+          </div>
         </div>
       </div>
     </footer>
