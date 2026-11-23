@@ -15,11 +15,11 @@ export async function getDb() {
     return cachedDb;
   }
 
-  const uri = process.env.MONGODB_URI;
+  const uri = process.env.MONGODB_URI_FN || process.env.MONGODB_URI;
   const dbName = process.env.MONGODB_DB || 'hair_shurokkha';
 
   if (!uri) {
-    throw new Error('MONGODB_URI environment variable is missing in function environment');
+    throw new Error('Neither MONGODB_URI_FN nor MONGODB_URI environment variable is configured in function environment');
   }
 
   if (!cachedClient) {

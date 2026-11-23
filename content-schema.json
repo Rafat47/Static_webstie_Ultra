@@ -971,6 +971,16 @@
           "items": {
             "type": "object"
           }
+        },
+        "adminPortalUrl": {
+          "title": "Admin Portal URL",
+          "description": "External or relative destination URL for the footer Admin Portal link",
+          "type": "string"
+        },
+        "adminPortalText": {
+          "title": "Admin Portal Link Text",
+          "description": "Label text displayed for the footer Admin Portal link",
+          "type": "string"
         }
       }
     },

@@ -122,7 +122,8 @@ export function captureAttribution() {
 let isPixelInitialized = false;
 
 export function initMetaPixel(pixelId) {
-  if (!pixelId || typeof window === 'undefined') return;
+  const resolvedPixelId = pixelId || (typeof import.meta !== 'undefined' && import.meta.env?.VITE_META_PIXEL_ID) || null;
+  if (!resolvedPixelId || typeof window === 'undefined') return;
   if (isPixelInitialized || window.fbq) {
     return;
   }

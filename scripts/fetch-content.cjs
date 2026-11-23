@@ -7,14 +7,17 @@ const { MongoClient } = require('mongodb');
 
 // Load environment variables (supports .env locally and Netlify Build environment variables)
 dotenv.config();
+if (fs.existsSync(path.join(__dirname, '..', '.env'))) {
+  dotenv.config({ path: path.join(__dirname, '..', '.env') });
+}
 
-const uri = process.env.MONGODB_URI;
+const uri = process.env.MONGODB_URI_BUILD || process.env.MONGODB_URI;
 const dbName = process.env.MONGODB_DB || 'hair_shurokkha';
 
 if (!uri) {
-  console.error('\n[BUILD FATAL ERROR] MONGODB_URI is not set!');
+  console.error('\n[BUILD FATAL ERROR] MONGODB_URI_BUILD (or MONGODB_URI) is not set!');
   console.error('The storefront build requires read-only MongoDB access to fetch site_ui.');
-  console.error('Ensure MONGODB_URI is configured in Netlify environment variables (Builds scope).\n');
+  console.error('Ensure MONGODB_URI_BUILD is configured in Netlify environment variables (Builds scope).\n');
   process.exit(1);
 }
 

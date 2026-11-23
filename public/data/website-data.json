@@ -831,7 +831,9 @@
     "navCol1Title": "Quick Navigation",
     "navCol2Title": "Customer Care & Policies",
     "contactColTitle": "Direct Contact",
-    "disclaimerText": "Disclaimer: For cosmetic & topical use. Consult a physician for chronic dermatological conditions."
+    "disclaimerText": "Disclaimer: For cosmetic & topical use. Consult a physician for chronic dermatological conditions.",
+    "adminPortalUrl": "https://admin-hairshurokkha.netlify.app",
+    "adminPortalText": "Admin Portal"
   },
   "seo": {
     "metaTitle": "Regrow Hair Care — Premium Minoxidil & Scalp Wellness Bangladesh",

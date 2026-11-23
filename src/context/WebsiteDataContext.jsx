@@ -53,10 +53,11 @@ export function WebsiteDataProvider({ children }) {
           // Non-blocking
         }
 
-        // Initialize Meta Pixel once data arrives
+        // Initialize Meta Pixel once data arrives (resolve pixelId from UI content first, env fallback)
         const meta = res.data.metaSettings;
-        if (meta?.pixelId && meta?.isPixelEnabled !== false) {
-          initMetaPixel(meta.pixelId);
+        const resolvedPixelId = meta?.pixelId || (typeof import.meta !== 'undefined' && import.meta.env?.VITE_META_PIXEL_ID) || null;
+        if (resolvedPixelId && meta?.isPixelEnabled !== false) {
+          initMetaPixel(resolvedPixelId);
         }
       }
     } catch (err) {

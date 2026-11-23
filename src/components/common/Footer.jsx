@@ -171,7 +171,21 @@ export default function Footer() {
                 <Link to="/terms-and-conditions" className="hover:text-white transition-colors">Terms & Conditions</Link>
               </li>
               <li>
-                <Link to="/admin/login" className="hover:text-white transition-colors opacity-50">Admin Portal</Link>
+                {footerData.adminPortalUrl && footerData.adminPortalUrl.startsWith('http') ? (
+                  <a
+                    href={footerData.adminPortalUrl}
+                    className="hover:text-white transition-colors opacity-50"
+                  >
+                    {footerData.adminPortalText || 'Admin Portal'}
+                  </a>
+                ) : (
+                  <Link
+                    to={footerData.adminPortalUrl || '/admin/login'}
+                    className="hover:text-white transition-colors opacity-50"
+                  >
+                    {footerData.adminPortalText || 'Admin Portal'}
+                  </Link>
+                )}
               </li>
             </ul>
           </div>

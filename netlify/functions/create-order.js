@@ -65,9 +65,8 @@ export const handler = async (event, context) => {
         };
       }
 
-      const client = await getMongoClient();
-      const db = client.db(getDatabaseName());
-      const order = await db.collection(COLLECTIONS.ORDERS).findOne(
+      const db = await getDb();
+      const order = await db.collection('orders').findOne(
         { orderId: orderIdParam },
         { projection: { _id: 0, serverMeta: 0, rawPayload: 0 } }
       );

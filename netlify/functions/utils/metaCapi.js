@@ -169,9 +169,10 @@ export async function sendMetaCapiEvent({
   userData = {},
   customData = {}
 }) {
-  const pixelId = bundledData?.metaSettings?.pixelId;
+  // Resolve Pixel ID: Primary from bundled UI content (editable via admin in MongoDB), fallback to env
+  const pixelId = bundledData?.metaSettings?.pixelId || process.env.META_PIXEL_ID;
   if (!pixelId) {
-    console.warn('[Meta CAPI] Skipping CAPI event: No pixelId configured.');
+    console.warn('[Meta CAPI] Skipping CAPI event: No pixelId configured in UI content or environment.');
     return { success: false, reason: 'NO_PIXEL_ID' };
   }
 
