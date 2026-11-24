@@ -100,8 +100,16 @@ export function captureAttribution() {
       attributionData.fbp = fbpCookie;
     } else if (isValidFbp(existing.fbp)) {
       attributionData.fbp = existing.fbp;
+      if (!fbpCookie) {
+        setCookie('_fbp', existing.fbp, 90);
+      }
     } else {
-      delete attributionData.fbp;
+      // Auto-generate standard Meta fbp if not present so anonymous pre-checkout events are accepted by CAPI
+      const creationTime = Date.now();
+      const randomInt = Math.floor(1000000000 + Math.random() * 9000000000);
+      const generatedFbp = `fb.1.${creationTime}.${randomInt}`;
+      attributionData.fbp = generatedFbp;
+      setCookie('_fbp', generatedFbp, 90);
     }
 
     if (foundNew || !attributionData.landingPage) {
@@ -159,10 +167,16 @@ export function trackEvent(eventName, customData = {}, userData = {}, customEven
   const eventId = customEventId || generateUuid();
   const attribution = captureAttribution();
 
-  const effectiveFbp = (isValidFbp(userData.fbp) ? userData.fbp.trim() : null) ||
-                       (isValidFbp(attribution.fbp) ? attribution.fbp.trim() : null) ||
-                       (isValidFbp(getCookie('_fbp')) ? getCookie('_fbp').trim() : null) ||
-                       null;
+  let effectiveFbp = (isValidFbp(userData.fbp) ? userData.fbp.trim() : null) ||
+                     (isValidFbp(attribution.fbp) ? attribution.fbp.trim() : null) ||
+                     (isValidFbp(getCookie('_fbp')) ? getCookie('_fbp').trim() : null);
+
+  if (!effectiveFbp) {
+    const creationTime = Date.now();
+    const randomInt = Math.floor(1000000000 + Math.random() * 9000000000);
+    effectiveFbp = `fb.1.${creationTime}.${randomInt}`;
+    setCookie('_fbp', effectiveFbp, 90);
+  }
 
   const effectiveFbc = (isValidFbc(userData.fbc) ? userData.fbc.trim() : null) ||
                        (isValidFbc(attribution.fbc) ? attribution.fbc.trim() : null) ||
@@ -251,27 +265,30 @@ export const metaEvents = {
 
   viewContent: (product, currency = 'BDT') => {
     if (!product) return;
-    const cat = product.category || 'Hair Care';
+    const cat = product.category || 'Minoxidil';
     const prodId = String(product._id || product.slug);
     trackEvent('ViewContent', {
       content_name: product.name,
       content_category: cat,
+      content_categories: [cat],
       content_ids: [prodId],
       contents: [{
         id: prodId,
         quantity: 1,
-        item_price: product.salePrice || 0
+        item_price: Number(product.salePrice) || 0,
+        category: cat
       }],
       content_type: 'product',
       value: Number(product.salePrice) || 0,
-      currency
+      currency,
+      num_items: 1
     });
   },
 
   addToCart: (product, quantity = 1, currency = 'BDT') => {
     if (!product) return;
     const items = Array.isArray(product) ? product : [product];
-    const cat = items[0]?.category || 'Hair Care';
+    const cat = items[0]?.category || 'Minoxidil';
     const contentIds = items.map(i => String(i._id || i.productId || i.slug));
     const totalValue = items.reduce((acc, i) => acc + ((Number(i.salePrice || i.unitPrice) || 0) * (Number(i.quantity || quantity) || 1)), 0);
     const totalQty = items.reduce((acc, i) => acc + (Number(i.quantity || quantity) || 1), 0);
@@ -279,11 +296,13 @@ export const metaEvents = {
     trackEvent('AddToCart', {
       content_name: items.length === 1 ? (items[0].name || items[0].productName || 'Product') : 'Cart Items',
       content_category: cat,
+      content_categories: [cat],
       content_ids: contentIds,
       contents: items.map(i => ({
         id: String(i._id || i.productId || i.slug),
         quantity: Number(i.quantity || quantity) || 1,
-        item_price: Number(i.salePrice || i.unitPrice) || 0
+        item_price: Number(i.salePrice || i.unitPrice) || 0,
+        category: i.category || cat
       })),
       content_type: 'product',
       value: totalValue,
@@ -294,16 +313,18 @@ export const metaEvents = {
 
   initiateCheckout: (cartItems, subtotal, userData = {}, currency = 'BDT') => {
     if (!cartItems || cartItems.length === 0) return;
-    const cat = cartItems[0]?.category || 'Hair Care';
+    const cat = cartItems[0]?.category || 'Minoxidil';
 
     trackEvent('InitiateCheckout', {
       content_name: 'Cart Checkout',
       content_category: cat,
+      content_categories: [cat],
       content_ids: cartItems.map(item => String(item.productId || item.slug || item._id)),
       contents: cartItems.map(item => ({
         id: String(item.productId || item.slug || item._id),
         quantity: Number(item.quantity) || 1,
-        item_price: Number(item.unitPrice || item.salePrice) || 0
+        item_price: Number(item.unitPrice || item.salePrice) || 0,
+        category: item.category || cat
       })),
       content_type: 'product',
       num_items: cartItems.reduce((acc, item) => acc + (Number(item.quantity) || 1), 0),
@@ -337,7 +358,7 @@ export const metaEvents = {
 
     const eventId = order.tracking?.eventId || order.metaEventId || order.eventId || `order_${order.orderId}`;
     const items = order.items || [];
-    const cat = items[0]?.category || 'Hair Care';
+    const cat = items[0]?.category || 'Minoxidil';
 
     // Browser fires its Purchase with identical eventId; skipServerCapi=true since server already dispatched it
     trackEvent(
@@ -346,11 +367,13 @@ export const metaEvents = {
         content_name: 'Order Purchase',
         content_type: 'product',
         content_category: cat,
+        content_categories: [cat],
         content_ids: items.map(i => String(i.productId || i.slug)),
         contents: items.map(i => ({
           id: String(i.productId || i.slug),
           quantity: Number(i.quantity) || 1,
-          item_price: Number(i.unitPrice) || 0
+          item_price: Number(i.unitPrice) || 0,
+          category: i.category || cat
         })),
         num_items: items.reduce((acc, i) => acc + (Number(i.quantity) || 1), 0),
         value: Number(order.finalTotal || order.total) || 0,

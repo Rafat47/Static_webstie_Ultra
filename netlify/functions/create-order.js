@@ -321,19 +321,24 @@ export const handler = async (event, context) => {
       fbc: attribution.fbc
     });
 
+    const primaryCategory = verifiedItems[0]?.category || 'Minoxidil';
+
     const capiCustomData = buildCustomData({
       contentIds: verifiedItems.map(i => i.productId),
       contents: verifiedItems.map(i => ({
         id: i.productId,
         quantity: i.quantity,
-        item_price: i.unitPrice
+        item_price: i.unitPrice,
+        category: i.category || primaryCategory
       })),
       contentName: 'Order Purchase',
-      contentCategory: verifiedItems[0]?.category || 'Hair Care',
+      contentType: 'product',
+      contentCategory: primaryCategory,
+      contentCategories: [primaryCategory],
       value: serverFinalTotal,
       currency: 'BDT',
       numItems: verifiedItems.reduce((acc, i) => acc + i.quantity, 0),
-      orderId
+      orderId: String(orderId)
     });
 
     // Fire CAPI Purchase in background (CAPI failure MUST NOT fail the order)

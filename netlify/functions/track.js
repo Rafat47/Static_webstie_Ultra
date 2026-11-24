@@ -94,16 +94,16 @@ export const handler = async (event, context) => {
       };
     }
 
-    const clientUserAgent = event.headers['user-agent'] || userData.clientUserAgent || null;
+    const clientUserAgent = event.headers['user-agent'] || userData.clientUserAgent || userData.client_user_agent || null;
 
     const normalizedUserData = buildUserData({
-      email: userData.email,
-      phone: userData.phone,
-      firstName: userData.firstName,
-      lastName: userData.lastName,
-      city: userData.city,
-      country: userData.country || 'bd',
-      externalId: userData.externalId,
+      email: userData.email || (Array.isArray(userData.em) ? userData.em[0] : userData.em),
+      phone: userData.phone || userData.phoneNumber || (Array.isArray(userData.ph) ? userData.ph[0] : userData.ph),
+      firstName: userData.firstName || (Array.isArray(userData.fn) ? userData.fn[0] : userData.fn),
+      lastName: userData.lastName || (Array.isArray(userData.ln) ? userData.ln[0] : userData.ln),
+      city: userData.city || userData.district || (Array.isArray(userData.ct) ? userData.ct[0] : userData.ct),
+      country: userData.country || (Array.isArray(userData.country) ? userData.country[0] : userData.country) || 'bd',
+      externalId: userData.externalId || (Array.isArray(userData.external_id) ? userData.external_id[0] : userData.external_id),
       clientIp,
       clientUserAgent,
       fbp: userData.fbp,
@@ -111,14 +111,16 @@ export const handler = async (event, context) => {
     });
 
     const normalizedCustomData = buildCustomData({
-      contentIds: customData.content_ids,
+      contentIds: customData.content_ids || customData.contentIds,
       contents: customData.contents,
-      contentName: customData.content_name,
-      contentCategory: customData.content_category,
+      contentName: customData.content_name || customData.contentName,
+      contentType: customData.content_type || customData.contentType,
+      contentCategory: customData.content_category || customData.contentCategory,
+      contentCategories: customData.content_categories || customData.contentCategories,
       value: customData.value,
       currency: customData.currency || 'BDT',
-      numItems: customData.num_items,
-      orderId: customData.order_id,
+      numItems: customData.num_items ?? customData.numItems,
+      orderId: customData.order_id || customData.orderId,
       inStock: customData.in_stock
     });
 
