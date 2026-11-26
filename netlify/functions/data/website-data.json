@@ -1,9 +1,9 @@
 {
   "siteSettings": {
     "socialLinks": {
-      "facebook": "https://facebook.com/hairshurokkhabd",
-      "instagram": "https://instagram.com/hairshurokkhabd",
-      "youtube": "https://youtube.com/@hairshurokkhabd"
+      "facebook": "https://www.facebook.com/hairsurokkha",
+      "instagram": "https://instagram.com/hairshurokkha",
+      "youtube": "https://youtube.com/@hairshurokkha"
     },
     "siteName": "Hair Shurokkha",
     "logoText": "Hair Shurokkha",
@@ -13,7 +13,7 @@
     "contactPhone": "01356813069, 01521259918",
     "contactEmail": "hairsurokkha@gmail.com",
     "whatsappNumber": "+8801356813069",
-    "address": "Sonirakra, Dhonia, Dhaka 1236",
+    "address": "Shonir Akhra, Dania, Dhaka 1236",
     "faviconUrl": "/hair-shurokkha-logo-transparent.png",
     "searchPlaceholderEn": "Search products, brands, and daily essentials...",
     "searchPlaceholderBn": "পণ্য, মিনোক্সিডিল, ডার্মা রোলার খুঁজুন...",
@@ -36,7 +36,7 @@
     "secondaryBtnText": "How to Use",
     "secondaryBtnLink": "#how-to-use",
     "heroImage": "https://res.cloudinary.com/wvd1wcrw/image/upload/v1795466309/imresizer-resize-Modern_Hair_Care_Product_Showcase.webp",
-    "rating": "4.9 / 5.0 Rating across Bangladesh",
+    "rating": "4.8 / 5.0 Rating across Bangladesh",
     "trustBadges": [
       {
         "label": "Authentic Sourced",
@@ -181,19 +181,19 @@
     "startNow": {
       "enabled": true,
       "title": "It's not too Late. Start Now.",
-      "subtitle": "Early intervention makes the critical difference between miniaturized and restored follicles.",
-      "content": "Hair thinning is a progressive biological process. DHT (Dihydrotestosterone) gradually binds to vulnerable receptors, shrinking follicles and shortening growth cycles. However, as long as hair follicles remain alive, targeted topical stimulation can help restore blood flow, nutrients, and cellular regeneration.",
+      "subtitle": "Starting early can help you get better results. (সময়মতো শুরু করলে ভালো ফল পাওয়ার সম্ভাবনা বেশি থাকে।)",
+      "content": "Hair loss often gets worse over time. Many people wait until their hair becomes very thin before taking action. But starting treatment early may help slow hair loss and keep your existing hair for longer while improving the chance of growing new hair. Don't wait until you lose more hair. Start taking action now. - (বাংলা): চুল পড়া সময়ের সাথে সাথে বাড়তে পারে। অনেকেই চুল অনেক বেশি পাতলা হয়ে যাওয়ার পর ব্যবস্থা নেন। কিন্তু শুরুতেই treatment নিলে চুল পড়া কমাতে এবং বর্তমান চুল ধরে রাখতে সাহায্য করতে পারে এবং নতুন চুল গজানোর সম্ভাবনা বৃদ্ধি পায়। আরও চুল হারানোর অপেক্ষা না করে এখনই ব্যবস্থা নিন।",
       "bulletPoints": [
-        "Follicles remain viable years before irreversible dormancy occurs.",
-        "Topical Minoxidil dilates micro-capillaries to supply oxygen and vital amino acids.",
-        "Derma rolling enhances topical absorption up to 3x while stimulating collagen synthesis."
+        "Early treatment may help protect weak hair follicles before they become inactive. (শুরুতেই treatment নিলে ফলিকল আরও দুর্বল বা নিষ্ক্রিয় হয়ে যাওয়ার আগে সেগুলো ধরে রাখতে সাহায্য হতে পারে।)",
+        "Minoxidil helps support hair growth and may reduce hair loss. (Minoxidil চুলের বৃদ্ধি বাড়াতে এবং চুল পড়া কমাতে সাহায্য করতে পারে।)",
+        "The sooner you start, the more hair you may be able to protect.(যত দ্রুত শুরু করবেন, আপনার বর্তমান চুল ধরে রাখার সম্ভাবনাও তত বেশি হতে পারে।)"
       ],
       "ctaText": "Explore Hair Care Products",
       "ctaLink": "/shop",
       "image": "https://res.cloudinary.com/wvd1wcrw/image/upload/v1795554568/imresizer-resize-Worried_Man_Touching_His_Hair.webp",
       "desktopImage": "https://res.cloudinary.com/wvd1wcrw/image/upload/v1795554568/imresizer-resize-Worried_Man_Touching_His_Hair.webp",
       "mobileImage": "https://res.cloudinary.com/wvd1wcrw/image/upload/v1795554568/imresizer-resize-Worried_Man_Touching_His_Hair.webp",
-      "overline": "Early Action Strategy"
+      "overline": "Worried about your hair?"
     },
     "hairThinning": {
       "enabled": true,
@@ -204,7 +204,7 @@
         {
           "stageNumber": "01",
           "title": "Healthy Hair Follicles",
-          "description": "Follicles are deeply rooted in the dermal layer. Blood vessels supply ample oxygen and nutrients, keeping 85-90% of hairs in the active growing (Anagen) phase.",
+          "description": "Hair roots are healthy and strong. They get the nutrients they need to grow, keeping your hair thick and full. - (বাংলা):\nএই পর্যায়ে চুলের গোড়া সুস্থ ও শক্তিশালী থাকে। প্রয়োজনীয় পুষ্টি পেয়ে চুল স্বাভাবিকভাবে বেড়ে ওঠে এবং ঘন থাকে।",
           "badge": "Phase 1: Normal",
           "icon": "ShieldCheck",
           "_id": "6b0072b8ca8f2dea4a890dfb",
@@ -212,8 +212,8 @@
         },
         {
           "stageNumber": "02",
-          "title": "Miniaturization Begins",
-          "description": "DHT sensitivity constricts micro-vessels. Hair shafts become progressively finer, shorter, and brittle as the growth phase shortens drastically.",
+          "title": "Hair Starts to Thin",
+          "description": "Hair roots start to become weaker. New hair grows thinner and shorter, and you may notice more hair fall or a thinner crown. - (বাংলা):\nএই পর্যায়ে চুলের গোড়া ধীরে ধীরে দুর্বল হতে শুরু করে। নতুন চুল আগের তুলনায় পাতলা ও ছোট হয়। চুল পড়া বেড়ে যেতে পারে এবং মাথার কিছু অংশ পাতলা দেখা দিতে পারে।",
           "badge": "Phase 2: Warning",
           "icon": "TrendingDown",
           "_id": "6b0072b8ca8f2dea4a890dfc",
@@ -221,8 +221,8 @@
         },
         {
           "stageNumber": "03",
-          "title": "Visible Scalp Exposure",
-          "description": "Without topical stimulation, hairs shed faster than they can regenerate, leading to widened part lines, receding temples, and thinning crowns.",
+          "title": "Scalp Becomes Visible",
+          "description": "Hair loss becomes more noticeable, and more of your scalp starts to show. Hair may become too weak to grow properly, leading to a receding hairline and a thinner crown. - (বাংলা):\nএই পর্যায়ে চুল পড়া আরও স্পষ্ট হয়ে যায় এবং মাথার ত্বক দেখা যেতে শুরু করে। চুলের গোড়া অনেক দুর্বল হয়ে যাওয়ায় চুল ঠিকমতো বাড়তে পারে না। ফলে সামনের Hairline পিছিয়ে যেতে পারে এবং মাথার উপরের অংশ আরও পাতলা হয়ে যায়।",
           "badge": "Phase 3: Action Required",
           "icon": "AlertCircle",
           "_id": "6b0072b8ca8f2dea4a890dfd",
@@ -231,36 +231,36 @@
       ],
       "ctaText": "Start Recovery Routine",
       "ctaLink": "/shop",
-      "overline": "Biological Progression",
+      "overline": "Stages of Hairfall",
       "healthLabel": "Follicle Health:"
     },
     "howMinoxidilWorks": {
       "enabled": true,
       "title": "How Does Minoxidil Work?",
-      "subtitle": "The dermatological science behind follicular reactivation and prolonged Anagen growth.",
+      "subtitle": "Minoxidil helps your hair grow longer, stronger and thicker.(মিনোক্সিডিল আপনার চুলকে দীর্ঘ সময় ধরে বাড়তে এবং আরও মোটা ও শক্ত হতে সাহায্য করে।)",
       "mechanismPoints": [
         {
           "step": "01",
-          "title": "Potassium Channel Opening",
-          "description": "Minoxidil acts as a potassium channel opener, widening cell membranes and encouraging cellular hyperpolarization.",
+          "title": "Wakes Up Hair Roots",
+          "description": "Minoxidil gently activates the cells around your hair roots, so they start working again.(মিনোক্সিডিল চুলের গোড়ার কোষগুলোকে সক্রিয় করে, ফলে সেগুলো আবার কাজ শুরু করে।)",
           "_id": "6b0072b8ca8f2dea4a890dfe"
         },
         {
           "step": "02",
-          "title": "Micro-Vascular Vasodilation",
-          "description": "Expands constricted scalp capillaries, boosting immediate oxygen and nutrient delivery directly to dormant follicle roots.",
+          "title": "Increases Blood Flow",
+          "description": "It widens the tiny blood vessels in your scalp. More blood means more oxygen and nutrients reach your hair roots.(এটি মাথার ত্বকের ছোট রক্তনালী প্রশস্ত করে। ফলে চুলের গোড়ায় বেশি অক্সিজেন ও পুষ্টি পৌঁছায়।)",
           "_id": "6b0072b8ca8f2dea4a890dff"
         },
         {
           "step": "03",
-          "title": "Prolonging the Anagen Phase",
-          "description": "Transitions prematurely resting (Telogen) follicles back into vigorous, prolonged active growth (Anagen) cycles.",
+          "title": "Longer Growth Time",
+          "description": "It moves resting hair back into the growing stage, and keeps it growing for longer.(এটি বিশ্রামে থাকা চুলকে আবার বাড়ার পর্যায়ে ফিরিয়ে আনে এবং বেশি সময় ধরে বাড়তে দেয়।)",
           "_id": "6b0072b8ca8f2dea4a890e00"
         },
         {
           "step": "04",
-          "title": "Thicker Shaft Diameter",
-          "description": "Over consistent application, renewed follicles produce visibly thicker, darker terminal hairs with greater root anchorage.",
+          "title": "Thicker Hair",
+          "description": "With regular use, new hair grows thicker, darker and stronger at the root. (নিয়মিত ব্যবহার করলে নতুন চুল আরও মোটা, কালো এবং গোড়ায় শক্ত হয়ে ওঠে।)",
           "_id": "6b0072b8ca8f2dea4a890e01"
         }
       ],
@@ -269,7 +269,7 @@
       "ctaText": "View Minoxidil Solutions",
       "ctaLink": "/shop",
       "desktopImage": "https://res.cloudinary.com/wvd1wcrw/image/upload/v1795554892/imresizer-resize-How_Minoxidil_Reactivates_Hair_Growth.webp",
-      "overline": "Dermatological Science",
+      "overline": "Science behind Minoxidil",
       "anatomyOverline": "Follicular Anatomy",
       "anatomyTitle": "Targeted Microvascular Circulation",
       "anatomyDescription": "Topical application widens dormant scalp capillaries, delivering oxygen directly to hair dermal papilla roots."
@@ -277,14 +277,14 @@
     "progressTimeline": {
       "enabled": true,
       "title": "Every Journey Takes Time",
-      "subtitle": "What to realistically expect with consistent daily application. Results vary by individual.",
+      "subtitle": "The full recovery of hair can take some time. It is a matter of staying consistent. (চুল পুরোপুরি আগের অবস্থায় ফিরতে কিছুটা সময় লাগতে পারে। এক্ষেত্রে ধারাবাহিকতা বজায় রাখাটা জরুরি।)",
       "disclaimer": "Important: Consistent twice-daily application is essential. Individual biological response, timeline, and degree of recovery naturally vary.",
       "stages": [
         {
           "stage": "Stage 1",
           "period": "Month 1",
-          "title": "Adjustment & Shedding Phase",
-          "description": "Old, miniaturized resting telogen hairs shed to make room for healthier new follicles. This shedding is normal and a sign of active response.",
+          "title": "Shedding Phase (Normal)",
+          "description": "Some old, weak hairs fall out first to make room for new, healthy ones. This is normal and shows the treatment is working. — প্রথমে কিছু পুরনো, দুর্বল চুল ঝরে যায়, নতুন সুস্থ চুলের জায়গা করে দিতে। এটা স্বাভাবিক এবং চিকিৎসা কাজ করার লক্ষণ।",
           "image": "https://res.cloudinary.com/wvd1wcrw/image/upload/v1795554981/imresizer-resize-Clinical_Scalp_Hair_Loss_Assessment.webp",
           "highlight": "Normal Shedding",
           "_id": "6b0072b8ca8f2dea4a890e02"
@@ -292,8 +292,8 @@
         {
           "stage": "Stage 2",
           "period": "Month 3",
-          "title": "Early Vellus Hair Emergence",
-          "description": "Fine, soft baby hairs begin sprouting in previously thinning areas. Follicle roots gain deeper anchorage and improved micro-circulation.",
+          "title": "New Baby Hairs",
+          "description": "Thin, soft new hairs start to grow in thinning areas. Your hair roots get stronger and get better blood flow. — পাতলা হয়ে যাওয়া জায়গায় নরম, সরু নতুন চুল গজাতে শুরু করে। চুলের গোড়া আরও শক্ত হয় এবং রক্ত চলাচল ভালো হয়।",
           "image": "https://res.cloudinary.com/wvd1wcrw/image/upload/v1795555043/imresizer-resize-Three-Month_Hair_Growth_Progress.webp",
           "highlight": "Soft Sprouting",
           "_id": "6b0072b8ca8f2dea4a890e03"
@@ -301,8 +301,8 @@
         {
           "stage": "Stage 3",
           "period": "Month 6",
-          "title": "Terminal Hair Thickening",
-          "description": "Vellus hairs mature into pigmented, thicker terminal shafts. Noticeable reduction in scalp visibility and visible density restoration.",
+          "title": "Hair Gets Thicker",
+          "description": "The baby hairs grow thicker and darker. You can see less scalp and more hair. — নরম চুলগুলো মোটা ও কালো হয়ে ওঠে। মাথার ত্বক কম দেখা যায়, চুল বেশি দেখায়।",
           "image": "https://res.cloudinary.com/wvd1wcrw/image/upload/v1795555139/imresizer-resize-Clinical_Crown_Hair_Assessment.webp",
           "highlight": "Visible Density",
           "_id": "6b0072b8ca8f2dea4a890e04"
@@ -310,14 +310,14 @@
         {
           "stage": "Stage 4",
           "period": "Month 9 - 12",
-          "title": "Optimal Density & Maintenance",
-          "description": "Full cosmetic density achieved in responsive areas. Continued maintenance routine preserves healthy hair cycles permanently.",
+          "title": "Full Growth & Upkeep",
+          "description": "Your hair looks fuller in the treated areas. Keep using it regularly to hold on to the results. — চিকিৎসা করা জায়গায় চুল ঘন দেখায়। ফলাফল ধরে রাখতে নিয়মিত ব্যবহার চালিয়ে যান।",
           "image": "https://res.cloudinary.com/wvd1wcrw/image/upload/v1795555215/imresizer-resize-Dense_Dark_Hair_Overhead_Portrait.webp",
           "highlight": "Full Routine",
           "_id": "6b0072b8ca8f2dea4a890e05"
         }
       ],
-      "overline": "Realistic Expectations",
+      "overline": "It's not an overnight magic",
       "milestoneLabel": "Milestone:"
     },
     "usageGuide": {
@@ -328,36 +328,36 @@
       "steps": [
         {
           "stepNumber": "01",
-          "title": "Cleanse & Dry Scalp",
-          "description": "Wash your scalp with a gentle shampoo. Ensure hair and scalp are 100% dry before application, as moisture impedes optimal absorption.",
+          "title": "Wash & Dry Your Scalp",
+          "description": "Wash your scalp with a mild shampoo. Dry your hair and scalp fully before you apply. Wet skin absorbs less. — Soft  শ্যাম্পু দিয়ে মাথার ত্বক ধুয়ে নিন। লাগানোর আগে চুল ও ত্বক পুরোপুরি শুকিয়ে নিন। ভেজা ত্বক ওষুধ কম শোষণ করে।",
           "_id": "6b0072b8ca8f2dea4a890e06",
           "image": "https://res.cloudinary.com/wvd1wcrw/image/upload/v1795558636/imresizer-resize-Young_Man_Washing_Hair_with_Foamy_Shampoo.webp"
         },
         {
           "stepNumber": "02",
-          "title": "Measure Exactly 1 mL",
-          "description": "Draw 1 mL of Minoxidil 5% solution into the calibrated dropper. Never exceed 1 mL per application, regardless of the area size.",
+          "title": "Measure 1 mL",
+          "description": "Fill the dropper up to the 1 mL line. Never use more than 1 mL at a time. — ড্রপারে ১ মিলিলিটার দাগ পর্যন্ত ওষুধ ভরুন। একবারে কখনো ১ মিলিলিটারের বেশি লাগাবেন না।",
           "_id": "6b0072b8ca8f2dea4a890e07",
           "image": "https://res.cloudinary.com/wvd1wcrw/image/upload/v1795558844/imresizer-resize-1_mL_Minoxidil_Dropper_Guide.webp"
         },
         {
           "stepNumber": "03",
-          "title": "Part Hair & Apply to Scalp(not Hair)",
-          "description": "Part hair in areas of thinning (vertex, crown, temples). Gently release drops directly onto the scalp surface, not on hair strands.",
+          "title": "Apply on Scalp, Not Hair",
+          "description": "Part your hair where it is thin. Put the drops on your scalp and spread gently with your fingertips. Wash your hands after. — যেখানে চুল পাতলা, সেখানে সিঁথি করুন। ফোঁটাগুলো সরাসরি মাথার ত্বকে দিন এবং আঙুলের ডগা দিয়ে আলতো ছড়িয়ে দিন। শেষে হাত ধুয়ে নিন।",
           "_id": "6b0072b8ca8f2dea4a890e08",
           "image": "https://res.cloudinary.com/wvd1wcrw/image/upload/v1795558915/imresizer-resize-Hair_Serum_Dropper_on_Thinning_Scalp.webp"
         },
         {
           "stepNumber": "04",
-          "title": "Wait 3-4 Hours before washing off",
-          "description": "Lightly spread the liquid over the target scalp area with your fingertips. Do not vigorously rub. Wash hands immediately.",
+          "title": "Wait 3–4 Hours Before Washing",
+          "description": "Let it soak into your scalp. Do not rub hard. Do not wash your hair for 3–4 hours. — ওষুধ ত্বকে শুষে নিতে দিন। জোরে ঘষবেন না। ৩–৪ ঘণ্টা চুল ধুবেন না।",
           "_id": "6b0072b8ca8f2dea4a890e09",
           "image": "https://res.cloudinary.com/wvd1wcrw/image/upload/v1795559004/imresizer-resize-3_4_Hour_Hair_Timer_Badge.webp"
         },
         {
           "stepNumber": "05",
-          "title": "Apply twice a day, daily. Consistency is key!!",
-          "description": "Let the solution naturally absorb for at least 4 hours before washing hair, wearing tight hats, or going to sleep.",
+          "title": "Twice a Day, Every Day",
+          "description": "Apply every morning and evening. After applying, avoid tight caps and sleeping for 3–4 hours. Regular use gives the best results. — প্রতিদিন সকালে ও সন্ধ্যায় লাগান। লাগানোর পর ৩–৪ ঘণ্টা টাইট টুপি পরবেন না এবং সঙ্গে সঙ্গে শুয়ে পড়বেন না। নিয়মিত ব্যবহারে সবচেয়ে ভালো ফল পাওয়া যায়।",
           "_id": "6b0072b8ca8f2dea4a890e0a",
           "image": "https://res.cloudinary.com/wvd1wcrw/image/upload/v1795559066/imresizer-resize-Glossy_Minoxidil_Twice-Daily_Schedule.webp"
         }
@@ -1002,7 +1002,7 @@
     }
   },
   "orderConfirmation": {
-    "heading": "Amrai kinmu...Customer r kinbo na!",
+    "heading": "Thank You",
     "subheading": "We have received your order. Our team is dispatching your authentic package via Cash on Delivery.",
     "orderIdLabel": "Order Reference Number",
     "dateLabel": "Date",

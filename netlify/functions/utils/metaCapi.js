@@ -233,7 +233,7 @@ export async function sendMetaCapiEvent({
     event_name: eventName,
     event_time: timeInSeconds,
     event_id: eventId,
-    event_source_url: eventSourceUrl || 'https://hairshurokkha.com',
+    event_source_url: eventSourceUrl || 'https://hairshurokkha.netlify.app',
     action_source: 'website',
     user_data: userData,
     custom_data: customData
