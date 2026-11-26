@@ -1,28 +1,11 @@
 import { getDb } from './utils/mongo.js';
 import {
-  sendMetaCapiEvent,
+  dispatchEvent,
   extractClientIp,
   buildUserData,
   buildCustomData
 } from './utils/metaCapi.js';
 import bundledData from './data/website-data.json' with { type: 'json' };
-
-// In-memory rate limiting per IP (max 5 orders per 10 minutes per IP)
-const orderRateMap = new Map();
-const RATE_WINDOW_MS = 10 * 60 * 1000;
-const MAX_ORDERS_PER_WINDOW = 5;
-
-function isOrderRateLimited(ip) {
-  if (!ip) return false;
-  const now = Date.now();
-  const record = orderRateMap.get(ip);
-  if (!record || now - record.start > RATE_WINDOW_MS) {
-    orderRateMap.set(ip, { count: 1, start: now });
-    return false;
-  }
-  record.count += 1;
-  return record.count > MAX_ORDERS_PER_WINDOW;
-}
 
 // Bangladesh Phone Validation helper
 function isValidBDPhone(phone) {
@@ -42,6 +25,8 @@ function generateOrderId() {
 }
 
 export const handler = async (event, context) => {
+  const startedAt = Date.now();
+
   const headers = {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Headers': 'Content-Type, Authorization',
@@ -102,19 +87,8 @@ export const handler = async (event, context) => {
     };
   }
 
-  const clientIp = extractClientIp(event.headers);
-  if (isOrderRateLimited(clientIp)) {
-    return {
-      statusCode: 429,
-      headers,
-      body: JSON.stringify({
-        success: false,
-        message: 'Too many order requests. Please wait a few minutes before trying again.'
-      })
-    };
-  }
-
   try {
+    const clientIp = extractClientIp(event.headers);
     const body = JSON.parse(event.body || '{}');
 
     // 1. Honeypot check (anti-bot)
@@ -127,9 +101,9 @@ export const handler = async (event, context) => {
       };
     }
 
-    const { customer = {}, items = [], deliveryArea = 'inside_dhaka', notes = '', attribution = {}, eventId: incomingEventId } = body;
+    const { customer = {}, items = [], deliveryArea = 'inside_dhaka', notes = '', attribution = {} } = body;
 
-    // 2. Validate Customer Fields
+    // 2. Validate customer fields
     const fullName = (customer.fullName || customer.name || '').trim();
     const phoneNumber = (customer.phoneNumber || customer.phone || '').trim();
     const address = (customer.address || '').trim();
@@ -161,7 +135,7 @@ export const handler = async (event, context) => {
       };
     }
 
-    // 3. Validate Items and RECOMPUTE Prices from Bundled Static UI Data
+    // 3. Validate items and recompute prices from bundled product data
     if (!Array.isArray(items) || items.length === 0) {
       return {
         statusCode: 400,
@@ -173,7 +147,6 @@ export const handler = async (event, context) => {
     const catalogProducts = bundledData.products || [];
     const verifiedItems = [];
     let serverSubtotal = 0;
-    const MAX_QTY_PER_ITEM = 10;
 
     for (const item of items) {
       const prodId = item.productId || item._id || item.slug;
@@ -190,31 +163,18 @@ export const handler = async (event, context) => {
         };
       }
 
-      // Enforce in-stock flag
-      if (product.stock <= 0) {
-        return {
-          statusCode: 400,
-          headers,
-          body: JSON.stringify({
-            success: false,
-            message: `Sorry, "${product.name}" is currently out of stock.`
-          })
-        };
-      }
-
       const requestedQty = parseInt(item.quantity, 10);
-      if (isNaN(requestedQty) || requestedQty < 1 || requestedQty > MAX_QTY_PER_ITEM) {
+      if (isNaN(requestedQty) || requestedQty < 1) {
         return {
           statusCode: 400,
           headers,
           body: JSON.stringify({
             success: false,
-            message: `Invalid quantity for "${product.name}". Max allowed per order is ${MAX_QTY_PER_ITEM}.`
+            message: `Invalid quantity for "${product.name}".`
           })
         };
       }
 
-      // Strict price lookup from bundled content
       const verifiedUnitPrice = Number(product.salePrice);
       const lineTotal = verifiedUnitPrice * requestedQty;
       serverSubtotal += lineTotal;
@@ -232,7 +192,7 @@ export const handler = async (event, context) => {
       });
     }
 
-    // 4. Recompute Delivery Fee & Final Total from Bundled Delivery Settings
+    // 4. Recompute delivery fee and final total from bundled settings
     const isInsideDhaka = deliveryArea === 'inside_dhaka';
     const serverDeliveryFee = isInsideDhaka
       ? (Number(bundledData.deliverySettings?.insideDhakaFee) || 70)
@@ -240,7 +200,7 @@ export const handler = async (event, context) => {
 
     const serverFinalTotal = serverSubtotal + serverDeliveryFee;
 
-    // Reject any order with price tampering / mismatch
+    // Reject any order with price tampering or mismatch
     if (body.finalTotal !== undefined && Math.abs(Number(body.finalTotal) - serverFinalTotal) > 0.01) {
       console.warn(`[Price Validation Mismatch] Client: ${body.finalTotal}, Server: ${serverFinalTotal}`);
       return {
@@ -253,9 +213,9 @@ export const handler = async (event, context) => {
       };
     }
 
-    // 5. Generate Order and Deduplication Identifiers
+    // 5. Generate order and fixed event ID (same ID is sent to the browser Pixel)
     const orderId = generateOrderId();
-    const eventId = incomingEventId || `order_${orderId}_${Date.now()}`;
+    const eventId = `purchase_${orderId}`;
     const now = new Date();
 
     const orderRecord = {
@@ -298,12 +258,12 @@ export const handler = async (event, context) => {
       updatedAt: now
     };
 
-    // 6. SAVE ORDER TO MONGODB FIRST
+    // 6. Save order first (an order is never lost because of Meta)
     const db = await getDb();
     await db.collection('orders').insertOne(orderRecord);
     console.log(`✓ Order ${orderId} successfully saved to database.`);
 
-    // 7. FIRE PURCHASE TO META CONVERSIONS API WITH SAME EVENT_ID
+    // 7. Build Meta data
     const userAgent = event.headers['user-agent'] || null;
     const nameParts = fullName.split(' ');
     const firstName = nameParts[0] || '';
@@ -341,19 +301,26 @@ export const handler = async (event, context) => {
       orderId: String(orderId)
     });
 
-    // Fire CAPI Purchase in background (CAPI failure MUST NOT fail the order)
-    sendMetaCapiEvent({
-      eventName: 'Purchase',
-      eventId,
-      eventTime: Math.floor(now.getTime() / 1000),
-      eventSourceUrl: attribution.landingPage || event.headers['referer'] || 'https://hairshurokkha.com/checkout',
-      userData: capiUserData,
-      customData: capiCustomData
-    }).catch(capiErr => {
-      console.warn(`[Meta CAPI Purchase Non-Fatal Error for order ${orderId}]:`, capiErr.message);
-    });
+    // 8. Send Purchase to Meta (awaited, within time budget, logged, retried once if quick failure)
+    let metaDelivered = false;
+    try {
+      const metaResult = await dispatchEvent({
+        eventName: 'Purchase',
+        eventId,
+        eventTime: Math.floor(now.getTime() / 1000),
+        eventSourceUrl: attribution.landingPage || event.headers['referer'] || 'https://hairshurokkha.com/checkout',
+        userData: capiUserData,
+        customData: capiCustomData,
+        startedAt,
+        failedRecord: { orderId, source: 'create-order', total: serverFinalTotal }
+      });
+      metaDelivered = metaResult.success;
+    } catch (metaErr) {
+      // Order is already saved; a failure here must not change the customer's result
+      console.error(`[Meta CAPI] Unexpected error for order ${orderId}:`, metaErr.message);
+    }
 
-    // 8. Return response
+    // 9. Return response
     return {
       statusCode: 201,
       headers,
@@ -361,8 +328,10 @@ export const handler = async (event, context) => {
         success: true,
         orderId,
         eventId,
+        metaDelivered,
         data: {
           orderId,
+          eventId,
           subtotal: serverSubtotal,
           deliveryFee: serverDeliveryFee,
           total: serverFinalTotal,

@@ -1,42 +1,25 @@
 import {
-  sendMetaCapiEvent,
+  dispatchEvent,
   extractClientIp,
   buildUserData,
   buildCustomData
 } from './utils/metaCapi.js';
 
+// Purchase is NOT allowed here: it is sent by create-order with the order's event ID
 const ALLOWED_EVENTS = new Set([
   'PageView',
   'ViewContent',
   'AddToCart',
   'InitiateCheckout',
   'AddPaymentInfo',
-  'Purchase',
   'Contact',
   'Search',
   'Lead'
 ]);
 
-// Simple in-memory rate limiter (per client IP)
-const ipRateMap = new Map();
-const RATE_LIMIT_WINDOW_MS = 60 * 1000;
-const MAX_REQUESTS_PER_MINUTE = 60;
-
-function isRateLimited(ip) {
-  if (!ip) return false;
-  const now = Date.now();
-  const record = ipRateMap.get(ip);
-
-  if (!record || now - record.start > RATE_LIMIT_WINDOW_MS) {
-    ipRateMap.set(ip, { count: 1, start: now });
-    return false;
-  }
-
-  record.count += 1;
-  return record.count > MAX_REQUESTS_PER_MINUTE;
-}
-
 export const handler = async (event, context) => {
+  const startedAt = Date.now();
+
   const headers = {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Headers': 'Content-Type, Authorization',
@@ -65,16 +48,8 @@ export const handler = async (event, context) => {
     };
   }
 
-  const clientIp = extractClientIp(event.headers);
-  if (isRateLimited(clientIp)) {
-    return {
-      statusCode: 429,
-      headers,
-      body: JSON.stringify({ success: false, error: 'Rate limit exceeded' })
-    };
-  }
-
   try {
+    const clientIp = extractClientIp(event.headers);
     const payload = JSON.parse(event.body || '{}');
     const { eventName, eventId, eventSourceUrl, userData = {}, customData = {} } = payload;
 
@@ -124,21 +99,15 @@ export const handler = async (event, context) => {
       inStock: customData.in_stock
     });
 
-    // Fire CAPI event in background (fire-and-forget or await with short timeout)
-    const capiPromise = sendMetaCapiEvent({
+    const result = await dispatchEvent({
       eventName,
       eventId,
       eventTime: Math.floor(Date.now() / 1000),
       eventSourceUrl: eventSourceUrl || event.headers['referer'] || null,
       userData: normalizedUserData,
-      customData: normalizedCustomData
+      customData: normalizedCustomData,
+      startedAt
     });
-
-    // Respond quickly to client
-    const capiResult = await Promise.race([
-      capiPromise,
-      new Promise(resolve => setTimeout(() => resolve({ success: true, status: 'dispatched_async' }), 1500))
-    ]);
 
     return {
       statusCode: 200,
@@ -146,7 +115,7 @@ export const handler = async (event, context) => {
       body: JSON.stringify({
         success: true,
         eventId,
-        status: capiResult.status || 'delivered'
+        status: result.success ? 'delivered' : 'failed'
       })
     };
   } catch (err) {
@@ -158,4 +127,3 @@ export const handler = async (event, context) => {
     };
   }
 };
-

@@ -131,7 +131,7 @@ export default function CheckoutPage() {
     return Object.keys(errors).length === 0;
   };
 
-  const handleSubmit = async (e) => {
+    const handleSubmit = async (e) => {
     e.preventDefault();
     setErrorMessage('');
 
@@ -165,17 +165,37 @@ export default function CheckoutPage() {
       const res = await api.createOrder(payload);
 
       if (res && res.success && res.orderId) {
+        const eventId = res.eventId || res.data?.eventId;
+        const serverTotal = res.data?.total ?? finalTotal;
+
+        // Browser Pixel Purchase: uses the SAME eventId the server sent to CAPI,
+        // so Meta counts the purchase once. Fires only after the order is saved.
+        try {
+          if (eventId) {
+            metaEvents.purchase({
+              orderId: res.orderId,
+              eventId,
+              items: payload.items,
+              customer: payload.customer,
+              finalTotal: serverTotal
+            });
+          }
+        } catch (pixelErr) {
+          console.warn('Pixel purchase error:', pixelErr);
+        }
+
         clearCart();
         try {
           // Cache order receipt for instant confirmation render
           sessionStorage.setItem(`order_${res.orderId}`, JSON.stringify(res.data || res.order || {
             orderId: res.orderId,
+            eventId,
             createdAt: new Date().toISOString(),
             customer: payload.customer,
             items: payload.items,
             subtotal,
             deliveryCharge,
-            finalTotal,
+            finalTotal: serverTotal,
             orderStatus: 'pending'
           }));
           const updatedCache = { ...formData, notes: '' };

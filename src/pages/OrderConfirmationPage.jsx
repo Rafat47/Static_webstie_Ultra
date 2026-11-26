@@ -16,7 +16,6 @@ import SEOHead from '../components/common/SEOHead';
 import api from '../services/api';
 import { useConfig } from '../context/ConfigContext';
 import { formatCurrency, formatDate } from '../utils/formatters';
-import { metaEvents } from '../utils/metaPixel';
 
 export default function OrderConfirmationPage() {
   const { orderId } = useParams();
@@ -55,7 +54,6 @@ export default function OrderConfirmationPage() {
           try {
             const parsed = JSON.parse(cached);
             setOrder(parsed);
-            metaEvents.purchase(parsed);
             setLoading(false);
             return;
           } catch (e) {}
@@ -65,8 +63,6 @@ export default function OrderConfirmationPage() {
       const res = await api.getOrderById(orderId);
       if (res && res.success && res.data) {
         setOrder(res.data);
-        // Fire Meta Purchase Event only once after successful order creation
-        metaEvents.purchase(res.data);
       }
     } catch (err) {
       console.warn('Failed to load order confirmation:', err);
