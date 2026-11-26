@@ -1,4 +1,4 @@
-# Regrow Hair Care BD — Premium E-commerce Website
+# hair surokkha — Premium E-commerce Website
 
 A complete, production-oriented, mobile-first e-commerce web application for a hair care brand in Bangladesh specializing in authentic **topical Minoxidil 5%**, **540 Titanium Derma Rollers**, and **hair restoration combo packages**.
 
