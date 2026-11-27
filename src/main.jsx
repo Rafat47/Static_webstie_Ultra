@@ -5,6 +5,9 @@ import App from './App';
 import { WebsiteDataProvider } from './context/WebsiteDataContext';
 import { CartProvider } from './context/CartContext';
 import './styles/index.css';
+import { initHideNetlifyBadge } from "./utils/hideNetlifyBadge";
+
+initHideNetlifyBadge();
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
