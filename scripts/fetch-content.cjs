@@ -12,7 +12,10 @@ if (fs.existsSync(path.join(__dirname, '..', '.env'))) {
 }
 
 const uri = process.env.MONGODB_URI_BUILD || process.env.MONGODB_URI || process.env.MONGODB_URI_FN;
-const dbName = process.env.MONGODB_DB || 'claude_hair_surokkha';
+const dbName = process.env.MONGODB_DB;
+if (!dbName) {
+  throw new Error('MONGODB_DB environment variable is not set');
+}
 
 if (!uri) {
   console.error('\n[BUILD FATAL ERROR] MONGODB_URI_BUILD (or MONGODB_URI) is not set!');
