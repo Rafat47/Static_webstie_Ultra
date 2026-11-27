@@ -201,12 +201,18 @@ export function buildCustomData({
 
   // Resolve content_type
   const resolvedContentType = contentType || (formattedContents ? 'product' : null);
+  
+  // Flat list of product IDs, used by Meta for catalog matching
+  const resolvedContentIds = (contentIds && Array.isArray(contentIds) && contentIds.length > 0)
+    ? contentIds.map(id => String(id))
+    : (formattedContents ? formattedContents.map(item => item.id) : null);
 
   return {
     currency: resolvedCurrency,
     value: resolvedValue,
     order_id: orderId ? String(orderId) : null,
     content_name: contentName || null,
+    content_ids: resolvedContentIds,
     content_type: resolvedContentType,
     content_category: resolvedCategory,
     content_categories: resolvedCategories,
